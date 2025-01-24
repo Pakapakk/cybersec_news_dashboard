@@ -1,7 +1,17 @@
-import { createContext, useState, useMemo } from "react";
-import { createTheme } from "@mui/material/styles";
+'use client';
 
-// color design tokens export
+import { Source_Sans_3 } from 'next/font/google';
+import { createContext, useMemo, useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+// Load Source_Sans_3 font from Google Fonts
+const sourceSans = Source_Sans_3({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
+
+// Color design tokens export
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
@@ -120,95 +130,69 @@ export const tokens = (mode) => ({
       }),
 });
 
-// mui theme settings
-export const themeSettings = (mode) => {
+// MUI theme settings
+const themeSettings = (mode) => {
   const colors = tokens(mode);
-  return {
+  return createTheme({
+    cssVariables: true,
     palette: {
-      mode: mode,
+      mode,
       ...(mode === "dark"
         ? {
-            // palette values for dark mode
-            primary: {
-              main: colors.primary[500],
-            },
-            secondary: {
-              main: colors.greenAccent[500],
-            },
-            neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
-            },
-            background: {
-              default: colors.primary[500],
-            },
+            primary: { main: colors.primary[500] },
+            secondary: { main: colors.greenAccent[500] },
+            background: { default: colors.primary[500] },
           }
         : {
-            // palette values for light mode
-            primary: {
-              main: colors.primary[100],
-            },
-            secondary: {
-              main: colors.greenAccent[500],
-            },
-            neutral: {
-              dark: colors.grey[700],
-              main: colors.grey[500],
-              light: colors.grey[100],
-            },
-            background: {
-              default: "#fcfcfc",
-            },
+            primary: { main: colors.primary[100] },
+            secondary: { main: colors.greenAccent[500] },
+            background: { default: "#fcfcfc" },
           }),
     },
     typography: {
-      fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-      fontSize: 12,
-      h1: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 40,
-      },
-      h2: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 32,
-      },
-      h3: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 24,
-      },
-      h4: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 20,
-      },
-      h5: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 16,
-      },
-      h6: {
-        fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 14,
-      },
+      fontFamily: sourceSans.style.fontFamily,
+      fontSize: 15,
+      fontWeightLight: 300,
+      fontWeightRegular: 400,
+      fontWeightMedium: 600,
+      fontWeightBold: 700,
+      h1: { fontSize: 42 },
+      h2: { fontSize: 34 },
+      h3: { fontSize: 26 },
+      h4: { fontSize: 22 },
+      h5: { fontSize: 18 },
+      h6: { fontSize: 16 },
     },
-  };
+  });
 };
 
-// context for color mode
+// Context for color mode
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
 });
 
+// Custom hook to manage color mode
 export const useMode = () => {
-  const [mode, setMode] = useState("dark");
+  // Get the initial mode from localStorage or default to "dark"
+  const [mode, setMode] = useState(() => {
+    const savedMode = localStorage.getItem("colorMode");
+    return savedMode ? savedMode : "dark";
+  });
 
   const colorMode = useMemo(
     () => ({
-      toggleColorMode: () =>
-        setMode((prev) => (prev === "light" ? "dark" : "light")),
+      toggleColorMode: () => {
+        setMode((prevMode) => {
+          const newMode = prevMode === "light" ? "dark" : "light";
+          localStorage.setItem("colorMode", newMode);
+          return newMode;
+        });
+      },
     }),
     []
   );
 
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  const theme = useMemo(() => themeSettings(mode), [mode]);
+
   return [theme, colorMode];
 };
