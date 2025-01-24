@@ -79,6 +79,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <title>CyberSec Dashboard</title>
       <body>
         <ColorModeContext.Provider value={colorMode}>
           <ThemeProvider theme={theme}>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Source_Sans_3 } from 'next/font/google';
-import { createContext, useMemo, useState } from "react";
+import { createContext, useMemo, useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // Load Source_Sans_3 font from Google Fonts
@@ -173,18 +173,22 @@ export const ColorModeContext = createContext({
 
 // Custom hook to manage color mode
 export const useMode = () => {
-  // Get the initial mode from localStorage or default to "dark"
-  const [mode, setMode] = useState(() => {
+  // Default to "dark" mode, and check localStorage on the client
+  const [mode, setMode] = useState("dark");
+
+  useEffect(() => {
     const savedMode = localStorage.getItem("colorMode");
-    return savedMode ? savedMode : "dark";
-  });
+    if (savedMode) {
+      setMode(savedMode); // Update to saved mode if it exists
+    }
+  }, []); // Run this effect only once when the component mounts
 
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
         setMode((prevMode) => {
           const newMode = prevMode === "light" ? "dark" : "light";
-          localStorage.setItem("colorMode", newMode);
+          localStorage.setItem("colorMode", newMode); // Save to localStorage
           return newMode;
         });
       },
