@@ -87,7 +87,7 @@ export default function RootLayout({ children }) {
             <div style={{ display: "flex" }}>
               <Sidebar isOpen={isSidebarOpen} setOpen={setSidebarOpen} />
               <main style={{ flex: 1 }}>
-                <Topbar />
+                {/* <Topbar /> */}
                 {children}
               </main>
             </div>
