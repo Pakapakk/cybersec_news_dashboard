@@ -15,6 +15,7 @@ import BarChart from "@/components/BarChart";
 import StatBox from "@/components/StatBox";
 import ProgressCircle from "@/components/ProgressCircle";
 import Sidebar from "@/components/Sidebar";
+import PieChart from "@/components/PieChart";
 
 const Dashboard = () => {
     const theme = useTheme();
@@ -130,7 +131,7 @@ const Dashboard = () => {
 
                 {/* ROW 2 */}
                 <Box
-                    gridColumn="span 4"
+                    gridColumn="span 5"
                     gridRow="span 2"
                     backgroundColor={colors.primary[400]}
                 >
@@ -193,28 +194,28 @@ const Dashboard = () => {
                 </Box>
 
                 <Box
-                    gridColumn="span 3"
+                    gridColumn="span 2"
                     gridRow="span 2"
                     backgroundColor={colors.primary[400]}
-                    p="30px"
+                    padding="30px"
                 >
-                    <Typography variant="h5" fontWeight="600">
-                        Attack Types
-                    </Typography>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        mt="25px"
+                    <Typography
+                        variant="h5"
+                        fontWeight="600"
+                        sx={{ marginBottom: "15px" }}
                     >
-                        <ProgressCircle size="125" />
-                        <Typography
-                            variant="h5"
-                            color={colors.greenAccent[500]}
-                            sx={{ mt: "15px" }}
-                        >
-                            $48,352 revenue generated
-                        </Typography>
+                        Top 5 Attackers
+                    </Typography>
+                    <Box>
+                        {mockTransactions.slice(0, 5).map((attack, index) => (
+                            <Typography
+                                key={index}
+                                color={colors.grey[100]}
+                                sx={{ marginBottom: "10px" }}
+                            >
+                                {index + 1}. {attack.date}: {attack.amount}
+                            </Typography>
+                        ))}
                     </Box>
                 </Box>
 
@@ -239,15 +240,8 @@ const Dashboard = () => {
                             >
                                 Attack Statistics
                             </Typography>
-                            <Typography
-                                variant="h3"
-                                fontWeight="bold"
-                                color={colors.greenAccent[500]}
-                            >
-                                12345
-                            </Typography>
                         </Box>
-                        <Box>
+                        {/* <Box>
                             <IconButton>
                                 <DownloadOutlinedIcon
                                     sx={{
@@ -256,7 +250,7 @@ const Dashboard = () => {
                                     }}
                                 />
                             </IconButton>
-                        </Box>
+                        </Box> */}
                     </Box>
                     <Box height="250px" m="-20px 0 0 0">
                         <LineChart isDashboard={true} />
@@ -264,7 +258,21 @@ const Dashboard = () => {
                 </Box>
 
                 <Box
-                    gridColumn="span 3"
+                    gridColumn="span 4"
+                    gridRow="span 2"
+                    backgroundColor={colors.primary[400]}
+                    p="30px"
+                >
+                    <Typography variant="h5" fontWeight="600">
+                        Attack Types
+                    </Typography>
+                    <Box height="290px" mt="-20px" paddingTop={3}>
+                        <PieChart />
+                    </Box>
+                </Box>
+
+                <Box
+                    gridColumn="span 2"
                     gridRow="span 2"
                     backgroundColor={colors.primary[400]}
                     padding="30px"
@@ -289,31 +297,9 @@ const Dashboard = () => {
                     </Box>
                 </Box>
 
-                <Box
-                    gridColumn="span 3"
-                    gridRow="span 2"
-                    backgroundColor={colors.primary[400]}
-                    padding="30px"
-                >
-                    <Typography
-                        variant="h5"
-                        fontWeight="600"
-                        sx={{ marginBottom: "15px" }}
-                    >
-                        Top 5 Attackers
-                    </Typography>
-                    <Box>
-                        {mockTransactions.slice(0, 5).map((attack, index) => (
-                            <Typography
-                                key={index}
-                                color={colors.grey[100]}
-                                sx={{ marginBottom: "10px" }}
-                            >
-                                {index + 1}. {attack.date}: {attack.amount}
-                            </Typography>
-                        ))}
-                    </Box>
-                </Box>
+                
+
+                
             </Box>
         </Box>
     );
