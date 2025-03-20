@@ -29,7 +29,7 @@ const Dashboard = () => {
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <Header title="DASHBOARD" subtitle="Cyber Attack Statistics"/>
+                <Header title="DASHBOARD" subtitle="Cyber Attack Statistics" />
             </Box>
 
             {/* GRID & CHARTS */}
@@ -147,7 +147,6 @@ const Dashboard = () => {
                     </Box>
                 </Box>
 
-                {/* ROW 3 */}
                 <Box
                     gridColumn="span 5"
                     gridRow="span 2"
@@ -168,27 +167,6 @@ const Dashboard = () => {
                     >
                         <Box flex="1">
                             <GeographyChart isDashboard={true} />
-                        </Box>
-                        <Box flex="0.4" ml="20px">
-                            <Typography
-                                variant="h6"
-                                fontWeight="600"
-                                color={colors.grey[100]}
-                                sx={{ marginBottom: "15px" }}
-                            >
-                                Top 3 Target Countries:
-                            </Typography>
-                            {mockTransactions
-                                .slice(0, 3)
-                                .map((country, index) => (
-                                    <Typography
-                                        key={index}
-                                        color={colors.grey[100]}
-                                        sx={{ marginBottom: "10px" }}
-                                    >
-                                        {index + 1}. {country.country}
-                                    </Typography>
-                                ))}
                         </Box>
                     </Box>
                 </Box>
@@ -296,10 +274,6 @@ const Dashboard = () => {
                         ))}
                     </Box>
                 </Box>
-
-                
-
-                
             </Box>
         </Box>
     );
