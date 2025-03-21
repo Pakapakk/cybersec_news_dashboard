@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -13,32 +13,54 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData"; // Adjust this to your actual data source
 import Header from "../../components/Header";
-import Popup from "../../components/Popup"; // Import the popup component
+import Popup from "../../components/Popup";
+import cyberAttackNews from "../../data/json/cyber_attack_news.json"; // Import JSON data
 
 const NewsList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedNews, setSelectedNews] = useState(null); // Store selected news data
-  const [openPopup, setOpenPopup] = useState(false); // Manage popup open state
+  const [selectedNews, setSelectedNews] = useState(null);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Show 10 news per page
+
+  useEffect(() => {
+    const filtered = cyberAttackNews.filter(
+      (news) =>
+        news.victimName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (news.threatActor &&
+          news.threatActor.some((actor) =>
+            actor.toLowerCase().includes(searchQuery.toLowerCase())
+          ))
+    );
+    setFilteredData(filtered);
+    setCurrentPage(1); // Reset to first page on search
+  }, [searchQuery]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Function to open the popup with news details
   const handleOpenPopup = (news) => {
     setSelectedNews(news);
     setOpenPopup(true);
   };
 
-  // Placeholder function for filtering
-  const filteredData = mockDataContacts.filter((contact) =>
-    contact.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  // Function to change page and scroll to top
+  const changePage = (newPage) => {
+    setCurrentPage(newPage);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top
+  };
 
   return (
     <Box m="20px" marginTop={5}>
@@ -48,16 +70,14 @@ const NewsList = () => {
       <TextField
         fullWidth
         variant="outlined"
-        placeholder="Attacker or victim name"
+        placeholder="Search by victim or threat actor"
         value={searchQuery}
         onChange={handleSearchChange}
         sx={{
           mb: 2,
           backgroundColor: colors.primary[400],
           borderRadius: "5px",
-          input: {
-            color: theme.palette.mode === "dark" ? "#fff" : "#000",
-          },
+          input: { color: theme.palette.mode === "dark" ? "#fff" : "#000" },
         }}
         InputLabelProps={{
           style: { color: theme.palette.mode === "dark" ? "#bbb" : "#666" },
@@ -66,29 +86,42 @@ const NewsList = () => {
 
       {/* Cards for List */}
       <Box>
-        {filteredData.map((contact) => (
+        {currentItems.map((news, index) => (
           <Card
-            key={contact.id}
+            key={index}
             sx={{
               mb: 2,
               backgroundColor: colors.primary[400],
               color: "#fff",
               cursor: "pointer",
             }}
-            onClick={() => handleOpenPopup(contact)} // Open popup on click
+            onClick={() => handleOpenPopup(news)}
           >
             <CardContent>
-              <Typography variant="h6">
-                {contact.name} ・ {contact.city}
+              <Typography variant="h6">{news.victimName}</Typography>
+              <Typography variant="body2">
+                {new Date(news.datetime).toLocaleString()}
               </Typography>
-              <Typography variant="body2">{contact.email}</Typography>
-              <Typography variant="body2">{contact.phone}</Typography>
-              <Typography variant="body2">{contact.address}</Typography>
 
+              {/* Additional Details */}
+              <Typography variant="body2" mt={1}>
+                <strong>Industry:</strong> {news.industry.join(", ")}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Threat Actor:</strong> {news.threatActor.join(", ")}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Country:</strong> {news.country.join(", ")}
+              </Typography>
               {/* Tags inside the card */}
               <Stack direction="row" spacing={1} mt={1}>
-                <Chip label="hashtag" sx={{ backgroundColor: colors.grey[700], color: "#fff" }} />
-                <Chip label="hashtag" sx={{ backgroundColor: colors.grey[700], color: "#fff" }} />
+                {news.attackType.map((type, i) => (
+                  <Chip
+                    key={i}
+                    label={type}
+                    sx={{ backgroundColor: colors.greenAccent[400], color: "#000" }}
+                  />
+                ))}
               </Stack>
             </CardContent>
           </Card>
@@ -96,18 +129,31 @@ const NewsList = () => {
       </Box>
 
       {/* Popup Component */}
-      <Popup 
-        open={openPopup} 
-        onClose={() => setOpenPopup(false)} 
-        news={selectedNews} // Pass selected news data
+      <Popup
+        open={openPopup}
+        onClose={() => setOpenPopup(false)}
+        news={selectedNews}
       />
 
       {/* Pagination Buttons */}
-      <Box display="flex" justifyContent="space-between" mt={2}>
-        <Button variant="contained" sx={{ backgroundColor: colors.primary[500] }}>
+      <Box display="flex" justifyContent="space-between" mt={2} alignItems="center">
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: colors.primary[500] }}
+          onClick={() => changePage(currentPage - 1)}
+          disabled={currentPage === 1} // Disable if on first page
+        >
           BACK
         </Button>
-        <Button variant="contained" sx={{ backgroundColor: colors.primary[500] }}>
+        <Typography variant="body2" color="white">
+          Page {currentPage} of {totalPages}
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: colors.primary[500] }}
+          onClick={() => changePage(currentPage + 1)}
+          disabled={currentPage === totalPages} // Disable if on last page
+        >
           NEXT
         </Button>
       </Box>

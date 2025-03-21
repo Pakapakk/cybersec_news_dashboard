@@ -80,6 +80,11 @@ function getTopAttackTypes() {
   return aggregateAttackTypes().slice(0, 5);
 }
 
+// Get top 5 attackers with the most attacks
+function getTopAttackers() {
+  return aggregateCounts("threatActor").slice(0, 5);
+}
+
 export {
   aggregateIndustries,
   aggregateAttackTypes,
@@ -89,5 +94,6 @@ export {
   getLatestAttacks,
   getMostUsedAttackType,
   getMostTargetedIndustry,
-  getTopAttackTypes
+  getTopAttackTypes,
+  getTopAttackers,
 };
