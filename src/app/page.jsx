@@ -144,7 +144,7 @@ const Dashboard = () => {
                                     sx={{ marginBottom: "8px" }}
                                 >
                                     {index + 1}. {country.label} (
-                                    {country.value} attacks)
+                                    {country.value})
                                 </Typography>
                             ))}
                         </Box>
@@ -241,8 +241,7 @@ const Dashboard = () => {
                                 color={colors.grey[100]}
                                 sx={{ marginBottom: "10px" }}
                             >
-                                {index + 1}. {attacker.label} ({attacker.value}{" "}
-                                attacks)
+                                {index + 1}. {attacker.label} ({attacker.value})
                             </Typography>
                         ))}
                     </Box>
