@@ -28,6 +28,14 @@ const NewsList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10; // Show 10 news per page
 
+    // Load currentPage from localStorage on mount
+    useEffect(() => {
+        const storedPage = localStorage.getItem("currentPage");
+        if (storedPage) {
+            setCurrentPage(parseInt(storedPage, 10));
+        }
+    }, []);
+
     useEffect(() => {
         const filtered = cyberAttackNews.filter(
             (news) =>
@@ -40,7 +48,12 @@ const NewsList = () => {
                     ))
         );
         setFilteredData(filtered);
-        setCurrentPage(1); // Reset to first page on search
+
+        // Reset to first page only if searching
+        if (searchQuery.trim() !== "") {
+            setCurrentPage(1);
+            localStorage.setItem("currentPage", "1");
+        }
     }, [searchQuery]);
 
     const handleSearchChange = (event) => {
@@ -61,7 +74,8 @@ const NewsList = () => {
     // Function to change page and scroll to top
     const changePage = (newPage) => {
         setCurrentPage(newPage);
-        window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top
+        localStorage.setItem("currentPage", newPage); // Store current page
+        window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
     return (
@@ -162,9 +176,6 @@ const NewsList = () => {
                     sx={{ backgroundColor: colors.primary[500], mr: 1 }}
                     onClick={() => {
                         changePage(currentPage - 1);
-                        setTimeout(() => {
-                            window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top after page change
-                        }, 100); // Slight delay to ensure page change before scroll
                     }}
                     disabled={currentPage === 1} // Disable if on first page
                 >
@@ -177,7 +188,6 @@ const NewsList = () => {
                         key={pageIndex}
                         onClick={() => {
                             changePage(pageIndex + 1);
-                            window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top on page click
                         }}
                         sx={{
                             mx: 0.5,
@@ -206,7 +216,6 @@ const NewsList = () => {
                     sx={{ backgroundColor: colors.primary[500], ml: 1 }}
                     onClick={() => {
                         changePage(currentPage + 1);
-                        window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top on "NEXT"
                     }}
                     disabled={currentPage === totalPages}
                 >
