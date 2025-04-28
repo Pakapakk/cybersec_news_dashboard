@@ -104,7 +104,7 @@ const Sidebar = () => {
                         <Item title="News" to="/NewsList" icon={<ArticleIcon />} />
 
                         {/* Dark Mode Toggle Button */}
-                        <Box title="Appearance" display="flex" justifyContent="left" p={2} paddingTop={87}>
+                        <Box title="Appearance" display="flex" justifyContent="left" p={2} paddingTop={95}>
                             <IconButton title="Appearance" onClick={colorMode.toggleColorMode}>
                                 {theme.palette.mode === "dark" ? ( <DarkModeOutlinedIcon title="Appearance" /> ) : ( <LightModeOutlinedIcon title="Appearance" /> )}
                             </IconButton>
