@@ -10,14 +10,15 @@ import {
     Button,
     Chip,
     Stack,
+    CircularProgress,
+    Alert,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import Popup from "../../components/Popup";
-import cyberAttackNews from "../../data/json/cyber_attack_news.json"; // Import JSON data
 
-const NewsList = () => {
+export default function NewsList() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -26,7 +27,11 @@ const NewsList = () => {
     const [openPopup, setOpenPopup] = useState(false);
     const [filteredData, setFilteredData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10; // Show 10 news per page
+    const itemsPerPage = 10;
+    const [news, setNews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [statistics, setStatistics] = useState(null);
 
     // Load currentPage from localStorage on mount
     useEffect(() => {
@@ -37,7 +42,41 @@ const NewsList = () => {
     }, []);
 
     useEffect(() => {
-        const filtered = cyberAttackNews.filter(
+        const fetchNews = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('/api/cyber-attack-news', { 
+                    cache: 'no-store',
+                    headers: {
+                        'Accept': 'application/json',
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch news data');
+                }
+                
+                const result = await response.json();
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                
+                setNews(result.data);
+                setStatistics(result.statistics);
+                setFilteredData(result.data);
+            } catch (err) {
+                setError(err.message);
+                console.error('Error fetching news:', err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNews();
+    }, []);
+
+    useEffect(() => {
+        const filtered = news.filter(
             (news) =>
                 news.victimName
                     .toLowerCase()
@@ -49,12 +88,11 @@ const NewsList = () => {
         );
         setFilteredData(filtered);
 
-        // Reset to first page only if searching
         if (searchQuery.trim() !== "") {
             setCurrentPage(1);
             localStorage.setItem("currentPage", "1");
         }
-    }, [searchQuery]);
+    }, [searchQuery, news]);
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
@@ -71,18 +109,37 @@ const NewsList = () => {
     const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-    // Function to change page and scroll to top
     const changePage = (newPage) => {
         setCurrentPage(newPage);
-        localStorage.setItem("currentPage", newPage); // Store current page
+        localStorage.setItem("currentPage", newPage.toString());
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+    if (error) {
+        return (
+            <Box m="20px">
+                <Alert severity="error">
+                    Error loading news data: {error}
+                </Alert>
+            </Box>
+        );
+    }
+
     return (
         <Box m="20px" marginTop={5}>
-            <Header title="News List" subtitle="List of Cybersecurity News" />
+            <Header 
+                title="News List" 
+                subtitle={`Total Attacks: ${news.length} | Latest Update: ${new Date().toLocaleDateString()}`} 
+            />
 
-            {/* Search Bar */}
             <TextField
                 fullWidth
                 variant="outlined"
@@ -96,15 +153,12 @@ const NewsList = () => {
                     input: {
                         color: theme.palette.mode === "dark" ? "#fff" : "#000",
                     },
-                }}
-                InputLabelProps={{
-                    style: {
+                    "& .MuiInputLabel-root": {
                         color: theme.palette.mode === "dark" ? "#bbb" : "#666",
                     },
                 }}
             />
 
-            {/* Cards for List */}
             <Box>
                 {currentItems.map((news, index) => (
                     <Card
@@ -114,6 +168,10 @@ const NewsList = () => {
                             backgroundColor: colors.primary[400],
                             color: "#fff",
                             cursor: "pointer",
+                            transition: "transform 0.2s",
+                            "&:hover": {
+                                transform: "scale(1.01)",
+                            },
                         }}
                         onClick={() => handleOpenPopup(news)}
                     >
@@ -125,7 +183,6 @@ const NewsList = () => {
                                 {new Date(news.datetime).toLocaleString()}
                             </Typography>
 
-                            {/* Additional Details */}
                             <Typography variant="body2" mt={1}>
                                 <strong>Industry:</strong>{" "}
                                 {news.industry.join(", ")}
@@ -138,15 +195,13 @@ const NewsList = () => {
                                 <strong>Country:</strong>{" "}
                                 {news.country.join(", ")}
                             </Typography>
-                            {/* Tags inside the card */}
                             <Stack direction="row" spacing={1} mt={1}>
                                 {news.attackType.map((type, i) => (
                                     <Chip
                                         key={i}
                                         label={type}
                                         sx={{
-                                            backgroundColor:
-                                                colors.greenAccent[400],
+                                            backgroundColor: colors.greenAccent[400],
                                             color: "#000",
                                         }}
                                     />
@@ -157,14 +212,12 @@ const NewsList = () => {
                 ))}
             </Box>
 
-            {/* Popup Component */}
             <Popup
                 open={openPopup}
                 onClose={() => setOpenPopup(false)}
                 news={selectedNews}
             />
 
-            {/* Pagination */}
             <Box
                 display="flex"
                 justifyContent="center"
@@ -174,21 +227,16 @@ const NewsList = () => {
                 <Button
                     variant="contained"
                     sx={{ backgroundColor: colors.primary[500], mr: 1 }}
-                    onClick={() => {
-                        changePage(currentPage - 1);
-                    }}
-                    disabled={currentPage === 1} // Disable if on first page
+                    onClick={() => changePage(currentPage - 1)}
+                    disabled={currentPage === 1}
                 >
                     BACK
                 </Button>
 
-                {/* Page Number Buttons */}
                 {[...Array(totalPages)].map((_, pageIndex) => (
                     <Button
                         key={pageIndex}
-                        onClick={() => {
-                            changePage(pageIndex + 1);
-                        }}
+                        onClick={() => changePage(pageIndex + 1)}
                         sx={{
                             mx: 0.5,
                             backgroundColor:
@@ -196,7 +244,7 @@ const NewsList = () => {
                                     ? colors.greenAccent[400]
                                     : colors.primary[500],
                             color:
-                                currentPage === pageIndex + 1 ? "#000" : "#fff", // Change color to black when active
+                                currentPage === pageIndex + 1 ? "#000" : "#fff",
                             fontWeight:
                                 currentPage === pageIndex + 1
                                     ? "bold"
@@ -214,9 +262,7 @@ const NewsList = () => {
                 <Button
                     variant="contained"
                     sx={{ backgroundColor: colors.primary[500], ml: 1 }}
-                    onClick={() => {
-                        changePage(currentPage + 1);
-                    }}
+                    onClick={() => changePage(currentPage + 1)}
                     disabled={currentPage === totalPages}
                 >
                     NEXT
@@ -224,6 +270,4 @@ const NewsList = () => {
             </Box>
         </Box>
     );
-};
-
-export default NewsList;
+}
