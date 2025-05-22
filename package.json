@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@comunica/query-sparql": "^4.2.0",
     "@comunica/query-sparql-file": "^4.2.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -30,7 +31,9 @@
     "autoprefixer": "^10.4.20",
     "formik": "^2.4.6",
     "fs": "^0.0.1-security",
+    "n3": "^1.25.2",
     "next": "15.1.4",
+    "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-pro-sidebar": "^0.7.1",

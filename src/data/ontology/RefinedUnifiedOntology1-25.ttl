@@ -1,0 +1,4875 @@
+@prefix ex: <http://example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:ConfidentialData ex:shouldBeProtectedBy ex:DataCentricAuditProtection .
+
+ex:DataProtectionStrategy ex:shouldInclude ex:DataCentricAuditProtection,
+        ex:DatabaseActivityMonitoring .
+
+ex:SecuritySpecialist ex:uses ex:DataCentricAuditProtection,
+        ex:DatabaseActivityMonitoring .
+
+ex:actionsTaken a owl:AnnotationProperty .
+
+ex:activeSince a owl:DatatypeProperty ;
+    rdfs:domain ex:MaliciousTool ;
+    rdfs:range xsd:gYearMonth .
+
+ex:affectedBusinessCount a owl:AnnotationProperty .
+
+ex:affectedBy a owl:AnnotationProperty .
+
+ex:affectedComponent a owl:AnnotationProperty .
+
+ex:affectedCountries a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:Country .
+
+ex:affectedCountry a owl:AnnotationProperty .
+
+ex:affectedCustomers a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range xsd:integer .
+
+ex:affectedDevices a owl:DatatypeProperty ;
+    rdfs:label "affected devices"^^xsd:string ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range xsd:integer .
+
+ex:affectedFeature a owl:ObjectProperty ;
+    rdfs:label "affected feature"^^xsd:string ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range ex:DatabaseFeature .
+
+ex:affectedIndividuals a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityIncident ;
+    rdfs:range xsd:integer .
+
+ex:affectedOrganization a owl:AnnotationProperty .
+
+ex:affectedOrganizations a owl:AnnotationProperty .
+
+ex:affectedUserCount a owl:DatatypeProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range xsd:integer .
+
+ex:affectedUsers a owl:DatatypeProperty ;
+    rdfs:domain ex:DataBreach,
+        ex:Malware,
+        ex:SecurityIncident ;
+    rdfs:range xsd:integer .
+
+ex:affects a owl:AnnotationProperty .
+
+ex:affectsPlatform a owl:ObjectProperty ;
+    rdfs:domain ex:Vulnerability ;
+    rdfs:range ex:OnlineService .
+
+ex:affectsService a owl:ObjectProperty ;
+    rdfs:domain ex:Vulnerability ;
+    rdfs:range ex:DigitalWalletService .
+
+ex:affectsUserCount a owl:DatatypeProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range xsd:integer .
+
+ex:affiliatedWith a owl:ObjectProperty ;
+    rdfs:domain ex:StateSponsoredActor ;
+    rdfs:range ex:GovernmentOrganization .
+
+ex:age a owl:AnnotationProperty .
+
+ex:alsoExploits a owl:AnnotationProperty .
+
+ex:alsoKnownAs a owl:DatatypeProperty ;
+    rdfs:domain ex:ThreatActor ;
+    rdfs:range xsd:string .
+
+ex:analyzed a owl:AnnotationProperty .
+
+ex:appliedFor a owl:ObjectProperty ;
+    rdfs:domain ex:Person ;
+    rdfs:range ex:ProtectiveRegistration .
+
+ex:arrested a owl:AnnotationProperty .
+
+ex:associatedWith a owl:ObjectProperty ;
+    rdfs:domain ex:ThreatActor ;
+    rdfs:range ex:DataBreach,
+        ex:SecurityIncident .
+
+ex:attackMethod a owl:AnnotationProperty .
+
+ex:attackMethods a owl:AnnotationProperty .
+
+ex:attackType a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:CyberAttack .
+
+ex:attackVector a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:AttackVector,
+        ex:SystemComponent .
+
+ex:attackerImpersonated a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityIncident ;
+    rdfs:range ex:Person .
+
+ex:attributedNation a owl:ObjectProperty ;
+    rdfs:domain ex:StateSponsoredActor ;
+    rdfs:range ex:Country .
+
+ex:attributedTo a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:ThreatActor .
+
+ex:averageCost a owl:AnnotationProperty .
+
+ex:belongsTo a owl:AnnotationProperty .
+
+ex:bountyDate a owl:AnnotationProperty .
+
+ex:breachDate a owl:AnnotationProperty .
+
+ex:brieflyVisible a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range xsd:boolean .
+
+ex:bypasses a owl:ObjectProperty ;
+    rdfs:label "bypasses"^^xsd:string ;
+    rdfs:domain ex:Credential ;
+    rdfs:range ex:SecurityMechanism .
+
+ex:bypassesPolicy a owl:ObjectProperty ;
+    rdfs:domain ex:AttackMethod ;
+    rdfs:range ex:SecurityControl .
+
+ex:canBeCausedBy a owl:AnnotationProperty .
+
+ex:canBeObtainedThrough a owl:AnnotationProperty .
+
+ex:canInvolve a owl:AnnotationProperty .
+
+ex:capabilities a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:MalwareFunction .
+
+ex:capability a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:MaliciousFunction .
+
+ex:causedBy a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:SecurityVulnerability .
+
+ex:charges a owl:AnnotationProperty .
+
+ex:checksFor a owl:ObjectProperty ;
+    rdfs:domain ex:MaliciousCode ;
+    rdfs:range ex:BrowserFeature .
+
+ex:citizenship a owl:AnnotationProperty .
+
+ex:classifiedAs a owl:AnnotationProperty .
+
+ex:collaboratedWith a owl:AnnotationProperty .
+
+ex:commonCause a owl:AnnotationProperty .
+
+ex:communicatesWith a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:CommandAndControlServer .
+
+ex:communicationMethod a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:Protocol .
+
+ex:communicationProtocol a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:Protocol .
+
+ex:compiledFrom a owl:ObjectProperty ;
+    rdfs:domain ex:DataDump ;
+    rdfs:range ex:DataCollection .
+
+ex:composition a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityTool ;
+    rdfs:range xsd:string .
+
+ex:compromisePeriod a owl:DatatypeProperty ;
+    rdfs:domain ex:SoftwareUpdateCompromise ;
+    rdfs:range xsd:string .
+
+ex:compromisedData a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach,
+        ex:SecurityIncident ;
+    rdfs:range ex:SensitiveData .
+
+ex:compromisedOrganizations a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:Organization .
+
+ex:compromisedSystem a owl:AnnotationProperty .
+
+ex:concerns a owl:AnnotationProperty .
+
+ex:conductedBy a owl:ObjectProperty ;
+    rdfs:domain ex:LawEnforcementOperation ;
+    rdfs:range ex:LawEnforcementAgency .
+
+ex:confirmedDate a owl:AnnotationProperty .
+
+ex:contained a owl:AnnotationProperty .
+
+ex:containedData a owl:ObjectProperty ;
+    rdfs:domain ex:CybercrimeService ;
+    rdfs:range ex:SensitiveData .
+
+ex:contains a owl:AnnotationProperty .
+
+ex:containsCertificate a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:ServerCertificate .
+
+ex:containsFileTypes a owl:AnnotationProperty .
+
+ex:containsInformationAbout a owl:ObjectProperty ;
+    rdfs:domain ex:DataLeak ;
+    rdfs:range ex:Person .
+
+ex:containsPersonalData a owl:ObjectProperty ;
+    rdfs:domain ex:SocialMediaProfile ;
+    rdfs:range ex:PersonalData .
+
+ex:containsSensitiveInfoAbout a owl:ObjectProperty ;
+    rdfs:domain ex:DataLeak ;
+    rdfs:range ex:Entity .
+
+ex:contractsWith a owl:AnnotationProperty .
+
+ex:convictedOf a owl:ObjectProperty ;
+    rdfs:domain ex:Person ;
+    rdfs:range ex:CyberCrime .
+
+ex:couldBePreventedBy a owl:AnnotationProperty .
+
+ex:couldCompromise a owl:ObjectProperty ;
+    rdfs:domain ex:Vulnerability ;
+    rdfs:range ex:SensitiveData,
+        ex:UserAccount .
+
+ex:couldEnableAttack a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityMisconfiguration ;
+    rdfs:range ex:CyberAttack .
+
+ex:couldLeadTo a owl:AnnotationProperty .
+
+ex:countermeasureFor a owl:ObjectProperty ;
+    rdfs:domain ex:Countermeasure ;
+    rdfs:range ex:SecurityThreat .
+
+ex:country a owl:AnnotationProperty .
+
+ex:created a owl:AnnotationProperty .
+
+ex:currency a owl:AnnotationProperty .
+
+ex:customerCount a owl:AnnotationProperty .
+
+ex:customerLocations a owl:ObjectProperty ;
+    rdfs:domain ex:Organization ;
+    rdfs:range ex:Country .
+
+ex:dataExfiltrated a owl:DatatypeProperty ;
+    rdfs:label "data exfiltrated"^^xsd:string ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range xsd:string .
+
+ex:dataSecured a owl:DatatypeProperty ;
+    rdfs:domain ex:LegalProceeding ;
+    rdfs:range xsd:boolean .
+
+ex:dataSize a owl:AnnotationProperty .
+
+ex:dataSources a owl:DatatypeProperty ;
+    rdfs:domain ex:CybercrimeService ;
+    rdfs:range xsd:integer .
+
+ex:dataTypeCompromised a owl:AnnotationProperty .
+
+ex:date a owl:AnnotationProperty .
+
+ex:dateDisclosed a owl:AnnotationProperty .
+
+ex:dateDiscovered a owl:AnnotationProperty .
+
+ex:dateOccurred a owl:AnnotationProperty .
+
+ex:datePublished a owl:AnnotationProperty .
+
+ex:dateReported a owl:AnnotationProperty .
+
+ex:deliveryMethod a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:DeliveryVector,
+        ex:DistributionChannel .
+
+ex:detectedActivityIn a owl:AnnotationProperty .
+
+ex:detectedBy a owl:AnnotationProperty .
+
+ex:detects a owl:ObjectProperty ;
+    rdfs:label "detects"^^xsd:string ;
+    rdfs:domain ex:Software ;
+    rdfs:range ex:SecurityThreat .
+
+ex:developed a owl:AnnotationProperty .
+
+ex:developedBy a owl:AnnotationProperty .
+
+ex:developedCountermeasure a owl:ObjectProperty ;
+    rdfs:domain ex:Organization ;
+    rdfs:range ex:Countermeasure .
+
+ex:disclosureDate a owl:DatatypeProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range xsd:date .
+
+ex:discovered a owl:ObjectProperty ;
+    rdfs:label "discovered"^^xsd:string ;
+    rdfs:domain ex:Company ;
+    rdfs:range ex:SecurityVulnerability .
+
+ex:discoveredBy a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach,
+        ex:Vulnerability ;
+    rdfs:range ex:BugBountyResearcher,
+        ex:Person,
+        ex:SecurityResearchOrganization .
+
+ex:discoveredByOrganization a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range ex:SecurityResearcherOrganization .
+
+ex:discoveredDuring a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:SecurityAudit .
+
+ex:discoveryDate a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityIncident ;
+    rdfs:range xsd:date .
+
+ex:disguisedAs a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:SoftwareComponent .
+
+ex:distributedOn a owl:ObjectProperty ;
+    rdfs:domain ex:DataLeak ;
+    rdfs:range ex:CybercrimeForum .
+
+ex:distributedVia a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:SoftwareDistributionPlatform .
+
+ex:documentCount a owl:DatatypeProperty ;
+    rdfs:domain ex:FinancialDocument ;
+    rdfs:range xsd:integer .
+
+ex:domain a owl:AnnotationProperty .
+
+ex:duration a owl:DatatypeProperty ;
+    rdfs:label "duration"^^xsd:string ;
+    rdfs:domain ex:CyberAttack,
+        ex:SubscriptionPlan ;
+    rdfs:range xsd:duration .
+
+ex:endDate a owl:AnnotationProperty .
+
+ex:estimatedImpact a owl:DatatypeProperty ;
+    rdfs:domain ex:SoftwarePlatform ;
+    rdfs:range xsd:integer .
+
+ex:evasionMethod a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:EvasionTechnique .
+
+ex:executedBy a owl:ObjectProperty ;
+    rdfs:domain ex:Countermeasure ;
+    rdfs:range ex:Organization .
+
+ex:exfiltratesDataTo a owl:ObjectProperty ;
+    rdfs:domain ex:AttackMethod ;
+    rdfs:range ex:OnlineService .
+
+ex:exploitComplexity a owl:AnnotationProperty .
+
+ex:exploitDate a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range xsd:date .
+
+ex:exploitationStatus a owl:AnnotationProperty .
+
+ex:exploitedIn a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range ex:SecurityIncident .
+
+ex:exploits a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack,
+        ex:ThreatActor ;
+    rdfs:range ex:SecurityVulnerability,
+        ex:Vulnerability .
+
+ex:exploitsAuthenticationMethod a owl:ObjectProperty ;
+    rdfs:domain ex:AuthenticationFlaw ;
+    rdfs:range ex:AuthenticationMethod .
+
+ex:exploitsService a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:OnlineService .
+
+ex:exploitsVulnerabilities a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityTool ;
+    rdfs:range ex:Vulnerability .
+
+ex:exploitsWeakness a owl:AnnotationProperty .
+
+ex:exposedCredentials a owl:AnnotationProperty .
+
+ex:exposedData a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:PersonalData .
+
+ex:exposedPasswords a owl:DatatypeProperty ;
+    rdfs:domain ex:Organization,
+        ex:OrganizationDomain ;
+    rdfs:range xsd:integer .
+
+ex:exposedPaymentDetails a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:PaymentAccount .
+
+ex:extractsPayload a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:Payload .
+
+ex:extraditedFrom a owl:ObjectProperty ;
+    rdfs:domain ex:LegalProceeding ;
+    rdfs:range ex:Country .
+
+ex:feature a owl:AnnotationProperty .
+
+ex:financialDataCompromised a owl:AnnotationProperty .
+
+ex:firstActive a owl:AnnotationProperty .
+
+ex:firstIdentified a owl:AnnotationProperty .
+
+ex:firstObserved a owl:AnnotationProperty .
+
+ex:fixDate a owl:AnnotationProperty .
+
+ex:fixed a owl:ObjectProperty ;
+    rdfs:label "fixed"^^xsd:string ;
+    rdfs:domain ex:Company ;
+    rdfs:range ex:SecurityVulnerability .
+
+ex:fixedBy a owl:ObjectProperty ;
+    rdfs:domain ex:Vulnerability ;
+    rdfs:range ex:ITCompany .
+
+ex:fixedDate a owl:AnnotationProperty .
+
+ex:fixedInVersion a owl:DatatypeProperty ;
+    rdfs:domain ex:Vulnerability ;
+    rdfs:range xsd:string .
+
+ex:focus a owl:AnnotationProperty .
+
+ex:goal a owl:AnnotationProperty .
+
+ex:hardwareImpounded a owl:DatatypeProperty ;
+    rdfs:domain ex:LegalProceeding ;
+    rdfs:range xsd:boolean .
+
+ex:hasAccount a owl:ObjectProperty ;
+    rdfs:domain ex:Person ;
+    rdfs:range ex:UserAccount .
+
+ex:hasAffectedSubsidiary a owl:AnnotationProperty .
+
+ex:hasAuthenticationMethod a owl:AnnotationProperty .
+
+ex:hasBranch a owl:ObjectProperty ;
+    rdfs:domain ex:GovernmentAgency ;
+    rdfs:range ex:GovernmentAgency .
+
+ex:hasDomain a owl:AnnotationProperty .
+
+ex:hasExecutive a owl:ObjectProperty ;
+    rdfs:domain ex:Organization ;
+    rdfs:range ex:Person .
+
+ex:hasFeature a owl:AnnotationProperty .
+
+ex:hasMobileApp a owl:AnnotationProperty .
+
+ex:hasPhoneNumber a owl:ObjectProperty ;
+    rdfs:domain ex:Person ;
+    rdfs:range ex:PhoneNumber .
+
+ex:hasSecurityMeasure a owl:AnnotationProperty .
+
+ex:hasService a owl:AnnotationProperty .
+
+ex:hasSurveillanceCapability a owl:ObjectProperty ;
+    rdfs:domain ex:Spyware ;
+    rdfs:range ex:SurveillanceCapability .
+
+ex:hasTool a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityTeam ;
+    rdfs:range ex:RedTeamTool .
+
+ex:hasVulnerability a owl:ObjectProperty ;
+    rdfs:label "has vulnerability"^^xsd:string ;
+    rdfs:domain ex:DatabaseService ;
+    rdfs:range ex:SecurityVulnerability .
+
+ex:hostedData a owl:AnnotationProperty .
+
+ex:hosts a owl:ObjectProperty ;
+    rdfs:domain ex:SourceCodeRepository ;
+    rdfs:range ex:SoftwareComponent,
+        ex:SourceCode .
+
+ex:hostsDataFor a owl:ObjectProperty ;
+    rdfs:domain ex:WebHostingCompany ;
+    rdfs:range ex:Organization .
+
+ex:hostsMaliciousCode a owl:ObjectProperty ;
+    rdfs:domain ex:CloudService ;
+    rdfs:range ex:MaliciousCode .
+
+ex:identified a owl:AnnotationProperty .
+
+ex:identifiedActivity a owl:AnnotationProperty .
+
+ex:identifiedVariant a owl:AnnotationProperty .
+
+ex:imitates a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:SecurityControl .
+
+ex:impact a owl:AnnotationProperty .
+
+ex:impactLevel a owl:AnnotationProperty .
+
+ex:impactedCountries a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:Country .
+
+ex:impactedOrganization a owl:AnnotationProperty .
+
+ex:impactedOrganizations a owl:AnnotationProperty .
+
+ex:impersonates a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:SoftwareApplication .
+
+ex:implementedBy a owl:AnnotationProperty .
+
+ex:implementedIn a owl:AnnotationProperty .
+
+ex:implements a owl:ObjectProperty ;
+    rdfs:label "implements"^^xsd:string ;
+    rdfs:domain ex:Software ;
+    rdfs:range ex:SecurityControl .
+
+ex:includes a owl:AnnotationProperty .
+
+ex:industry a owl:AnnotationProperty .
+
+ex:initiatedPasswordReset a owl:DatatypeProperty ;
+    rdfs:domain ex:Organization ;
+    rdfs:range xsd:boolean .
+
+ex:integratesWith a owl:ObjectProperty ;
+    rdfs:label "integrates with"^^xsd:string ;
+    rdfs:domain ex:Software ;
+    rdfs:range ex:Software .
+
+ex:intendedUse a owl:DatatypeProperty ;
+    rdfs:domain ex:StolenData ;
+    rdfs:range xsd:string .
+
+ex:investigatedBy a owl:AnnotationProperty .
+
+ex:involved a owl:AnnotationProperty .
+
+ex:involvedOrganization a owl:AnnotationProperty .
+
+ex:involvedThirdParty a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:ITCompany .
+
+ex:involves a owl:AnnotationProperty .
+
+ex:isCompromisedBy a owl:ObjectProperty ;
+    rdfs:label "is compromised by"^^xsd:string ;
+    rdfs:domain ex:Credential ;
+    rdfs:range ex:SecurityVulnerability .
+
+ex:isManagedService a owl:AnnotationProperty .
+
+ex:isNoSQLDatabase a owl:AnnotationProperty .
+
+ex:isOpenSource a owl:AnnotationProperty .
+
+ex:isPartOf a owl:AnnotationProperty .
+
+ex:issuedAdvisory a owl:AnnotationProperty .
+
+ex:issuedBy a owl:AnnotationProperty .
+
+ex:issuedDirective a owl:AnnotationProperty .
+
+ex:killswitchDomain a owl:DatatypeProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range xsd:string .
+
+ex:knownFor a owl:ObjectProperty ;
+    rdfs:label "known for"^^xsd:string ;
+    rdfs:domain ex:CybercriminalGroup ;
+    rdfs:range ex:AttackMethod .
+
+ex:language a owl:AnnotationProperty .
+
+ex:launchDate a owl:DatatypeProperty ;
+    rdfs:domain ex:CybercrimeMarketplace ;
+    rdfs:range xsd:date .
+
+ex:leakLocation a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:OnlinePlatform .
+
+ex:leakedData a owl:AnnotationProperty .
+
+ex:leakedDate a owl:AnnotationProperty .
+
+ex:leakedFrom a owl:ObjectProperty ;
+    rdfs:domain ex:DataLeak ;
+    rdfs:range ex:Organization .
+
+ex:leakedOn a owl:AnnotationProperty .
+
+ex:linkedTo a owl:AnnotationProperty .
+
+ex:locatedIn a owl:AnnotationProperty .
+
+ex:location a owl:AnnotationProperty .
+
+ex:maintainedBy a owl:ObjectProperty ;
+    rdfs:domain ex:Software ;
+    rdfs:range ex:Organization .
+
+ex:maintains a owl:ObjectProperty ;
+    rdfs:domain ex:Organization ;
+    rdfs:range ex:ProgrammingLanguage .
+
+ex:managedBy a owl:AnnotationProperty .
+
+ex:masqueradesAs a owl:ObjectProperty ;
+    rdfs:domain ex:Malware ;
+    rdfs:range ex:NetworkProtocol .
+
+ex:method a owl:AnnotationProperty .
+
+ex:mitigates a owl:AnnotationProperty .
+
+ex:mitigation a owl:AnnotationProperty .
+
+ex:mitigationAction a owl:ObjectProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range ex:SecurityAction .
+
+ex:monitors a owl:ObjectProperty ;
+    rdfs:label "monitors"^^xsd:string ;
+    rdfs:domain ex:Software ;
+    rdfs:range ex:Activity .
+
+ex:motivation a owl:AnnotationProperty .
+
+ex:newSystem a owl:ObjectProperty ;
+    rdfs:domain ex:SystemMigration ;
+    rdfs:range ex:System .
+
+ex:news001 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:AzureCosmosDB,
+        ex:ChaosDBVulnerability,
+        ex:Fortune500Companies,
+        ex:JupyterNotebookFeature,
+        ex:Microsoft,
+        ex:PrimaryKey,
+        ex:Wiz .
+
+ex:news002 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APITokens,
+        ex:CloudCredentialTheft,
+        ex:CompromisedCredentials,
+        ex:DataBreach,
+        ex:EducationEntities,
+        ex:GitHub,
+        ex:GitHubRepositoryAttacks,
+        ex:GovernmentEntities,
+        ex:MilitaryEntities,
+        ex:OAuthTokens,
+        ex:RaidForums,
+        ex:SP100Companies,
+        ex:ShinyHunters,
+        ex:TwoFactorAuthentication .
+
+ex:news003 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APT41,
+        ex:AirIndia,
+        ex:AviationIT,
+        ex:AviationIndustry,
+        ex:BadPotato,
+        ex:CobaltStrike,
+        ex:ColunmTK,
+        ex:EspionageCampaigns,
+        ex:Mimikatz,
+        ex:PassengerServiceSystem,
+        ex:SITA,
+        ex:SupplyChainAttacks .
+
+ex:news004 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:ActiveDirectory,
+        ex:BreachedPasswordLists,
+        ex:BreachedPasswordProtection,
+        ex:CredentialStuffing,
+        ex:Microsoft,
+        ex:NIST,
+        ex:PasswordAttack,
+        ex:PasswordPolicy,
+        ex:PasswordSpraying,
+        ex:SP800-63B,
+        ex:Specops,
+        ex:SpecopsPasswordPolicy .
+
+ex:news005 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:CollusionFraud,
+        ex:DataCentricAuditProtection,
+        ex:DataLeakage,
+        ex:DatabaseActivityMonitoring,
+        ex:DatabaseMonitor,
+        ex:FMSIncident,
+        ex:FileAuditor,
+        ex:InsiderRisk,
+        ex:PriceListFraud,
+        ex:SearchInform .
+
+ex:news006 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:ClickStudios,
+        ex:ClickStudiosCommunication,
+        ex:CompromisedCDN,
+        ex:CompromisedUpdateMechanism,
+        ex:ContentDeliveryNetwork,
+        ex:DLL,
+        ex:FakeHotfix,
+        ex:Hotfix,
+        ex:InPlaceUpgrade,
+        ex:MoserwareHotfix,
+        ex:MoserwareSecretSplitterDLL,
+        ex:Moserware_zip,
+        ex:PasswordManager,
+        ex:Passwordstate,
+        ex:PasswordstateCustomers,
+        ex:PasswordstatePhishingAttack,
+        ex:PasswordstatePhishingCampaign,
+        ex:PasswordstateSupplyChainAttack,
+        ex:PasswordstateUpdateMechanism,
+        ex:Payload,
+        ex:PhishingAttack,
+        ex:SecondStagePayload,
+        ex:SupplyChainAttack,
+        ex:UnknownThreatActor,
+        ex:UpdateMechanism,
+        ex:moserware_secretsplitter_dll .
+
+ex:news007 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:BigBasketBreach,
+        ex:BigBasketLeak,
+        ex:BreachedCredentials,
+        ex:COMB21,
+        ex:CybercrimeForum,
+        ex:DataDump,
+        ex:DataLeak,
+        ex:FelipeDaragon,
+        ex:GovernmentDomain,
+        ex:MultipleBreaches,
+        ex:OldsmarWaterPlant,
+        ex:PasswordHashCracking,
+        ex:PlaintextConnection,
+        ex:ShinyHunters,
+        ex:StateDepartment,
+        ex:Syhunt,
+        ex:USGovernment,
+        ex:state_gov,
+        ex:va_gov .
+
+ex:news008 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:AWS,
+        ex:AWSMisconfiguration,
+        ex:BrokeragePlatform,
+        ex:DarkWeb,
+        ex:DigitalWallet,
+        ex:FinancialDocument,
+        ex:FinancialServices,
+        ex:KYC,
+        ex:KYCDocument,
+        ex:KYCDocuments,
+        ex:MisconfiguredServer,
+        ex:MobiKwik,
+        ex:MobiKwikBreach,
+        ex:RajshekharRajaharia,
+        ex:ServerMisconfiguration,
+        ex:ThirdPartyDataWarehouse,
+        ex:Upstox,
+        ex:UpstoxBreach .
+
+ex:news009 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:BCryptHash,
+        ex:Backdoor,
+        ex:BcryptHash,
+        ex:DatabaseLeak,
+        ex:DigestAuthentication,
+        ex:GitPHPNetServer,
+        ex:GitPhpNetServer,
+        ex:HTTPAuthentication,
+        ex:MD5Hash,
+        ex:MainPHPNetSystem,
+        ex:MainPhpNetSystem,
+        ex:MaliciousCommits,
+        ex:MasterPHPNetSystem,
+        ex:MasterPhpNetSystem,
+        ex:NikitaPopov,
+        ex:OutdatedSoftware,
+        ex:PHP,
+        ex:PHPBreach,
+        ex:PHPGroup,
+        ex:PHPLanguage,
+        ex:PHPMaintainers,
+        ex:PHPSourceCode,
+        ex:PHPSupplyChainAttack,
+        ex:PasswordHash,
+        ex:PasswordHashAlgorithm,
+        ex:PasswordReset,
+        ex:PotentialSoftwareExploit,
+        ex:ProgrammingLanguage,
+        ex:RasmusLerdorf,
+        ex:SSHAuthentication,
+        ex:SoftwareSupplyChainAttack,
+        ex:SourceCodeRepository,
+        ex:SystemMigration,
+        ex:UserDatabase,
+        ex:UserDatabaseLeak .
+
+ex:news010 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:CambridgeAnalyticaScandal,
+        ex:ChrisHughes,
+        ex:CybercrimeForum,
+        ex:CybercrimeForumX,
+        ex:DataScraping,
+        ex:DataScrapingAttack,
+        ex:DustinMoskovitz,
+        ex:Facebook,
+        ex:FacebookDataLeak2019,
+        ex:FacebookDataLeak2021,
+        ex:FacebookIDLookup,
+        ex:FacebookPlatform,
+        ex:FacebookUserProfiles,
+        ex:India,
+        ex:MarkZuckerberg,
+        ex:MetaPlatformsInc,
+        ex:PersonalDataLeak,
+        ex:PersonalInformation,
+        ex:ProfileScraping,
+        ex:ProfileScrapingVulnerability,
+        ex:Signal,
+        ex:SignalApp,
+        ex:SocialMediaPlatform,
+        ex:SocialMediaProfile,
+        ex:TelegramBot,
+        ex:UnitedKingdom,
+        ex:UnitedStates,
+        ex:ZuckerbergFacebookProfile,
+        ex:ZuckerbergPhoneNumber,
+        ex:ZuckerbergSignalAccount .
+
+ex:news011 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:CVE-2021-28133,
+        ex:InformationLeak,
+        ex:LinuxClient,
+        ex:MatthiasDeeg,
+        ex:MichaelStrametz,
+        ex:ScreenCaptureTool,
+        ex:ScreenSharingFeature,
+        ex:ScreenSharingGlitch,
+        ex:SecurityResearchCompany,
+        ex:SecurityResearcherOrganization,
+        ex:SharedApplicationWindow,
+        ex:SoftwareFeature,
+        ex:SySS,
+        ex:UnsharedApplicationContent,
+        ex:VideoconferencingCompany,
+        ex:VideoconferencingSoftware,
+        ex:WindowsClient,
+        ex:Zoom .
+
+ex:news012 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:ASIC,
+        ex:Accellion,
+        ex:AccellionFTA,
+        ex:AccellionVulnerability,
+        ex:CybersecurityForensicsFirm,
+        ex:DataBreach,
+        ex:FTAVulnerability,
+        ex:FileTransferService,
+        ex:ForensicsFirm,
+        ex:PersonalInformation,
+        ex:RBNZ,
+        ex:SAOBreach,
+        ex:SAODataBreach,
+        ex:SAOWashington,
+        ex:StateAuditor,
+        ex:StateAuditorOffice,
+        ex:UnemploymentClaimantData,
+        ex:UnemploymentClaimantInfo,
+        ex:WashingtonSAO .
+
+ex:news013 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:Bitcoin,
+        ex:CredentialStuffingAttack,
+        ex:CybercrimeMarketplace,
+        ex:CybercrimeService,
+        ex:CybercrimeTool,
+        ex:Cybercriminal,
+        ex:DailySubscription,
+        ex:FBI,
+        ex:GermanBKA,
+        ex:LawEnforcementOperation,
+        ex:MonthlySubscription,
+        ex:NCA,
+        ex:NetherlandsPolice,
+        ex:NorthernIrelandPolice,
+        ex:QuarterlySubscription,
+        ex:StolenCredentials,
+        ex:UKCyberArrests2021,
+        ex:WeLeakInfo,
+        ex:WeLeakInfoArrests,
+        ex:WeLeakInfoCrackdown,
+        ex:WeLeakInfoCredentials,
+        ex:WeLeakInfoData,
+        ex:WeLeakInfoOperator1,
+        ex:WeLeakInfoOperator2,
+        ex:WeeklySubscription .
+
+ex:news014 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APT29,
+        ex:CISA,
+        ex:CISA_Advisory,
+        ex:CobaltStrikeBeacon,
+        ex:CyberEspionageCampaign,
+        ex:DarkHalo,
+        ex:DomainSeizure,
+        ex:DuoMFACompromise,
+        ex:FireEye,
+        ex:MaliciousUpdate,
+        ex:MalwareBackdoor,
+        ex:Microsoft,
+        ex:MicrosoftResponse,
+        ex:MultiFactorAuthenticationBypass,
+        ex:SUNBURST,
+        ex:SoftwareBuildSystem,
+        ex:SolarWinds,
+        ex:SolarWindsAttack,
+        ex:SolarWindsOrion,
+        ex:StateSponsoredActor,
+        ex:StateSponsoredAttack,
+        ex:SupplyChainAttack,
+        ex:Teardrop .
+
+ex:news015 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APT29,
+        ex:Backdoor,
+        ex:Consulting,
+        ex:CyberEspionageCampaign,
+        ex:DeptOfJustice,
+        ex:Education,
+        ex:ExtractiveIndustry,
+        ex:FireEyeBreach,
+        ex:FireEyeRedTeamTools,
+        ex:NASA,
+        ex:NOAA,
+        ex:NSA,
+        ex:NTIA,
+        ex:NetworkManagementSoftware,
+        ex:OfficeOfThePresident,
+        ex:OrionImprovementProgram,
+        ex:PenetrationTestingTool,
+        ex:Pentagon,
+        ex:PostalService,
+        ex:SUNBURST,
+        ex:SoftwareUpdateCompromise,
+        ex:SolarWindsAdvisory,
+        ex:SolarWindsAttack,
+        ex:SolarWindsOrion,
+        ex:Solorigate,
+        ex:StateDepartment,
+        ex:Telecommunications,
+        ex:TelecommunicationsAgency,
+        ex:UNC2452,
+        ex:USMilitary .
+
+ex:news016 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APT29,
+        ex:CounterForensicTechniques,
+        ex:CozyBear,
+        ex:FireEye,
+        ex:FireEyeBreach2020,
+        ex:FireEyeCountermeasures,
+        ex:FireEyeRedTeamTools,
+        ex:FireEyeRedTeamToolsThreat,
+        ex:ForensicExamination,
+        ex:GovernmentClients,
+        ex:KevinMandia,
+        ex:NovelCombinationMalware,
+        ex:OperationalSecurity,
+        ex:RedTeam,
+        ex:RedTeamTool,
+        ex:Russia,
+        ex:SVR,
+        ex:SecurityPractice,
+        ex:SecurityTeam,
+        ex:ToolTheft .
+
+ex:news017 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APT-C-23,
+        ex:APT-C-23-C2,
+        ex:APTGroup,
+        ex:Android-SpyC23.A,
+        ex:CallRecording,
+        ex:CallRecordingCapability,
+        ex:CheckPoint,
+        ex:CommandAndControlServer,
+        ex:DigitalApps,
+        ex:ESET,
+        ex:MiddleEast,
+        ex:NotificationSpying,
+        ex:NotificationSpyingCapability,
+        ex:Qihoo360,
+        ex:ScreenRecording,
+        ex:ScreenRecordingCapability,
+        ex:SecurityNotificationDismissal,
+        ex:Spyware,
+        ex:Symantec,
+        ex:ThirdPartyAppStore,
+        ex:WebsiteUnderMaintenance .
+
+ex:news018 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:AggravatedIdentityTheft,
+        ex:Automattic,
+        ex:ComputerIntrusion,
+        ex:CybercriminalForum,
+        ex:CzechRepublic,
+        ex:DataBreach,
+        ex:DataTrafficking,
+        ex:Dropbox,
+        ex:DropboxBreach2012,
+        ex:Formspring,
+        ex:FormspringBreach2012,
+        ex:LinkedIn,
+        ex:LinkedInBreach2012,
+        ex:MalwareInstallation,
+        ex:Moscow,
+        ex:NikulinTrial,
+        ex:Prague,
+        ex:Russia,
+        ex:RussianCybercriminalForum,
+        ex:SanFrancisco,
+        ex:WilliamAlsup,
+        ex:WordPress,
+        ex:YevgeniyNikulin .
+
+ex:news019 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:AntonPillerOrder,
+        ex:AntonPillerOrder2020,
+        ex:CreditReportingAgency,
+        ex:Experian,
+        ex:ExperianBreach2020,
+        ex:ExperianSouthAfrica,
+        ex:FinancialServices,
+        ex:NischalMewalall,
+        ex:PersonalInformation,
+        ex:ProtectiveRegistration,
+        ex:SABRIC,
+        ex:SAFPS,
+        ex:SouthAfrica,
+        ex:UnidentifiedSuspect .
+
+ex:news020 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:AuthenticationToken,
+        ex:CORSVulnerability,
+        ex:CheckPointResearch,
+        ex:CrossSiteScripting,
+        ex:DatingPlatform,
+        ex:DatingServices,
+        ex:MatchGroup,
+        ex:OkCupid,
+        ex:OkCupidAndroidApp,
+        ex:OkCupidVulnerabilities2021,
+        ex:SecurityResearchOrganization,
+        ex:UserProfileData,
+        ex:Vulnerability,
+        ex:XSSAttack .
+
+ex:news021 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:BrowserFeature,
+        ex:CloudService,
+        ex:ContentSecurityPolicy,
+        ex:DataExfiltration,
+        ex:DeveloperMode,
+        ex:EcommerceWebsite,
+        ex:Firebase,
+        ex:FormjackingAttack,
+        ex:FormjackingAttackExample,
+        ex:GoogleAnalytics,
+        ex:Kaspersky,
+        ex:MagecartGroup,
+        ex:MaliciousJavaScriptCode,
+        ex:March2023Campaign,
+        ex:PerimeterX,
+        ex:Sansec,
+        ex:WebAnalyticsService,
+        ex:Website,
+        ex:Whitelisting .
+
+ex:news022 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:AlabamaFusionCenter,
+        ex:AustinRegionalIntelligenceCenter,
+        ex:BlackLivesMatter,
+        ex:BlueLeaks,
+        ex:BlueLeaksAttack,
+        ex:BostonRegionalIntelligenceCenter,
+        ex:ColoradoInformationAnalysisCenter,
+        ex:DDoSecrets,
+        ex:DataLeak,
+        ex:FusionCenter,
+        ex:GeorgeFloydDeath,
+        ex:HacktivistGroup,
+        ex:LawEnforcementAgency,
+        ex:MultiplePoliceDepartments,
+        ex:NationalFusionCenterAssociation,
+        ex:NetsentialInc,
+        ex:ProtestMovement,
+        ex:TransparencyCollective,
+        ex:WebHostingCompany .
+
+ex:news023 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APIVulnerability,
+        ex:AadhaarSystem,
+        ex:AshishGahlot,
+        ex:AuthenticationFlaw,
+        ex:BugBountyResearcher,
+        ex:CERT-In,
+        ex:Digilocker,
+        ex:DigilockerOTPBypass,
+        ex:DigilockerTeam,
+        ex:DigitalWalletService,
+        ex:IndianGovernment,
+        ex:MoheshMohan,
+        ex:OTP,
+        ex:OTPAuthentication,
+        ex:PINAuthentication,
+        ex:SensitiveDocuments,
+        ex:Vulnerability .
+
+ex:news024 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:AWSS3,
+        ex:AccountCleanup,
+        ex:AmazonWebServices,
+        ex:BusinessAddresses,
+        ex:BusinessEmails,
+        ex:BusinessNature,
+        ex:BusinessPhones,
+        ex:CloudStorage,
+        ex:CompanyURLs,
+        ex:ContentManagementSystem,
+        ex:CredentialStuffingAttack,
+        ex:DataBreach,
+        ex:DeveloperDirectory,
+        ex:Joomla,
+        ex:JoomlaDataBreach2023,
+        ex:JoomlaInternalAudit,
+        ex:JoomlaResourcesDirectory,
+        ex:NewsletterPreferences,
+        ex:PasswordHash,
+        ex:PasswordResetMandate,
+        ex:SecurityAudit,
+        ex:SecurityFixesDeployment,
+        ex:TwoFactorAuthEnablement,
+        ex:UnencryptedBackupOnS3,
+        ex:UserFullNames,
+        ex:UserIPAddresses,
+        ex:UserPasswordHashes .
+
+ex:news025 a ex:CybersecurityNewsArticle,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:APICredential,
+        ex:APICredentials,
+        ex:AccessToken,
+        ex:BirthDates,
+        ex:Brazil,
+        ex:CustomerFullNames,
+        ex:EmailAddresses,
+        ex:Genders,
+        ex:MOIP,
+        ex:MOIPAccountDetails,
+        ex:MotherMaidenNames,
+        ex:Nationalities,
+        ex:NaturaDataBreach2023,
+        ex:NaturaServerCertificate,
+        ex:Nicknames,
+        ex:PasswordResetRecommendation,
+        ex:PaymentService,
+        ex:PaymentSkimming,
+        ex:Peru,
+        ex:PhoneNumbers,
+        ex:PhysicalAddresses,
+        ex:PurchaseHistories,
+        ex:SafetyDetectiveResearch,
+        ex:ServerCertificate,
+        ex:ServerLog,
+        ex:ServerSecuring,
+        ex:UnprotectedS3Buckets,
+        ex:UserPasswordHashesWithSalts,
+        ex:Usernames,
+        ex:WebsiteDefacement,
+        ex:Wirecard,
+        ex:WirecardTokens .
+
+ex:notableCustomers a owl:AnnotationProperty .
+
+ex:notifiedCustomers a owl:DatatypeProperty ;
+    rdfs:domain ex:IncidentResponse,
+        ex:Organization ;
+    rdfs:range xsd:integer .
+
+ex:numberAffected a owl:DatatypeProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range xsd:integer .
+
+ex:numberArrested a owl:AnnotationProperty .
+
+ex:obtainedFrom a owl:AnnotationProperty .
+
+ex:offeredSubscription a owl:ObjectProperty ;
+    rdfs:domain ex:CybercrimeMarketplace,
+        ex:CybercrimeService ;
+    rdfs:range ex:ServicePlan,
+        ex:SubscriptionPlan .
+
+ex:ongoing a owl:DatatypeProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range xsd:boolean .
+
+ex:operatedBy a owl:AnnotationProperty .
+
+ex:operates a owl:AnnotationProperty .
+
+ex:operatesIn a owl:AnnotationProperty .
+
+ex:operatesOn a owl:ObjectProperty ;
+    rdfs:label "operates on"^^xsd:string ;
+    rdfs:domain ex:CybercriminalGroup ;
+    rdfs:range ex:HackerForum .
+
+ex:origin a owl:AnnotationProperty .
+
+ex:ownedBy a owl:AnnotationProperty .
+
+ex:paidBounty a owl:AnnotationProperty .
+
+ex:parentCompany a owl:AnnotationProperty .
+
+ex:partOf a owl:ObjectProperty ;
+    rdfs:domain ex:Organization ;
+    rdfs:range ex:Organization .
+
+ex:pastTargets a owl:AnnotationProperty .
+
+ex:patchReleaseDate a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range xsd:date,
+        xsd:dateTime .
+
+ex:performedBetween a owl:DatatypeProperty ;
+    rdfs:domain ex:InPlaceUpgrade ;
+    rdfs:range xsd:dateTime .
+
+ex:performedBy a owl:AnnotationProperty .
+
+ex:perpetratedBy a owl:AnnotationProperty .
+
+ex:plannedFix a owl:AnnotationProperty .
+
+ex:platformVulnerability a owl:AnnotationProperty .
+
+ex:position a owl:AnnotationProperty .
+
+ex:potentialCause a owl:AnnotationProperty .
+
+ex:potentialImpact a owl:AnnotationProperty .
+
+ex:presidedOver a owl:AnnotationProperty .
+
+ex:previousOperations a owl:AnnotationProperty .
+
+ex:previouslyCompromisedIn a owl:AnnotationProperty .
+
+ex:price a owl:DatatypeProperty ;
+    rdfs:domain ex:SubscriptionPlan ;
+    rdfs:range xsd:decimal .
+
+ex:primaryMalware a owl:AnnotationProperty .
+
+ex:primaryMethod a owl:AnnotationProperty .
+
+ex:providedService a owl:ObjectProperty ;
+    rdfs:domain ex:MaliciousTool ;
+    rdfs:range ex:IllegalService .
+
+ex:provider a owl:AnnotationProperty .
+
+ex:providesAccessTo a owl:AnnotationProperty .
+
+ex:providesService a owl:AnnotationProperty .
+
+ex:publicationDate a owl:AnnotationProperty .
+
+ex:publishDate a owl:AnnotationProperty .
+
+ex:publishedBy a owl:AnnotationProperty .
+
+ex:publishedOn a owl:ObjectProperty ;
+    rdfs:domain ex:DataDump,
+        ex:DataLeak ;
+    rdfs:range ex:CybercrimeForum .
+
+ex:publishesData a owl:ObjectProperty ;
+    rdfs:domain ex:TransparencyCollective ;
+    rdfs:range ex:DataLeak .
+
+ex:purpose a owl:AnnotationProperty .
+
+ex:quantity a owl:DatatypeProperty ;
+    rdfs:domain ex:KYCDocument ;
+    rdfs:range xsd:integer .
+
+ex:recentOperations a owl:AnnotationProperty .
+
+ex:recommendations a owl:AnnotationProperty .
+
+ex:recommendedAction a owl:AnnotationProperty .
+
+ex:recommends a owl:ObjectProperty ;
+    rdfs:label "recommends"^^xsd:string ;
+    rdfs:domain ex:Standard ;
+    rdfs:range ex:SecurityControl .
+
+ex:recordsCount a owl:DatatypeProperty ;
+    rdfs:domain ex:StolenCredentials ;
+    rdfs:range xsd:integer .
+
+ex:recordsIndexed a owl:DatatypeProperty ;
+    rdfs:domain ex:CybercrimeService ;
+    rdfs:range xsd:integer .
+
+ex:relatedAttack a owl:AnnotationProperty .
+
+ex:relatedTo a owl:ObjectProperty ;
+    rdfs:label "related to"^^xsd:string ;
+    rdfs:domain ex:CybersecurityNewsArticle .
+
+ex:releaseDate a owl:AnnotationProperty .
+
+ex:releasedHotfix a owl:AnnotationProperty .
+
+ex:releasedToFix a owl:ObjectProperty ;
+    rdfs:domain ex:Hotfix ;
+    rdfs:range ex:SecurityVulnerability .
+
+ex:remediationAction a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range ex:SecurityMeasure .
+
+ex:remediationDate a owl:AnnotationProperty .
+
+ex:replicates a owl:ObjectProperty ;
+    rdfs:domain ex:PhishingAttack ;
+    rdfs:range ex:Communication .
+
+ex:reportedTo a owl:ObjectProperty ;
+    rdfs:domain ex:Vulnerability ;
+    rdfs:range ex:GovernmentOrganization .
+
+ex:requiresKnowledge a owl:AnnotationProperty .
+
+ex:responsibleFor a owl:AnnotationProperty .
+
+ex:responsibleOrganization a owl:AnnotationProperty .
+
+ex:result a owl:AnnotationProperty .
+
+ex:resultedIn a owl:AnnotationProperty .
+
+ex:reveals a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range ex:SensitiveData .
+
+ex:role a owl:AnnotationProperty .
+
+ex:runsOn a owl:AnnotationProperty .
+
+ex:sameAs a owl:AnnotationProperty .
+
+ex:securityStatus a owl:DatatypeProperty ;
+    rdfs:domain ex:PasswordHash ;
+    rdfs:range xsd:string .
+
+ex:seizedAmount a owl:DatatypeProperty ;
+    rdfs:domain ex:LawEnforcementOperation ;
+    rdfs:range xsd:decimal .
+
+ex:seizedAssetType a owl:ObjectProperty ;
+    rdfs:domain ex:LawEnforcementOperation ;
+    rdfs:range ex:DigitalAsset .
+
+ex:seizedBy a owl:AnnotationProperty .
+
+ex:seizedCurrency a owl:DatatypeProperty,
+        owl:ObjectProperty ;
+    rdfs:domain ex:LawEnforcementOperation ;
+    rdfs:range ex:Currency,
+        xsd:string .
+
+ex:seizureDate a owl:DatatypeProperty ;
+    rdfs:domain ex:CybercrimeMarketplace ;
+    rdfs:range xsd:date .
+
+ex:sentencedTo a owl:DatatypeProperty ;
+    rdfs:domain ex:Person ;
+    rdfs:range xsd:string .
+
+ex:severity a owl:AnnotationProperty .
+
+ex:shouldBeMonitoredBy a owl:AnnotationProperty .
+
+ex:shouldBeProtectedBy a owl:AnnotationProperty .
+
+ex:shouldInclude a owl:AnnotationProperty .
+
+ex:shutdownDate a owl:AnnotationProperty .
+
+ex:similarTo a owl:AnnotationProperty .
+
+ex:size a owl:AnnotationProperty .
+
+ex:source a owl:AnnotationProperty .
+
+ex:sourceBreaches a owl:DatatypeProperty ;
+    rdfs:domain ex:StolenCredentials ;
+    rdfs:range xsd:integer .
+
+ex:sourceTechnique a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityIncident ;
+    rdfs:range ex:AttackTechnique .
+
+ex:startDate a owl:AnnotationProperty .
+
+ex:status a owl:AnnotationProperty .
+
+ex:stoleDataFrom a owl:ObjectProperty ;
+    rdfs:domain ex:ThreatActor ;
+    rdfs:range ex:Organization .
+
+ex:stolenItems a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:SecurityAsset .
+
+ex:storageMisconfiguration a owl:AnnotationProperty .
+
+ex:storedOn a owl:ObjectProperty ;
+    rdfs:domain ex:Data ;
+    rdfs:range ex:StorageService .
+
+ex:stores a owl:AnnotationProperty .
+
+ex:subCategoryOf a owl:AnnotationProperty .
+
+ex:subClassOf a owl:AnnotationProperty .
+
+ex:supportsAuthentication a owl:ObjectProperty ;
+    rdfs:domain ex:Platform,
+        ex:SourceCodeRepository ;
+    rdfs:range ex:AuthenticationMethod .
+
+ex:supportsProtocol a owl:AnnotationProperty .
+
+ex:target a owl:AnnotationProperty .
+
+ex:targetDomain a owl:AnnotationProperty .
+
+ex:targetPlatform a owl:AnnotationProperty .
+
+ex:targetSoftware a owl:AnnotationProperty .
+
+ex:targeted a owl:AnnotationProperty .
+
+ex:targetedBy a owl:AnnotationProperty .
+
+ex:targetedOrganizations a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:Organization .
+
+ex:targetedSector a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:IndustrySector .
+
+ex:targetedSectors a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:IndustrySector .
+
+ex:targetedService a owl:AnnotationProperty .
+
+ex:targets a owl:ObjectProperty ;
+    rdfs:label "targets"^^xsd:string ;
+    rdfs:domain ex:AttackMethod,
+        ex:ProtestMovement ;
+    rdfs:range ex:Organization,
+        ex:OrganizationCategory .
+
+ex:targetsApp a owl:AnnotationProperty .
+
+ex:targetsRegion a owl:ObjectProperty ;
+    rdfs:domain ex:APTGroup ;
+    rdfs:range ex:GeographicRegion .
+
+ex:timePeriod a owl:AnnotationProperty .
+
+ex:toolStolenIn a owl:ObjectProperty ;
+    rdfs:domain ex:RedTeamTool ;
+    rdfs:range ex:ToolTheft .
+
+ex:totalRecords a owl:DatatypeProperty ;
+    rdfs:domain ex:DataBreach ;
+    rdfs:range xsd:integer .
+
+ex:trackedBy a owl:AnnotationProperty .
+
+ex:triggeredBy a owl:AnnotationProperty .
+
+ex:type a owl:AnnotationProperty .
+
+ex:usedAsAttackVector a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range ex:SecurityIncident .
+
+ex:usedBy a owl:AnnotationProperty .
+
+ex:usedFor a owl:AnnotationProperty .
+
+ex:usedIn a owl:AnnotationProperty .
+
+ex:usedMalware a owl:ObjectProperty ;
+    rdfs:domain ex:CyberAttack ;
+    rdfs:range ex:Malware .
+
+ex:usedMethod a owl:AnnotationProperty .
+
+ex:usedTechnique a owl:AnnotationProperty .
+
+ex:usedVPN a owl:AnnotationProperty .
+
+ex:userCount a owl:AnnotationProperty .
+
+ex:uses a owl:AnnotationProperty .
+
+ex:usesApp a owl:ObjectProperty ;
+    rdfs:domain ex:Person ;
+    rdfs:range ex:Software .
+
+ex:usesAuthentication a owl:AnnotationProperty .
+
+ex:usesHashAlgorithm a owl:ObjectProperty ;
+    rdfs:domain ex:UserDatabase ;
+    rdfs:range ex:PasswordHash,
+        ex:PasswordHashAlgorithm .
+
+ex:usesInfrastructure a owl:AnnotationProperty .
+
+ex:vendor a owl:AnnotationProperty .
+
+ex:version a owl:AnnotationProperty .
+
+ex:versionAffected a owl:DatatypeProperty ;
+    rdfs:domain ex:SecurityVulnerability ;
+    rdfs:range xsd:string .
+
+ex:versionsAffected a owl:DatatypeProperty ;
+    rdfs:domain ex:SoftwareUpdateCompromise ;
+    rdfs:range xsd:string .
+
+ex:vulnerabilityType a owl:AnnotationProperty .
+
+ex:wasAttackedBy a owl:AnnotationProperty .
+
+ex:wasCompromisedIn a owl:ObjectProperty ;
+    rdfs:domain ex:SourceCode ;
+    rdfs:range ex:DataBreach .
+
+ex:whitelistsDomain a owl:ObjectProperty ;
+    rdfs:domain ex:SecurityControl ;
+    rdfs:range ex:Domain .
+
+ex:worksFor a owl:AnnotationProperty .
+
+ex:year a owl:AnnotationProperty .
+
+xsd:gYear a rdfs:Datatype .
+
+ex:APIModification a owl:NamedIndividual .
+
+ex:ASIC a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:locatedIn ex:Australia .
+
+ex:ASICBreach a owl:NamedIndividual .
+
+ex:AccessRestriction a owl:NamedIndividual .
+
+ex:ActiveDirectoryExploit a owl:NamedIndividual .
+
+ex:Activity a owl:Class .
+
+ex:AdvancedPersistentThreat a owl:Class .
+
+ex:AirForce a owl:NamedIndividual .
+
+ex:AntonPillerOrder2020 a ex:AntonPillerOrder,
+        owl:NamedIndividual ;
+    ex:dataSecured true ;
+    ex:date "2020"^^xsd:gYear ;
+    ex:hardwareImpounded true ;
+    ex:target ex:UnidentifiedSuspect .
+
+ex:Army a owl:NamedIndividual .
+
+ex:ArrestOperation a owl:Class .
+
+ex:BlackLivesMatter a ex:ProtestMovement,
+        owl:NamedIndividual ;
+    ex:targets ex:PoliceDepartments ;
+    ex:triggeredBy ex:GeorgeFloydDeath .
+
+ex:BlackLivesMatterProtests a owl:NamedIndividual .
+
+ex:BlueLeaks a ex:DataLeak,
+        owl:NamedIndividual ;
+    ex:containsFileTypes ex:AudioFiles,
+        ex:Documents,
+        ex:Emails,
+        ex:Images,
+        ex:Videos ;
+    ex:containsSensitiveInfoAbout ex:BlackLivesMatterProtests,
+        ex:COVID19Response,
+        ex:LawEnforcementActivities ;
+    ex:dataSize "269GB"^^xsd:string ;
+    ex:leakedFrom ex:MultiplePoliceDepartments,
+        ex:NationalFusionCenterAssociation ;
+    ex:publishedBy ex:DDoSecrets ;
+    ex:timePeriod "1996-08/2020-06-19"^^xsd:string .
+
+ex:BlueLeaksAttack a ex:CyberAttack,
+        owl:NamedIndividual ;
+    ex:attackMethod ex:DataExfiltration ;
+    ex:compromisedData ex:LawEnforcementDocuments ;
+    ex:exploitsService ex:WebHostingService ;
+    ex:impactedOrganizations ex:MultiplePoliceDepartments,
+        ex:NationalFusionCenterAssociation ;
+    ex:performedBy ex:UnknownHacktivists ;
+    ex:target ex:NetsentialInc .
+
+ex:CISA_Advisory a ex:SecurityAdvisory,
+        owl:NamedIndividual ;
+    ex:concerns ex:SolarWindsAttack ;
+    ex:date "2020-12-17"^^xsd:date ;
+    ex:issuedBy ex:CISA ;
+    ex:recommendations ex:NetworkMonitoring,
+        ex:ThreatHunting .
+
+ex:COMB21 a ex:DataDump,
+        ex:DataLeak,
+        owl:NamedIndividual ;
+    ex:compiledFrom ex:MultipleBreaches ;
+    ex:contains ex:BreachedCredentials,
+        ex:GovernmentCredentials ;
+    ex:datePublished "2021-02"^^xsd:gYearMonth ;
+    ex:discoveredBy ex:CyberNews ;
+    ex:publicationDate "2021-02-01"^^xsd:date ;
+    ex:publishedOn ex:CybercrimeForum ;
+    ex:size "100GB"^^xsd:string .
+
+ex:COVID19Response a owl:NamedIndividual .
+
+ex:CVE-2019-0708 a owl:NamedIndividual .
+
+ex:CVE-2019-11510 a owl:NamedIndividual .
+
+ex:CVE-2020-10189 a owl:NamedIndividual .
+
+ex:CVE-2020-1472 a owl:NamedIndividual .
+
+ex:CambridgeAnalyticaScandal a ex:SecurityIncident,
+        owl:NamedIndividual ;
+    ex:relatedTo ex:Facebook .
+
+ex:CheckPoint a ex:CybersecurityCompany,
+        owl:NamedIndividual ;
+    ex:identifiedActivity ex:APT-C-23 ;
+    ex:publishDate "2023"^^xsd:gYear .
+
+ex:CloudStorageCompany a owl:Class .
+
+ex:CoastGuard a owl:NamedIndividual .
+
+ex:ColoradoInformationAnalysisCenter a ex:FusionCenter,
+        owl:NamedIndividual .
+
+ex:ColunmTK a ex:CyberAttack,
+        owl:NamedIndividual ;
+    rdfs:label "ColunmTK Campaign"^^xsd:string ;
+    ex:affectedDevices 20 ;
+    ex:attributedTo ex:APT41 ;
+    ex:dataExfiltrated "23.33 MB"^^xsd:string ;
+    ex:duration "P2M26D"^^xsd:duration ;
+    ex:endDate "2021-03-09"^^xsd:date ;
+    ex:method ex:BadPotato,
+        ex:CobaltStrike,
+        ex:Mimikatz ;
+    ex:startDate "2020-12-11"^^xsd:date ;
+    ex:target ex:AirIndia .
+
+ex:ConfidentialDataLeakage a owl:NamedIndividual .
+
+ex:Corporation a owl:Class .
+
+ex:CozyBear a ex:StateSponsoredActor,
+        owl:Class,
+        owl:NamedIndividual ;
+    ex:affiliatedWith ex:SVR ;
+    ex:alsoKnownAs "APT29"^^xsd:string ;
+    rdfs:subClassOf ex:StateSponsoredActor .
+
+ex:CredentialData a owl:Class .
+
+ex:CreditCardInformation a owl:NamedIndividual .
+
+ex:Criminal a owl:Class .
+
+ex:CriticalInfrastructure a owl:Class .
+
+ex:Cryptocurrency a owl:Class .
+
+ex:CryptographicAlgorithm a owl:Class .
+
+ex:CryptographicMaterial a owl:Class .
+
+ex:Currency a rdfs:Datatype .
+
+ex:CyberIncident a owl:Class .
+
+ex:CyberNews a owl:NamedIndividual .
+
+ex:CyberSecurityAgency a owl:Class .
+
+ex:Cybercriminals ex:uses ex:CredentialStuffing,
+        ex:PasswordSpraying .
+
+ex:CybersecurityIndustry a owl:NamedIndividual .
+
+ex:Data a owl:Class .
+
+ex:DataResource a owl:Class .
+
+ex:DataStorage a owl:Class .
+
+ex:Database a owl:Class ;
+    ex:shouldBeMonitoredBy ex:DatabaseActivityMonitoring .
+
+ex:DatabaseAccess a owl:NamedIndividual .
+
+ex:DefunctSocialMediaCompany a owl:Class .
+
+ex:DeliveryVector a owl:Class .
+
+ex:DigilockerOTPBypass a ex:APIVulnerability,
+        ex:AuthenticationFlaw,
+        owl:NamedIndividual ;
+    ex:affectsService ex:Digilocker ;
+    ex:alsoExploits ex:WeakSSLPinning ;
+    ex:attackVector ex:APIModification ;
+    ex:couldCompromise ex:DigilockerUserAccount ;
+    ex:discoveredBy ex:AshishGahlot,
+        ex:MoheshMohan ;
+    ex:exploitsAuthenticationMethod ex:OTPAuthentication ;
+    ex:exploitsWeakness ex:MissingAPIAuthorization ;
+    ex:fixDate "2023-05-28"^^xsd:date ;
+    ex:fixedBy ex:DigilockerTeam ;
+    ex:potentialImpact ex:UnauthorizedDocumentAccess ;
+    ex:reportedTo ex:CERT-In,
+        ex:DigilockerTeam ;
+    ex:requiresKnowledge ex:VictimIdentifier ;
+    ex:vulnerabilityType ex:AuthorizationBypass .
+
+ex:DigilockerUserAccount a owl:NamedIndividual .
+
+ex:DigitalAsset a owl:Class .
+
+ex:DigitalDocument a owl:Class .
+
+ex:DistributionChannel a owl:Class .
+
+ex:Domain a owl:Class .
+
+ex:DropboxBreach2012 a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedUserCount 68000000 ;
+    ex:date "2012"^^xsd:gYear ;
+    ex:impactedOrganization ex:Dropbox ;
+    ex:perpetratedBy ex:YevgeniyNikulin .
+
+ex:DuoMFAKey a owl:NamedIndividual .
+
+ex:ESET a ex:CybersecurityCompany,
+        owl:NamedIndividual ;
+    ex:analyzed ex:Android-SpyC23.A ;
+    ex:publishDate "2023-04-12"^^xsd:date .
+
+ex:Ecommerce a owl:NamedIndividual .
+
+ex:EncryptedData a owl:Class .
+
+ex:Entity a owl:Class .
+
+ex:Event a owl:Class .
+
+ex:Executive a owl:Class .
+
+ex:ExperianBreach2020 a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedBusinessCount 793749 ;
+    ex:affectedUserCount 24000000 ;
+    ex:dataTypeCompromised ex:PersonalInformation ;
+    ex:date "2020"^^xsd:gYear ;
+    ex:financialDataCompromised false ;
+    ex:impactedOrganization ex:ExperianSouthAfrica ;
+    ex:perpetratedBy ex:UnidentifiedSuspect .
+
+ex:ExtractiveIndustries a owl:NamedIndividual .
+
+ex:FMSIncident a ex:SecurityIncident,
+        owl:NamedIndividual ;
+    rdfs:label "Federal Migration Service Database Tampering"^^xsd:string ;
+    ex:couldBePreventedBy ex:DatabaseActivityMonitoring ;
+    ex:involved ex:InsiderThreat .
+
+ex:FacebookDataLeak2021 a ex:PersonalDataLeak,
+        owl:NamedIndividual ;
+    ex:affectedCountries ex:India,
+        ex:UnitedKingdom,
+        ex:UnitedStates ;
+    ex:affectedOrganization ex:Facebook ;
+    ex:attackType ex:DataScrapingAttack ;
+    ex:causedBy ex:ProfileScrapingVulnerability ;
+    ex:disclosureDate "2021-04-03"^^xsd:date ;
+    ex:exposedData ex:EmailAddresses,
+        ex:Locations,
+        ex:PhoneNumbers,
+        ex:ProfileDetails,
+        ex:UserNames ;
+    ex:leakLocation ex:CybercrimeForumX ;
+    ex:totalRecords 533000000 .
+
+ex:FelipeDaragon a ex:Person,
+        owl:NamedIndividual ;
+    ex:affiliatedWith ex:Syhunt ;
+    ex:position "Founder and CVO"^^xsd:string .
+
+ex:FinancialService a owl:Class .
+
+ex:FinancialServiceProvider a owl:Class .
+
+ex:Firebase a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CloudService .
+
+ex:ForensicExamination a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityAction .
+
+ex:FormjackingAttackExample a ex:FormjackingAttack,
+        owl:NamedIndividual ;
+    ex:bypassesPolicy ex:ContentSecurityPolicy ;
+    ex:compromisedData ex:CreditCardInformation ;
+    ex:discoveredBy ex:Kaspersky,
+        ex:PerimeterX,
+        ex:Sansec ;
+    ex:exfiltratesDataTo ex:GoogleAnalyticsAccount ;
+    ex:exploits ex:CrossSiteScripting ;
+    ex:impactedCountries ex:Europe,
+        ex:NorthAmerica,
+        ex:SouthAmerica ;
+    ex:targets ex:EcommerceWebsite ;
+    ex:usedMalware ex:MaliciousJavaScriptCode .
+
+ex:FormspringBreach2012 a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:date "2012"^^xsd:gYear ;
+    ex:impactedOrganization ex:Formspring ;
+    ex:perpetratedBy ex:YevgeniyNikulin .
+
+ex:GitHub a ex:Platform,
+        owl:NamedIndividual ;
+    rdfs:label "GitHub"^^xsd:string ;
+    ex:ownedBy ex:Microsoft ;
+    ex:targetedBy ex:ShinyHunters .
+
+ex:Google a owl:NamedIndividual .
+
+ex:GovernmentService a owl:Class .
+
+ex:HackerGroup a owl:Class .
+
+ex:HacktivistGroup a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CybercriminalGroup .
+
+ex:HashAlgorithmUpgrade a owl:NamedIndividual .
+
+ex:HealthcareSector a owl:NamedIndividual .
+
+ex:HighTechSector a owl:NamedIndividual .
+
+ex:HigherEducation a owl:NamedIndividual .
+
+ex:ITInfrastructure a owl:Class .
+
+ex:ITTeam a owl:Class .
+
+ex:IllegalPlatform a owl:Class .
+
+ex:Infrastructure a owl:Class .
+
+ex:InsecureProtocol a owl:Class .
+
+ex:Joomla a ex:ContentManagementSystem,
+        owl:NamedIndividual ;
+    ex:hasService ex:JoomlaResourcesDirectory ;
+    ex:isOpenSource true .
+
+ex:JoomlaDataBreach2023 a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectsUserCount 2700 ;
+    ex:couldLeadTo ex:CredentialStuffingAttack ;
+    ex:discoveredDuring ex:JoomlaInternalAudit ;
+    ex:exposedData ex:BusinessAddresses,
+        ex:BusinessEmails,
+        ex:BusinessNature,
+        ex:BusinessPhones,
+        ex:CompanyURLs,
+        ex:NewsletterPreferences,
+        ex:UserFullNames,
+        ex:UserIPAddresses,
+        ex:UserPasswordHashes ;
+    ex:impactLevel "low"^^xsd:string ;
+    ex:involvedThirdParty ex:AmazonWebServices ;
+    ex:mitigationAction ex:AccountCleanup,
+        ex:PasswordResetMandate,
+        ex:SecurityFixesDeployment,
+        ex:TwoFactorAuthEnablement ;
+    ex:storageMisconfiguration ex:UnencryptedBackupOnS3 .
+
+ex:Judge a owl:Class .
+
+ex:KevinMandia a ex:Person,
+        owl:NamedIndividual ;
+    ex:hasExecutive ex:FireEye .
+
+ex:LawEnforcement a owl:NamedIndividual .
+
+ex:LawEnforcementActivities a owl:NamedIndividual .
+
+ex:LawEnforcementDocuments a owl:NamedIndividual .
+
+ex:LegacySoftwareIssue a owl:NamedIndividual .
+
+ex:LinkedInBreach2012 a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedUserCount 117000000 ;
+    ex:date "2012"^^xsd:gYear ;
+    ex:impactedOrganization ex:LinkedIn ;
+    ex:perpetratedBy ex:YevgeniyNikulin .
+
+ex:Linux a owl:NamedIndividual .
+
+ex:MOIP a ex:PaymentService,
+        owl:NamedIndividual .
+
+ex:MagecartGroup a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CybercriminalGroup .
+
+ex:MainPhpNetSystem a ex:UserDatabase,
+        owl:NamedIndividual ;
+    ex:status "Active"^^xsd:string ;
+    ex:usesAuthentication ex:TLSAuthentication ;
+    ex:usesHashAlgorithm ex:BcryptHash .
+
+ex:MaliciousFunction a owl:Class .
+
+ex:MalwareFunction a owl:Class .
+
+ex:ManageEngineExploit a owl:NamedIndividual .
+
+ex:March2023Campaign a ex:CyberAttackCampaign,
+        owl:NamedIndividual ;
+    ex:activeSince "2023-03-17"^^xsd:date ;
+    ex:attackType ex:FormjackingAttack ;
+    ex:discoveredBy ex:Sansec ;
+    ex:exploitsService ex:GoogleAnalytics ;
+    ex:targetedSector ex:Ecommerce .
+
+ex:MarineCorps a owl:NamedIndividual .
+
+ex:MessagingAccount a owl:Class .
+
+ex:MicrosoftResponse a ex:IncidentResponse,
+        owl:NamedIndividual ;
+    ex:actionsTaken ex:CustomerNotification,
+        ex:DomainSeizure,
+        ex:MalwareRemoval ;
+    ex:notifiedCustomers 40 .
+
+ex:MobiKwikBreach a ex:DataBreach,
+        ex:DataLeak,
+        owl:NamedIndividual ;
+    ex:affectedOrganization ex:MobiKwik ;
+    ex:dataSize "8.2TB"^^xsd:string ;
+    ex:dateReported "2021-03"^^xsd:gYearMonth ;
+    ex:exposedData ex:EmailAddresses,
+        ex:HashedPasswords,
+        ex:KYCDocuments,
+        ex:PhoneNumbers,
+        ex:UserNames ;
+    ex:leakedOn ex:CybercrimeForum ;
+    ex:publishedOn ex:CybercrimeForum ;
+    ex:size "8.2TB"^^xsd:string .
+
+ex:MobileApplication a owl:Class .
+
+ex:Moscow a ex:City,
+        owl:NamedIndividual .
+
+ex:MoserwareSecretSplitterDLL a ex:Malware,
+        owl:NamedIndividual ;
+    ex:targets ex:Passwordstate .
+
+ex:Moserware_zip a ex:Hotfix,
+        owl:NamedIndividual ;
+    ex:releasedToFix ex:PasswordstateSupplyChainAttack .
+
+ex:MultinationalCorporation a owl:Class .
+
+ex:NTIA a ex:GovernmentAgency,
+        ex:TelecommunicationsAgency,
+        owl:NamedIndividual ;
+    ex:partOf ex:USDeptOfCommerce,
+        ex:US_Commerce .
+
+ex:Names a owl:NamedIndividual .
+
+ex:NationalIDSystem a owl:Class .
+
+ex:NaturaDataBreach2023 a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedCountry ex:Brazil,
+        ex:Peru ;
+    ex:affectsUserCount 250000 ;
+    ex:containsCertificate ex:NaturaServerCertificate ;
+    ex:couldLeadTo ex:PaymentSkimming,
+        ex:WebsiteDefacement ;
+    ex:discoveredDuring ex:SafetyDetectiveResearch ;
+    ex:exposedData ex:APICredentials,
+        ex:BirthDates,
+        ex:CustomerFullNames,
+        ex:EmailAddresses,
+        ex:Genders,
+        ex:MOIPAccountDetails,
+        ex:MotherMaidenNames,
+        ex:Nationalities,
+        ex:Nicknames,
+        ex:PhoneNumbers,
+        ex:PhysicalAddresses,
+        ex:PurchaseHistories,
+        ex:UserPasswordHashesWithSalts,
+        ex:Usernames,
+        ex:WirecardTokens ;
+    ex:exposedPaymentDetails ex:MOIPAccountDetails ;
+    ex:impactLevel "high"^^xsd:string ;
+    ex:involvedThirdParty ex:AmazonWebServices ;
+    ex:mitigationAction ex:PasswordResetRecommendation,
+        ex:ServerSecuring ;
+    ex:storageMisconfiguration ex:UnprotectedS3Buckets .
+
+ex:Navy a owl:NamedIndividual .
+
+ex:NetworkData a owl:Class .
+
+ex:NewsMedia a owl:NamedIndividual .
+
+ex:NischalMewalall a ex:Executive,
+        owl:NamedIndividual ;
+    ex:position "CEO"^^xsd:string ;
+    ex:worksFor ex:SABRIC .
+
+ex:NonProfitOrganization a owl:Class .
+
+ex:OfficeOfPresident a owl:NamedIndividual .
+
+ex:OkCupidVulnerabilities2021 a ex:Vulnerability,
+        owl:NamedIndividual ;
+    ex:affectsPlatform ex:OkCupid ;
+    ex:couldCompromise ex:AuthenticationToken,
+        ex:UserProfileData ;
+    ex:dateDiscovered "2021"^^xsd:gYear ;
+    ex:discoveredBy ex:CheckPointResearch ;
+    ex:exploitationStatus "Not exploited"^^xsd:string ;
+    ex:fixedInVersion "43.3.2"^^xsd:string ;
+    ex:involves ex:CORSVulnerability,
+        ex:XSSAttack .
+
+ex:OldsmarWaterPlant a ex:CriticalInfrastructure,
+        owl:NamedIndividual ;
+    ex:exposedCredentials 13 ;
+    ex:hasDomain ex:oldsmar_water_domain .
+
+ex:OperationalSecurity a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityPractice .
+
+ex:PHP a ex:ProgrammingLanguage,
+        owl:NamedIndividual ;
+    ex:maintainedBy ex:PHPMaintainers .
+
+ex:PHPSupplyChainAttack a ex:SecurityIncident,
+        owl:NamedIndividual ;
+    ex:affectedOrganization ex:PHPMaintainers ;
+    ex:attackMethod ex:PasswordAuthentication ;
+    ex:attackVector ex:PotentialSoftwareExploit,
+        ex:UserDatabaseLeak ;
+    ex:attackerImpersonated ex:NikitaPopov,
+        ex:RasmusLerdorf ;
+    ex:dateReported "2021-03-28"^^xsd:date ;
+    ex:mitigationAction ex:PasswordReset,
+        ex:SystemMigration ;
+    ex:resultedIn ex:MaliciousCommits .
+
+ex:PIN a owl:Class .
+
+ex:PassengerServiceSystem a ex:Software,
+        owl:NamedIndividual ;
+    rdfs:label "Passenger Service System"^^xsd:string ;
+    ex:developedBy ex:SITA ;
+    ex:usedBy ex:AirIndia .
+
+ex:PasswordPolicy a ex:SecurityControl,
+        owl:NamedIndividual ;
+    rdfs:label "Password Policy"^^xsd:string ;
+    ex:implementedBy ex:ActiveDirectory .
+
+ex:PasswordstatePhishingAttack a ex:PhishingAttack,
+        owl:NamedIndividual ;
+    ex:associatedWith ex:UnknownThreatActor ;
+    ex:attackerImpersonated ex:ClickStudios ;
+    ex:replicates ex:ClickStudiosCommunication ;
+    ex:targets ex:PasswordstateCustomers .
+
+ex:PasswordstatePhishingCampaign a ex:PhishingAttack,
+        owl:NamedIndividual ;
+    ex:targets ex:Passwordstate ;
+    ex:uses ex:FakeHotfix .
+
+ex:PoliceDepartments a owl:NamedIndividual .
+
+ex:Prague a ex:City,
+        owl:NamedIndividual .
+
+ex:PriceListFraud a ex:SecurityIncident,
+        owl:NamedIndividual ;
+    rdfs:label "Purchase Price Leakage Scheme"^^xsd:string ;
+    ex:detectedBy ex:DataCentricAuditProtection ;
+    ex:involved ex:CollusionFraud .
+
+ex:PrimaryKey a ex:Credential,
+        owl:NamedIndividual ;
+    rdfs:label "Primary Key"^^xsd:string ;
+    ex:isCompromisedBy ex:ChaosDBVulnerability ;
+    ex:providesAccessTo ex:AdministrativeResources .
+
+ex:ProfileDetails a owl:NamedIndividual .
+
+ex:PulseSecureExploit a owl:NamedIndividual .
+
+ex:Qihoo360 a ex:CybersecurityCompany,
+        owl:NamedIndividual ;
+    ex:firstIdentified ex:APT-C-23 ;
+    ex:publishDate "2017"^^xsd:gYear .
+
+ex:RBNZ a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:locatedIn ex:NewZealand .
+
+ex:RBNZBreach a owl:NamedIndividual .
+
+ex:RansomwareDeployment a owl:NamedIndividual .
+
+ex:RedTeam a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityTeam .
+
+ex:RegulatoryAuthorities a owl:NamedIndividual .
+
+ex:RemoteDesktopExploit a owl:NamedIndividual .
+
+ex:SAFPS a ex:FraudPreventionService,
+        owl:NamedIndividual ;
+    ex:location ex:SouthAfrica .
+
+ex:SP800-63B a ex:Standard,
+        owl:NamedIndividual ;
+    rdfs:label "NIST Special Publication 800-63B"^^xsd:string ;
+    ex:publishedBy ex:NIST ;
+    ex:recommends ex:BreachedPasswordProtection .
+
+ex:ScreenCaptureTool a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Tool .
+
+ex:SearchInform a ex:Organization,
+        owl:NamedIndividual ;
+    rdfs:label "SearchInform"^^xsd:string ;
+    ex:developedBy ex:DatabaseMonitor,
+        ex:FileAuditor .
+
+ex:SecureMessagingApp a owl:Class .
+
+ex:SecurityAsset a owl:Class .
+
+ex:SecurityBypass a owl:Class .
+
+ex:SecurityCompany a owl:Class .
+
+ex:SecurityMeasure a owl:Class .
+
+ex:SecurityOperation a owl:Class .
+
+ex:SecurityOrganization a owl:Class .
+
+ex:SecurityProcedure a owl:Class .
+
+ex:SecurityRisk a owl:Class .
+
+ex:SecurityUpgrade a owl:NamedIndividual .
+
+ex:SecurityWeakness a owl:Class .
+
+ex:SensitiveDocument a owl:Class .
+
+ex:ServerLog a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SystemData .
+
+ex:SocialMediaCompany a owl:Class .
+
+ex:SocialMovement a owl:Class .
+
+ex:SoftwareApplication a owl:Class .
+
+ex:SoftwareBuildSystem a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:ITInfrastructure .
+
+ex:SoftwareInfrastructure a owl:Class .
+
+ex:SoftwareService a owl:Class .
+
+ex:SoftwareUpdate a owl:NamedIndividual .
+
+ex:SolarWindsAdvisory a ex:SecurityAdvisory,
+        owl:NamedIndividual ;
+    ex:date "2020-12-14"^^xsd:date ;
+    ex:fixDate "2020-12-15"^^xsd:date ;
+    ex:issuedBy ex:SolarWinds ;
+    ex:plannedFix ex:HF2 ;
+    ex:recommendedAction ex:UpgradeTo2020.2.1HF1 .
+
+ex:SolarWindsOrionUpdate a owl:NamedIndividual .
+
+ex:Solorigate a ex:CyberAttackCampaign,
+        owl:NamedIndividual ;
+    ex:sameAs ex:SolarWindsAttack .
+
+ex:SouthAmerica a owl:NamedIndividual .
+
+ex:Specops a ex:Organization,
+        owl:NamedIndividual ;
+    rdfs:label "Specops Software"^^xsd:string ;
+    ex:developedBy ex:SpecopsPasswordPolicy .
+
+ex:StateSponsoredAttack a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CyberAttack .
+
+ex:StolenData a owl:Class .
+
+ex:Symantec a ex:CybersecurityCompany,
+        owl:NamedIndividual ;
+    ex:identifiedVariant ex:Android-SpyC23.A ;
+    ex:publishDate "2018"^^xsd:gYear .
+
+ex:System a owl:Class .
+
+ex:SystemData a owl:Class .
+
+ex:SystemReboot a owl:NamedIndividual .
+
+ex:TechnologyCompany a owl:Class .
+
+ex:Telecom a owl:NamedIndividual .
+
+ex:TelecommunicationsSector a owl:NamedIndividual .
+
+ex:Telegram a owl:NamedIndividual .
+
+ex:TelegramBot a ex:MaliciousTool,
+        owl:NamedIndividual ;
+    ex:activeSince "2023-01"^^xsd:gYearMonth ;
+    ex:providedService ex:FacebookIDLookup .
+
+ex:ThirdPartyDataWarehouse a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:DataStorage .
+
+ex:ThirdPartyVendors a owl:NamedIndividual .
+
+ex:ThreatActorGroup a owl:Class .
+
+ex:Threema a owl:NamedIndividual .
+
+ex:TokopediaLeak a owl:NamedIndividual .
+
+ex:TransactionData a owl:Class .
+
+ex:TravelServices a owl:NamedIndividual .
+
+ex:UKCyberArrests2021 a ex:LawEnforcementOperation,
+        owl:NamedIndividual ;
+    ex:arrested 21 ;
+    ex:conductedBy ex:NCA ;
+    ex:date "2021-01-01"^^xsd:date ;
+    ex:relatedTo ex:WeLeakInfo ;
+    ex:seizedAmount 41000.00 ;
+    ex:seizedAssetType ex:Bitcoin ;
+    ex:seizedCurrency "GBP"^^xsd:string ;
+    ex:targeted ex:ComputerMisuseActViolation,
+        ex:FraudOffense .
+
+ex:UNC2452 a ex:CyberAttackCampaign,
+        ex:CyberEspionageCampaign,
+        owl:NamedIndividual ;
+    ex:alsoKnownAs "Solorigate"^^xsd:string ;
+    ex:ongoing true ;
+    ex:primaryMethod ex:SoftwareUpdateCompromise ;
+    ex:sameAs ex:SolarWindsAttack ;
+    ex:startDate "2020-03-01"^^xsd:date ;
+    ex:targetedSectors ex:Consulting,
+        ex:ExtractiveIndustries,
+        ex:Government,
+        ex:Technology,
+        ex:Telecom .
+
+ex:USDeptOfEnergy a owl:NamedIndividual .
+
+ex:USDeptOfHomelandSecurity a owl:NamedIndividual .
+
+ex:USDeptOfTreasury a owl:NamedIndividual .
+
+ex:US_DoJ a owl:NamedIndividual .
+
+ex:US_Energy a owl:NamedIndividual .
+
+ex:US_HomelandSecurity a owl:NamedIndividual .
+
+ex:US_Military a owl:NamedIndividual .
+
+ex:US_PostalService a owl:NamedIndividual .
+
+ex:US_Treasury a owl:NamedIndividual .
+
+ex:UnauthorizedCodeChanges a owl:Class .
+
+ex:UpstoxBreach a ex:DataBreach,
+        ex:DataLeak,
+        owl:NamedIndividual ;
+    ex:affectedOrganization ex:Upstox ;
+    ex:affectedUsers 2500000 ;
+    ex:causedBy ex:AWSMisconfiguration ;
+    ex:dateReported "2021-04-11"^^xsd:date ;
+    ex:disclosureDate "2021-04-11"^^xsd:date ;
+    ex:discoveredBy ex:RajshekharRajaharia ;
+    ex:exposedData ex:BankAccountInfo,
+        ex:BirthDates,
+        ex:EmailAddresses,
+        ex:KYCDocuments,
+        ex:Names,
+        ex:UserNames ;
+    ex:leakedOn ex:DarkWeb ;
+    ex:publishedOn ex:DarkWeb ;
+    ex:size "56M_KYC_docs"^^xsd:string ;
+    ex:sourceTechnique ex:MisconfiguredServer .
+
+ex:UserEmails a owl:NamedIndividual .
+
+ex:UserPreferenceData a owl:Class .
+
+ex:VersionControlSystem a owl:Class .
+
+ex:VideoGameIndustry a owl:NamedIndividual .
+
+ex:Volexity ex:identified ex:DarkHalo .
+
+ex:WattpadLeak a owl:NamedIndividual .
+
+ex:WeLeakInfoCrackdown a ex:LawEnforcementOperation,
+        owl:NamedIndividual ;
+    ex:conductedBy ex:FBI,
+        ex:GermanBKA,
+        ex:NCA,
+        ex:NetherlandsPolice,
+        ex:NorthernIrelandPolice ;
+    ex:date "2021-01-01"^^xsd:date ;
+    ex:resultedIn ex:WeLeakInfoArrests ;
+    ex:seizedAmount 41000.00 ;
+    ex:seizedCurrency ex:Bitcoin .
+
+ex:WeLeakInfoCredentials a ex:StolenCredentials,
+        owl:NamedIndividual ;
+    ex:contains ex:Email,
+        ex:Name,
+        ex:Password,
+        ex:PhoneNumber,
+        ex:Username ;
+    ex:obtainedFrom ex:DataBreach .
+
+ex:WebApplication a owl:Class .
+
+ex:WebHostingService a owl:NamedIndividual .
+
+ex:WebTechnologyCompany a owl:Class .
+
+ex:WebsiteState a owl:Class .
+
+ex:Whitelisting a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityPractice .
+
+ex:WilliamAlsup a ex:Judge,
+        owl:NamedIndividual ;
+    ex:presidedOver ex:NikulinTrial .
+
+ex:Wirecard a ex:PaymentService,
+        owl:NamedIndividual .
+
+ex:Wiz a ex:Company,
+        owl:NamedIndividual ;
+    rdfs:label "Wiz"^^xsd:string ;
+    ex:discovered ex:ChaosDBVulnerability ;
+    ex:industry ex:CloudSecurity .
+
+ex:WordPress a ex:ContentManagementSystem,
+        owl:NamedIndividual .
+
+ex:Zoom a ex:VideoconferencingCompany,
+        ex:VideoconferencingSoftware,
+        owl:NamedIndividual ;
+    ex:hasVulnerability ex:CVE-2021-28133 .
+
+ex:ZooskLeak a owl:NamedIndividual .
+
+ex:overlays a owl:NamedIndividual,
+        owl:ObjectProperty ;
+    rdfs:domain ex:SoftwareFeature ;
+    rdfs:range ex:SoftwareFeature .
+
+ex:weMessage a owl:NamedIndividual .
+
+xsd:duration a rdfs:Datatype .
+
+xsd:gYearMonth a rdfs:Datatype .
+
+ex:APICredential a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:AuthenticationData .
+
+ex:APICredentials a ex:APICredential,
+        owl:NamedIndividual ;
+    ex:storedOn ex:AWSS3 .
+
+ex:APITokens a ex:Credential,
+        owl:NamedIndividual ;
+    rdfs:label "API Tokens"^^xsd:string ;
+    ex:providesAccessTo ex:CloudServices .
+
+ex:APIVulnerability a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Vulnerability .
+
+ex:APT-C-23-C2 a ex:CommandAndControlServer,
+        owl:NamedIndividual ;
+    ex:disguisedAs ex:WebsiteUnderMaintenance .
+
+ex:APT41 a ex:CybercriminalGroup,
+        owl:NamedIndividual ;
+    rdfs:label "APT41"^^xsd:string ;
+    ex:alsoKnownAs "Axiom"^^xsd:string,
+        "Barium"^^xsd:string,
+        "Winnti Umbrella"^^xsd:string ;
+    ex:firstActive "2012"^^xsd:gYear ;
+    ex:knownFor ex:EspionageCampaigns,
+        ex:RansomwareDeployment,
+        ex:SupplyChainAttacks ;
+    ex:motivation "Information theft, espionage, financial gain"^^xsd:string ;
+    ex:origin "China"^^xsd:string ;
+    ex:targets ex:HealthcareSector,
+        ex:HighTechSector,
+        ex:HigherEducation,
+        ex:NewsMedia,
+        ex:TelecommunicationsSector,
+        ex:TravelServices,
+        ex:VideoGameIndustry .
+
+ex:AWS a ex:CloudProvider,
+        owl:NamedIndividual .
+
+ex:AWSMisconfiguration a ex:ServerMisconfiguration,
+        owl:NamedIndividual ;
+    ex:affectedComponent "Database"^^xsd:string ;
+    ex:remediationAction ex:AccessRestriction,
+        ex:SecurityUpgrade .
+
+ex:AadhaarSystem a ex:NationalIDSystem,
+        owl:NamedIndividual .
+
+ex:Accellion a ex:SoftwareCompany,
+        owl:NamedIndividual ;
+    ex:contractsWith ex:CybersecurityForensicsFirm ;
+    ex:providesService ex:AccellionFTA .
+
+ex:AccellionFTA a ex:FileTransferService,
+        owl:NamedIndividual ;
+    ex:hasVulnerability ex:AccellionVulnerability,
+        ex:FTAVulnerability .
+
+ex:AccellionVulnerability a ex:SecurityVulnerability,
+        owl:NamedIndividual ;
+    ex:affectedCustomers 50 ;
+    ex:causedBy ex:LegacySoftwareIssue ;
+    ex:disclosureDate "2021-01-11"^^xsd:date ;
+    ex:exploitDate "2020-12-20"^^xsd:date ;
+    ex:patchReleaseDate "2020-12-23"^^xsd:date ;
+    ex:securityStatus "patched"^^xsd:string ;
+    ex:usedAsAttackVector ex:ASICBreach,
+        ex:RBNZBreach,
+        ex:SAOBreach .
+
+ex:AccessToken a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:AuthenticationData .
+
+ex:AccountCleanup a ex:SecurityAction,
+        owl:NamedIndividual .
+
+ex:AggravatedIdentityTheft a ex:CyberCrime,
+        owl:NamedIndividual .
+
+ex:AlabamaFusionCenter a ex:FusionCenter,
+        owl:NamedIndividual .
+
+ex:AntonPillerOrder a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:LegalProceeding .
+
+ex:AshishGahlot a ex:BugBountyResearcher,
+        owl:NamedIndividual .
+
+ex:AttackTechnique a owl:Class .
+
+ex:AustinRegionalIntelligenceCenter a ex:FusionCenter,
+        owl:NamedIndividual .
+
+ex:AuthenticationData a owl:Class .
+
+ex:AuthenticationToken a ex:SensitiveData,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SensitiveData .
+
+ex:Automattic a ex:WebTechnologyCompany,
+        owl:NamedIndividual .
+
+ex:AviationIT a ex:IndustrySector,
+        owl:NamedIndividual ;
+    rdfs:label "Aviation IT"^^xsd:string .
+
+ex:AviationIndustry a ex:IndustrySector,
+        owl:NamedIndividual ;
+    rdfs:label "Aviation Industry"^^xsd:string .
+
+ex:BCryptHash a ex:PasswordHashAlgorithm,
+        owl:NamedIndividual .
+
+ex:BadPotato a ex:Malware,
+        owl:NamedIndividual ;
+    rdfs:label "BadPotato"^^xsd:string ;
+    ex:type ex:PrivilegeEscalationTool .
+
+ex:BankAccountInfo a owl:NamedIndividual .
+
+ex:BcryptHash a ex:PasswordHash,
+        owl:NamedIndividual ;
+    ex:securityStatus "Secure"^^xsd:string .
+
+ex:Belgium a owl:NamedIndividual .
+
+ex:BigBasketBreach a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedOrganization ex:BigBasket ;
+    ex:confirmedDate "2020-10-01"^^xsd:date ;
+    ex:exposedData ex:BirthDates,
+        ex:HashedPasswords,
+        ex:OrderHistories,
+        ex:PhoneNumbers,
+        ex:ResidentialAddresses,
+        ex:UserEmails ;
+    ex:leakedDate "2021-03-01"^^xsd:date .
+
+ex:BigBasketLeak a ex:DataLeak,
+        owl:NamedIndividual ;
+    ex:affectedOrganization ex:BigBasket ;
+    ex:dateReported "2020-11"^^xsd:gYearMonth,
+        "2021-02"^^xsd:gYearMonth ;
+    ex:exposedData ex:BirthDates,
+        ex:EmailAddresses,
+        ex:HashedPasswords,
+        ex:OrderHistories,
+        ex:PhoneNumbers,
+        ex:ResidentialAddresses .
+
+ex:BostonRegionalIntelligenceCenter a ex:FusionCenter,
+        owl:NamedIndividual .
+
+ex:Brazil a ex:Country,
+        owl:NamedIndividual .
+
+ex:BreachedCredentials a ex:SecurityIncident,
+        owl:NamedIndividual ;
+    ex:affectedOrganizations ex:AustralianGovernment,
+        ex:BrazilianGovernment,
+        ex:CanadianGovernment,
+        ex:UKGovernment,
+        ex:USGovernment ;
+    ex:includes ex:EmailAddresses,
+        ex:Passwords ;
+    ex:sourceTechnique ex:PasswordHashCracking,
+        ex:PhishingAttack,
+        ex:PlaintextConnection .
+
+ex:BreachedPasswordLists a ex:DataResource,
+        owl:NamedIndividual ;
+    rdfs:label "Breached Password Lists"^^xsd:string ;
+    ex:usedBy ex:Cybercriminals .
+
+ex:BusinessAddresses a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:BusinessData a owl:Class .
+
+ex:BusinessEmails a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:BusinessNature a ex:BusinessData,
+        owl:NamedIndividual .
+
+ex:BusinessPhones a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:CERT-In a ex:CyberSecurityAgency,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:GovernmentOrganization .
+
+ex:CISA a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:classifiedAs ex:GraveRisk ;
+    ex:collaboratedWith ex:FBI,
+        ex:ODNI ;
+    ex:issuedAdvisory "SolarWindsCompromise"^^xsd:string ;
+    ex:issuedDirective "EmergencyDirective21-01"^^xsd:string .
+
+ex:CORSVulnerability a ex:WebVulnerability,
+        owl:NamedIndividual ;
+    ex:impact "Unauthorized API access"^^xsd:string .
+
+ex:CVE-2021-28133 a ex:InformationLeak,
+        ex:ScreenSharingGlitch,
+        owl:NamedIndividual ;
+    ex:affectedFeature ex:ScreenSharingFeature ;
+    ex:brieflyVisible true ;
+    ex:causedBy ex:overlays ;
+    ex:disclosureDate "2020-12-02"^^xsd:date ;
+    ex:discoveredBy ex:MatthiasDeeg,
+        ex:MichaelStrametz,
+        ex:SySS ;
+    ex:discoveredByOrganization ex:SySS ;
+    ex:operatesOn ex:Linux,
+        ex:LinuxClient,
+        ex:Windows,
+        ex:WindowsClient ;
+    ex:overlays ex:SharedApplicationWindow ;
+    ex:reveals ex:SensitiveData,
+        ex:UnsharedApplicationContent ;
+    ex:securityStatus "unpatched"^^xsd:string .
+
+ex:CallRecording a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SurveillanceCapability .
+
+ex:CallRecordingCapability a ex:CallRecording,
+        owl:NamedIndividual ;
+    ex:targetsApp ex:WhatsApp .
+
+ex:Canada a owl:NamedIndividual .
+
+ex:CheckPointResearch a ex:SecurityResearchOrganization,
+        owl:NamedIndividual .
+
+ex:ClickStudiosCommunication a ex:Communication,
+        owl:NamedIndividual .
+
+ex:CloudCredentialTheft a ex:AttackMethod,
+        owl:NamedIndividual ;
+    rdfs:label "Cloud Credential Theft"^^xsd:string ;
+    ex:goal ex:CloudInfrastructureAccess ;
+    ex:targets ex:APITokens,
+        ex:OAuthTokens .
+
+ex:CloudProvider a owl:Class .
+
+ex:CloudStorage a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:StorageService .
+
+ex:CobaltStrike a ex:Malware,
+        owl:NamedIndividual ;
+    rdfs:label "Cobalt Strike"^^xsd:string ;
+    ex:type ex:RemoteAccessTool ;
+    ex:usedFor ex:CommandAndControl,
+        ex:LateralMovement .
+
+ex:CobaltStrikeBeacon a ex:CybercrimeTool,
+        ex:Malware,
+        owl:NamedIndividual ;
+    ex:purpose ex:LateralMovement .
+
+ex:CollusionFraud a ex:SecurityThreat,
+        owl:NamedIndividual ;
+    rdfs:label "Collusion Fraud"^^xsd:string ;
+    ex:subClassOf ex:InsiderRisk .
+
+ex:CommandExecution a owl:NamedIndividual .
+
+ex:Communication a owl:Class .
+
+ex:CompanyURLs a ex:BusinessData,
+        owl:NamedIndividual .
+
+ex:CompromisedCDN a ex:ContentDeliveryNetwork,
+        owl:NamedIndividual ;
+    ex:hosts ex:moserware_secretsplitter_dll .
+
+ex:CompromisedCredentials a ex:SecurityVulnerability,
+        owl:NamedIndividual ;
+    rdfs:label "Compromised Credentials"^^xsd:string ;
+    ex:canBeObtainedThrough ex:CredentialStuffing,
+        ex:Mimikatz,
+        ex:PasswordSpraying ;
+    ex:responsibleFor 0.2 .
+
+ex:ComputerIntrusion a ex:CyberCrime,
+        owl:NamedIndividual .
+
+ex:ContentDeliveryNetwork a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Platform .
+
+ex:ContentSecurityPolicy a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityControl .
+
+ex:CounterForensicTechniques a ex:EvasionTechnique,
+        owl:NamedIndividual .
+
+ex:CreditReportingAgency a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:FinancialServiceProvider .
+
+ex:CustomerFullNames a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:CybercrimeForumX a ex:CybercrimeForum,
+        owl:NamedIndividual .
+
+ex:CybercrimeTool a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Software .
+
+ex:CybercriminalForum a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:ThreatActorGroup .
+
+ex:CzechRepublic a ex:Country,
+        owl:NamedIndividual .
+
+ex:DDoSecrets a ex:TransparencyCollective,
+        owl:NamedIndividual ;
+    ex:similarTo ex:WikiLeaks .
+
+ex:DLL a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SoftwareComponent .
+
+ex:DailySubscription a ex:ServicePlan,
+        ex:SubscriptionPlan,
+        owl:NamedIndividual ;
+    ex:currency "USD"^^xsd:string ;
+    ex:duration "P1D"^^xsd:duration ;
+    ex:price 2.00 .
+
+ex:DarkHalo a ex:HackerGroup,
+        owl:NamedIndividual ;
+    ex:trackedBy ex:Volexity .
+
+ex:DataCollection a owl:Class .
+
+ex:DataLeakage a ex:SecurityThreat,
+        owl:NamedIndividual ;
+    rdfs:label "Data Leakage"^^xsd:string ;
+    ex:subClassOf ex:DataBreach .
+
+ex:DataScraping a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:AttackMethod .
+
+ex:DataScrapingAttack a ex:CyberAttack,
+        owl:NamedIndividual .
+
+ex:DataTrafficking a ex:CyberCrime,
+        owl:NamedIndividual .
+
+ex:DatabaseFeature a owl:Class .
+
+ex:DatabaseLeak a ex:SecurityVulnerability,
+        owl:NamedIndividual ;
+    ex:affectedComponent "User Database"^^xsd:string ;
+    ex:potentialCause ex:OutdatedSystem,
+        ex:PossibleExploit .
+
+ex:DatabaseMonitor a ex:Software,
+        owl:NamedIndividual ;
+    rdfs:label "SearchInform Database Monitor"^^xsd:string ;
+    ex:implements ex:DatabaseActivityMonitoring ;
+    ex:monitors ex:DatabaseAccess .
+
+ex:DatabaseService a owl:Class .
+
+ex:DatingPlatform a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:OnlineService .
+
+ex:DatingServices a ex:Industry,
+        owl:NamedIndividual .
+
+ex:DeptOfJustice a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack .
+
+ex:DeveloperDirectory a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:OnlineService .
+
+ex:DeveloperMode a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:BrowserFeature .
+
+ex:Digilocker a ex:DigitalWalletService,
+        owl:NamedIndividual ;
+    ex:hasAuthenticationMethod ex:OTPAuthentication,
+        ex:PINAuthentication ;
+    ex:linkedTo ex:AadhaarSystem ;
+    ex:managedBy ex:IndianGovernment ;
+    ex:stores ex:SensitiveDocuments ;
+    ex:userCount "38M"^^xsd:string .
+
+ex:DigitalApps a ex:ThirdPartyAppStore,
+        owl:NamedIndividual .
+
+ex:DomainSeizure a ex:Countermeasure,
+        owl:NamedIndividual ;
+    ex:executedBy ex:FireEye,
+        ex:GoDaddy,
+        ex:Microsoft ;
+    ex:result ex:SUNBURSTKillswitch ;
+    ex:targetDomain "avsvmcloud[.]com"^^xsd:string .
+
+ex:DuoMFACompromise a ex:AttackVector,
+        owl:NamedIndividual ;
+    ex:method ex:StolenEncryptionKey ;
+    ex:targetedService ex:OutlookWebApp .
+
+ex:EcommerceWebsite a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Website .
+
+ex:Education a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:IndustrySector .
+
+ex:EducationEntities a ex:OrganizationCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Education Entities"^^xsd:string .
+
+ex:EspionageCampaigns a ex:AttackMethod,
+        owl:NamedIndividual ;
+    rdfs:label "Espionage Campaigns"^^xsd:string ;
+    ex:goal ex:InformationTheft,
+        ex:StrategicAccess .
+
+ex:Europe a owl:NamedIndividual .
+
+ex:Experian a ex:MultinationalCorporation,
+        owl:NamedIndividual ;
+    ex:industry ex:FinancialServices .
+
+ex:ExtractiveIndustry a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:IndustrySector .
+
+ex:FTAVulnerability a ex:SecurityVulnerability,
+        owl:NamedIndividual ;
+    ex:affectedCustomers 50 ;
+    ex:disclosureDate "2021-01-11"^^xsd:date ;
+    ex:exploitedIn ex:SAODataBreach ;
+    ex:patchReleaseDate "2020-12-20T00:00:00"^^xsd:dateTime ;
+    ex:securityStatus "patched"^^xsd:string .
+
+ex:FacebookDataLeak2019 a ex:DataLeak,
+        owl:NamedIndividual ;
+    ex:affectedUsers 533000000 ;
+    ex:attackMethod ex:DataScraping ;
+    ex:containsInformationAbout ex:ChrisHughes,
+        ex:DustinMoskovitz,
+        ex:MarkZuckerberg ;
+    ex:dateDisclosed "2023-03"^^xsd:gYearMonth ;
+    ex:dateOccurred "2019-08"^^xsd:gYearMonth ;
+    ex:distributedOn ex:CybercrimeForum ;
+    ex:leakedData ex:FacebookUserProfiles ;
+    ex:platformVulnerability ex:ProfileScrapingVulnerability .
+
+ex:FacebookIDLookup a ex:IllegalService,
+        owl:NamedIndividual .
+
+ex:FacebookPlatform a ex:SocialMediaPlatform,
+        owl:NamedIndividual ;
+    ex:hasVulnerability ex:ProfileScrapingVulnerability .
+
+ex:FakeHotfix a ex:Malware,
+        owl:NamedIndividual ;
+    ex:imitates ex:MoserwareHotfix .
+
+ex:FileAuditor a ex:Software,
+        owl:NamedIndividual ;
+    rdfs:label "SearchInform FileAuditor"^^xsd:string ;
+    ex:detects ex:ConfidentialDataLeakage ;
+    ex:implements ex:DataCentricAuditProtection .
+
+ex:FileTransfer a owl:NamedIndividual .
+
+ex:FileTransferService a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Software,
+        ex:SoftwareService .
+
+ex:FireEyeBreach2020 a ex:ToolTheft,
+        owl:NamedIndividual ;
+    ex:attributedTo ex:APT29 ;
+    ex:compromisedData ex:RedTeamTools ;
+    ex:discoveredBy ex:FireEye ;
+    ex:relatedTo ex:GovernmentClients ;
+    ex:targetedSector ex:CybersecurityIndustry ;
+    ex:usedMalware ex:NovelCombinationMalware .
+
+ex:FireEyeCountermeasures a ex:Countermeasure,
+        owl:NamedIndividual ;
+    ex:countermeasureFor ex:FireEyeRedTeamToolsThreat .
+
+ex:FireEyeRedTeamToolsThreat a ex:SecurityThreat,
+        owl:NamedIndividual .
+
+ex:ForensicsFirm a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Organization,
+        ex:SecurityOrganization .
+
+ex:FraudPreventionService a owl:Class .
+
+ex:GeographicRegion a owl:Class .
+
+ex:GeorgeFloydDeath a ex:Event,
+        owl:NamedIndividual .
+
+ex:GitPHPNetServer a ex:SourceCodeRepository,
+        owl:NamedIndividual ;
+    ex:hosts ex:PHPSourceCode ;
+    ex:supportsAuthentication ex:HTTPAuthentication,
+        ex:SSHAuthentication .
+
+ex:GitPhpNetServer a ex:SourceCodeRepository,
+        owl:NamedIndividual ;
+    ex:hosts ex:PHPSourceCode ;
+    ex:supportsAuthentication ex:HTTPAuthentication,
+        ex:SSHAuthentication .
+
+ex:GoDaddy a owl:NamedIndividual .
+
+ex:GoogleAnalytics a ex:WebAnalyticsService,
+        owl:NamedIndividual ;
+    ex:associatedWith ex:Google .
+
+ex:GoogleAnalyticsAccount a owl:NamedIndividual .
+
+ex:GovernmentClients a ex:GovernmentOrganization,
+        owl:NamedIndividual .
+
+ex:GovernmentEntities a ex:OrganizationCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Government Entities"^^xsd:string .
+
+ex:HTTP a owl:NamedIndividual .
+
+ex:HackerForum a owl:Class .
+
+ex:InPlaceUpgrade a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:UpdateMechanism .
+
+ex:IncidentResponse a owl:Class .
+
+ex:India a ex:Country,
+        owl:NamedIndividual .
+
+ex:Industry a owl:Class .
+
+ex:InformationLeak a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityVulnerability .
+
+ex:Israel a owl:NamedIndividual .
+
+ex:JoomlaInternalAudit a ex:SecurityAudit,
+        owl:NamedIndividual .
+
+ex:JoomlaResourcesDirectory a ex:DeveloperDirectory,
+        owl:NamedIndividual ;
+    ex:purpose "Lists developers and service providers specialized in Joomla"^^xsd:string ;
+    ex:storedOn ex:AWSS3 .
+
+ex:KYC a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:FinancialDocument .
+
+ex:Kaspersky a ex:CybersecurityCompany,
+        owl:NamedIndividual .
+
+ex:LinuxClient a ex:SystemComponent,
+        owl:NamedIndividual .
+
+ex:Locations a owl:NamedIndividual .
+
+ex:MainPHPNetSystem a ex:UserDatabase,
+        owl:NamedIndividual ;
+    ex:supportsProtocol ex:TLS1.2 ;
+    ex:usesHashAlgorithm ex:BCryptHash .
+
+ex:MaliciousCommits a ex:UnauthorizedCodeChanges,
+        owl:NamedIndividual ;
+    ex:contained ex:Backdoor .
+
+ex:MaliciousJavaScriptCode a ex:MaliciousCode,
+        owl:NamedIndividual ;
+    ex:checksFor ex:DeveloperMode ;
+    ex:exfiltratesDataTo ex:GoogleAnalyticsAccount .
+
+ex:MaliciousUpdate a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Malware .
+
+ex:MasterPHPNetSystem a ex:UserDatabase,
+        owl:NamedIndividual ;
+    ex:runsOn ex:OutdatedSoftware ;
+    ex:usesAuthentication ex:DigestAuthentication ;
+    ex:usesHashAlgorithm ex:MD5Hash .
+
+ex:MasterPhpNetSystem a ex:UserDatabase,
+        owl:NamedIndividual ;
+    ex:status "Deprecated"^^xsd:string ;
+    ex:usesAuthentication ex:DigestAuthentication ;
+    ex:usesHashAlgorithm ex:MD5Hash .
+
+ex:MatchGroup a ex:Corporation,
+        owl:NamedIndividual ;
+    ex:industry ex:DatingServices .
+
+ex:MatthiasDeeg a ex:SecurityResearcher,
+        owl:NamedIndividual ;
+    ex:associatedWith ex:SySS ;
+    ex:partOf ex:SySS .
+
+ex:MetaPlatformsInc a ex:Organization,
+        owl:NamedIndividual ;
+    ex:operates ex:Facebook .
+
+ex:Mexico a owl:NamedIndividual .
+
+ex:MichaelStrametz a ex:SecurityResearcher,
+        owl:NamedIndividual ;
+    ex:associatedWith ex:SySS ;
+    ex:partOf ex:SySS .
+
+ex:MilitaryEntities a ex:OrganizationCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Military Entities"^^xsd:string .
+
+ex:MisconfiguredServer a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityVulnerability .
+
+ex:MobiKwik a ex:Company,
+        ex:DigitalWallet,
+        owl:NamedIndividual ;
+    ex:domain "mobikwik.com"^^xsd:string ;
+    ex:hasDomain ex:DigitalWallet ;
+    ex:operatesIn ex:FinancialSector .
+
+ex:MoheshMohan a ex:BugBountyResearcher,
+        owl:NamedIndividual .
+
+ex:MonthlySubscription a ex:ServicePlan,
+        ex:SubscriptionPlan,
+        owl:NamedIndividual ;
+    ex:currency "USD"^^xsd:string ;
+    ex:duration "P30D"^^xsd:duration ;
+    ex:price 25.00 .
+
+ex:MoserwareHotfix a ex:Hotfix,
+        owl:NamedIndividual ;
+    ex:fixed ex:CompromisedUpdateMechanism .
+
+ex:MotherMaidenNames a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:MultiFactorAuthenticationBypass a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityBypass .
+
+ex:MultipleBreaches a ex:DataCollection,
+        owl:NamedIndividual ;
+    ex:source ex:VariousCompanies .
+
+ex:NIST a ex:Organization,
+        owl:NamedIndividual ;
+    rdfs:label "National Institute of Standards and Technology"^^xsd:string ;
+    ex:country "United States"^^xsd:string .
+
+ex:NNSA a owl:NamedIndividual .
+
+ex:Nationalities a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:NaturaServerCertificate a ex:ServerCertificate,
+        owl:NamedIndividual .
+
+ex:NetsentialInc a ex:WebHostingCompany,
+        owl:NamedIndividual ;
+    ex:hostsDataFor ex:AlabamaFusionCenter,
+        ex:AustinRegionalIntelligenceCenter,
+        ex:BostonRegionalIntelligenceCenter,
+        ex:MultiplePoliceDepartments,
+        ex:NationalFusionCenterAssociation ;
+    ex:previouslyCompromisedIn ex:RansomwareAttack .
+
+ex:NetworkManagementSoftware a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SystemComponent .
+
+ex:NetworkProtocol a owl:Class .
+
+ex:NewsletterPreferences a ex:UserPreferenceData,
+        owl:NamedIndividual .
+
+ex:Nicknames a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:NikulinTrial a ex:LegalProceeding,
+        owl:NamedIndividual ;
+    ex:location ex:SanFrancisco ;
+    ex:result "Guilty"^^xsd:string ;
+    ex:year "2020"^^xsd:gYear .
+
+ex:NorthAmerica a owl:NamedIndividual .
+
+ex:NotificationSpying a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SurveillanceCapability .
+
+ex:NotificationSpyingCapability a ex:NotificationSpying,
+        owl:NamedIndividual ;
+    ex:targetsApp ex:Facebook,
+        ex:Messenger,
+        ex:Skype,
+        ex:Viber,
+        ex:WhatsApp .
+
+ex:NovelCombinationMalware a ex:Malware,
+        owl:NamedIndividual ;
+    ex:evasionMethod ex:CounterForensicTechniques .
+
+ex:OAuthTokens a ex:Credential,
+        owl:NamedIndividual ;
+    rdfs:label "OAuth Tokens"^^xsd:string ;
+    ex:bypasses ex:TwoFactorAuthentication .
+
+ex:OTP a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:AuthenticationMethod .
+
+ex:OfficeOfThePresident a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack .
+
+ex:OkCupid a ex:DatingPlatform,
+        owl:NamedIndividual ;
+    ex:hasMobileApp ex:OkCupidAndroidApp ;
+    ex:ownedBy ex:MatchGroup .
+
+ex:OkCupidAndroidApp a ex:MobileApplication,
+        owl:NamedIndividual ;
+    ex:releaseDate "2021-04-29"^^xsd:date ;
+    ex:version "40.3.1"^^xsd:string .
+
+ex:OnlinePlatform a owl:Class .
+
+ex:OrderHistories a owl:NamedIndividual .
+
+ex:OutdatedSoftware a ex:SecurityVulnerability,
+        owl:NamedIndividual .
+
+ex:PHPBreach a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedOrganization ex:PHPGroup ;
+    ex:attackType ex:SoftwareSupplyChainAttack ;
+    ex:causedBy ex:DatabaseLeak ;
+    ex:disclosureDate "2021-04-06"^^xsd:date ;
+    ex:discoveredBy ex:NikitaPopov ;
+    ex:exposedData ex:Passwords,
+        ex:UserNames ;
+    ex:remediationAction ex:HashAlgorithmUpgrade,
+        ex:PasswordReset,
+        ex:SystemMigration .
+
+ex:PHPGroup a ex:Organization,
+        owl:NamedIndividual ;
+    ex:maintains ex:PHPLanguage ;
+    ex:operates ex:GitPhpNetServer,
+        ex:MasterPhpNetSystem .
+
+ex:PHPLanguage a ex:ProgrammingLanguage,
+        owl:NamedIndividual .
+
+ex:PINAuthentication a ex:PIN,
+        owl:NamedIndividual .
+
+ex:PasswordHashCracking a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:AttackTechnique .
+
+ex:PasswordManager a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Software .
+
+ex:PasswordResetMandate a ex:SecurityAction,
+        owl:NamedIndividual .
+
+ex:PasswordResetRecommendation a ex:SecurityAction,
+        owl:NamedIndividual .
+
+ex:Passwords a owl:NamedIndividual .
+
+ex:PasswordstateCustomers a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Person .
+
+ex:PasswordstateUpdateMechanism a ex:UpdateMechanism,
+        owl:NamedIndividual ;
+    ex:isCompromisedBy ex:PasswordstateSupplyChainAttack .
+
+ex:PaymentAccount a owl:Class .
+
+ex:Pentagon a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack .
+
+ex:PerimeterX a ex:CybersecurityCompany,
+        owl:NamedIndividual .
+
+ex:PersonalDataLeak a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:DataBreach .
+
+ex:Peru a ex:Country,
+        owl:NamedIndividual .
+
+ex:PhysicalAddresses a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:PlaintextConnection a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:InsecureProtocol .
+
+ex:PostalService a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack .
+
+ex:PotentialSoftwareExploit a ex:SecurityVulnerability,
+        owl:NamedIndividual .
+
+ex:ProfileScraping a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityVulnerability .
+
+ex:ProtectiveRegistration a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:FraudPreventionService .
+
+ex:Protocol a owl:Class .
+
+ex:PurchaseHistories a ex:TransactionData,
+        owl:NamedIndividual .
+
+ex:QuarterlySubscription a ex:ServicePlan,
+        ex:SubscriptionPlan,
+        owl:NamedIndividual ;
+    ex:currency "USD"^^xsd:string ;
+    ex:duration "P90D"^^xsd:duration ;
+    ex:price 70.00 .
+
+ex:RaidForums a ex:HackerForum,
+        owl:NamedIndividual ;
+    rdfs:label "Raid Forums"^^xsd:string .
+
+ex:RajshekharRajaharia a ex:Person,
+        ex:SecurityResearcher,
+        owl:NamedIndividual ;
+    ex:role "Independent Security Researcher"^^xsd:string .
+
+ex:RasmusLerdorf a ex:Person,
+        owl:NamedIndividual ;
+    ex:role ex:PHPCreator,
+        "PHP Creator"^^xsd:string .
+
+ex:RedTeamTools a owl:NamedIndividual .
+
+ex:ResidentialAddresses a owl:NamedIndividual .
+
+ex:RussianCybercriminalForum a ex:CybercriminalForum,
+        owl:NamedIndividual ;
+    ex:language "Russian"^^xsd:string .
+
+ex:SABRIC a ex:NonProfitOrganization,
+        owl:NamedIndividual ;
+    ex:focus ex:BankingSecurity,
+        ex:FraudPrevention .
+
+ex:SAOBreach a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedIndividuals 1600000 ;
+    ex:breachDate "2020-12-20"^^xsd:date ;
+    ex:compromisedData ex:UnemploymentClaimantInfo ;
+    ex:discoveryDate "2021-01-25"^^xsd:date ;
+    ex:involvedOrganization ex:Accellion ;
+    ex:responsibleOrganization ex:SAOWashington .
+
+ex:SAODataBreach a ex:DataBreach,
+        owl:NamedIndividual ;
+    ex:affectedOrganization ex:WashingtonSAO ;
+    ex:compromisedData ex:UnemploymentClaimantData ;
+    ex:dateDiscovered "2021-01-25"^^xsd:date ;
+    ex:dateOccurred "2020-12-20"^^xsd:date ;
+    ex:investigatedBy ex:CybersecurityForensicsFirm ;
+    ex:numberAffected 1600000 .
+
+ex:SAOWashington a ex:StateAuditor,
+        owl:NamedIndividual .
+
+ex:SITA a ex:Organization,
+        owl:NamedIndividual ;
+    rdfs:label "SITA"^^xsd:string ;
+    ex:country "Switzerland"^^xsd:string ;
+    ex:industry ex:AviationIT .
+
+ex:SP100Companies a ex:OrganizationCategory,
+        owl:NamedIndividual ;
+    rdfs:label "S&P 100 Companies"^^xsd:string ;
+    ex:subCategoryOf ex:Fortune500Companies .
+
+ex:SafetyDetectiveResearch a ex:SecurityAudit,
+        owl:NamedIndividual .
+
+ex:SanFrancisco a ex:City,
+        owl:NamedIndividual .
+
+ex:ScreenRecording a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SurveillanceCapability .
+
+ex:ScreenRecordingCapability a ex:ScreenRecording,
+        owl:NamedIndividual .
+
+ex:ScreenSharingFeature a owl:Class,
+        owl:NamedIndividual ;
+    ex:implementedIn ex:VideoconferencingSoftware ;
+    rdfs:subClassOf ex:SoftwareFeature .
+
+ex:ScreenSharingGlitch a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityVulnerability .
+
+ex:SecurityAdvisory a owl:Class .
+
+ex:SecurityFixesDeployment a ex:SecurityAction,
+        owl:NamedIndividual .
+
+ex:SecurityNotificationDismissal a ex:EvasionTechnique,
+        owl:NamedIndividual .
+
+ex:SecurityResearchCompany a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityResearcherOrganization .
+
+ex:SensitiveDataType a owl:Class .
+
+ex:SensitiveDocuments a ex:DigitalDocument,
+        owl:NamedIndividual .
+
+ex:ServerMisconfiguration a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityVulnerability .
+
+ex:ServerSecuring a ex:SecurityAction,
+        owl:NamedIndividual .
+
+ex:ServiceDisabling a owl:NamedIndividual .
+
+ex:SharedApplicationWindow a ex:SoftwareFeature,
+        owl:NamedIndividual .
+
+ex:Signal a ex:SignalApp,
+        owl:NamedIndividual ;
+    ex:feature ex:EndToEndEncryption .
+
+ex:SignalApp a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecureMessagingApp .
+
+ex:SoftwareDistributionPlatform a owl:Class .
+
+ex:SoftwarePlatform a owl:Class .
+
+ex:SoftwareSupplyChainAttack a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CyberAttack .
+
+ex:Spain a owl:NamedIndividual .
+
+ex:SpecopsPasswordPolicy a ex:Software,
+        owl:NamedIndividual ;
+    rdfs:label "Specops Password Policy"^^xsd:string ;
+    ex:implements ex:BreachedPasswordProtection ;
+    ex:integratesWith ex:ActiveDirectory .
+
+ex:Standard a owl:Class .
+
+ex:StateAuditor a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:GovernmentAgency .
+
+ex:StateAuditorOffice a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:GovernmentAgency .
+
+ex:StorageService a owl:Class .
+
+ex:Syhunt a ex:SecurityCompany,
+        owl:NamedIndividual .
+
+ex:SystemProfiling a owl:NamedIndividual .
+
+ex:Teardrop a ex:Malware,
+        ex:MalwareBackdoor,
+        owl:NamedIndividual ;
+    ex:usedFor ex:SecondStagePayload .
+
+ex:Technology a owl:NamedIndividual .
+
+ex:Telecommunications a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:IndustrySector .
+
+ex:TelecommunicationsAgency a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:GovernmentAgency .
+
+ex:ThirdPartyAppStore a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SoftwareDistributionPlatform .
+
+ex:Tool a owl:Class .
+
+ex:TwoFactorAuthEnablement a ex:SecurityAction,
+        owl:NamedIndividual .
+
+ex:TwoFactorAuthentication a ex:SecurityMechanism,
+        owl:NamedIndividual ;
+    rdfs:label "Two-Factor Authentication"^^xsd:string .
+
+ex:UAE a owl:NamedIndividual .
+
+ex:UK a owl:NamedIndividual .
+
+ex:US a owl:NamedIndividual .
+
+ex:USDeptOfCommerce a owl:NamedIndividual .
+
+ex:USGovernment a ex:GovernmentDomain,
+        ex:GovernmentOrganization,
+        owl:NamedIndividual ;
+    ex:hasAffectedSubsidiary ex:CDC,
+        ex:DHS,
+        ex:DOJ,
+        ex:EPA,
+        ex:IRS,
+        ex:NASA,
+        ex:SSA,
+        ex:StateDepartment,
+        ex:USPS,
+        ex:VeteransAffairs ;
+    ex:hasDomain ex:cdc_gov,
+        ex:dhs_gov,
+        ex:epa_gov,
+        ex:irs_gov,
+        ex:nasa_gov,
+        ex:ssa_gov,
+        ex:state_gov,
+        ex:usdoj_gov,
+        ex:usps_gov,
+        ex:va_gov .
+
+ex:USMilitary a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:hasBranch ex:AirForce,
+        ex:Army,
+        ex:CoastGuard,
+        ex:MarineCorps,
+        ex:Navy .
+
+ex:US_Commerce a owl:NamedIndividual .
+
+ex:UnemploymentClaimantData a ex:SensitiveData,
+        owl:NamedIndividual ;
+    ex:contains ex:BankAccountNumber,
+        ex:BankRoutingNumber,
+        ex:DriverLicense,
+        ex:EmploymentPlace,
+        ex:FullName,
+        ex:SocialSecurityNumber,
+        ex:StateIDNumber .
+
+ex:UnemploymentClaimantInfo a ex:PersonalInformation,
+        owl:NamedIndividual ;
+    ex:contains ex:BankAccountInfo,
+        ex:DriversLicense,
+        ex:EmploymentInfo,
+        ex:FullName,
+        ex:SSN,
+        ex:StateID .
+
+ex:UnencryptedBackupOnS3 a ex:SecurityMisconfiguration,
+        owl:NamedIndividual .
+
+ex:UnitedStates a ex:Country,
+        owl:NamedIndividual .
+
+ex:UnprotectedS3Buckets a ex:SecurityMisconfiguration,
+        owl:NamedIndividual ;
+    ex:couldEnableAttack ex:PaymentSkimming,
+        ex:WebsiteDefacement .
+
+ex:UnsharedApplicationContent a ex:SensitiveData,
+        owl:NamedIndividual .
+
+ex:Upstox a ex:BrokeragePlatform,
+        ex:Company,
+        owl:NamedIndividual ;
+    ex:domain "upstox.com"^^xsd:string ;
+    ex:hasDomain ex:BrokeragePlatform ;
+    ex:hasSecurityMeasure ex:NetworkRingFencing ;
+    ex:initiatedPasswordReset true ;
+    ex:operatesIn ex:FinancialSector ;
+    ex:usesInfrastructure ex:AWS .
+
+ex:UserAccounts a owl:NamedIndividual .
+
+ex:UserDatabaseLeak a ex:DataLeak,
+        owl:NamedIndividual .
+
+ex:UserFullNames a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:UserIPAddresses a ex:NetworkData,
+        owl:NamedIndividual .
+
+ex:UserPasswordHashes a ex:PasswordHash,
+        owl:NamedIndividual ;
+    ex:storedOn ex:AWSS3 .
+
+ex:UserPasswordHashesWithSalts a ex:PasswordHash,
+        owl:NamedIndividual .
+
+ex:UserProfileData a ex:SensitiveDataType,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:comment "Includes email, preferences, sexual orientation, and other personal data"^^xsd:string ;
+    rdfs:subClassOf ex:PersonalInformation .
+
+ex:Usernames a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:VictimCountryVPN a owl:NamedIndividual .
+
+ex:VideoconferencingCompany a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SoftwareCompany .
+
+ex:WashingtonSAO a ex:StateAuditorOffice,
+        owl:NamedIndividual .
+
+ex:WeLeakInfo a ex:CybercrimeMarketplace,
+        ex:CybercrimeService,
+        owl:NamedIndividual ;
+    ex:containedData ex:StolenCredentials,
+        ex:WeLeakInfoData ;
+    ex:dataSources 10000 ;
+    ex:launchDate "2017-01-01"^^xsd:date ;
+    ex:offeredSubscription ex:DailySubscription,
+        ex:MonthlySubscription,
+        ex:QuarterlySubscription,
+        ex:WeeklySubscription ;
+    ex:operatedBy ex:WeLeakInfoOperator1,
+        ex:WeLeakInfoOperator2 ;
+    ex:recordsIndexed 12000000000 ;
+    ex:seizedBy ex:FBI,
+        ex:GermanBKA,
+        ex:NCA,
+        ex:NetherlandsPolice,
+        ex:NorthernIrelandPolice ;
+    ex:seizureDate "2021-01-01"^^xsd:date ;
+    ex:shutdownDate "2021-01-01"^^xsd:date ;
+    ex:usedIn ex:CredentialStuffingAttack .
+
+ex:WeLeakInfoArrests a ex:ArrestOperation,
+        owl:NamedIndividual ;
+    ex:arrested ex:ArrestedPerson1,
+        ex:ArrestedPerson2,
+        ex:ArrestedPerson3 ;
+    ex:charges ex:ComputerMisuseActOffence,
+        ex:FraudOffence ;
+    ex:numberArrested 21 .
+
+ex:WeLeakInfoData a ex:StolenCredentials,
+        owl:NamedIndividual ;
+    ex:contains ex:EmailAddress,
+        ex:Name,
+        ex:Password,
+        ex:PhoneNumber,
+        ex:Username ;
+    ex:recordsCount 12000000000 ;
+    ex:sourceBreaches 10000 .
+
+ex:WeLeakInfoOperator1 a ex:Cybercriminal,
+        owl:NamedIndividual ;
+    ex:age 22 ;
+    ex:location ex:Netherlands .
+
+ex:WeLeakInfoOperator2 a ex:Cybercriminal,
+        owl:NamedIndividual ;
+    ex:age 22 ;
+    ex:location ex:NorthernIreland .
+
+ex:WebAnalyticsService a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:OnlineService .
+
+ex:WebVulnerability a owl:Class .
+
+ex:Website a owl:Class,
+        owl:NamedIndividual .
+
+ex:WebsiteUnderMaintenance a ex:WebsiteState,
+        owl:NamedIndividual .
+
+ex:WeeklySubscription a ex:ServicePlan,
+        ex:SubscriptionPlan,
+        owl:NamedIndividual ;
+    ex:currency "USD"^^xsd:string ;
+    ex:duration "P7D"^^xsd:duration ;
+    ex:price 7.00 .
+
+ex:Windows a owl:NamedIndividual .
+
+ex:WindowsClient a ex:SystemComponent,
+        owl:NamedIndividual .
+
+ex:WirecardTokens a ex:AccessToken,
+        owl:NamedIndividual .
+
+ex:XSSAttack a ex:CrossSiteScripting,
+        owl:NamedIndividual ;
+    ex:attackVector "Injected JavaScript via section parameter"^^xsd:string ;
+    ex:impact "Token theft and profile data access"^^xsd:string .
+
+ex:ZuckerbergFacebookProfile a ex:SocialMediaProfile,
+        owl:NamedIndividual ;
+    ex:containsPersonalData ex:ZuckerbergPhoneNumber .
+
+ex:ZuckerbergSignalAccount a ex:MessagingAccount,
+        owl:NamedIndividual .
+
+ex:moserware_secretsplitter_dll a ex:DLL,
+        owl:NamedIndividual ;
+    ex:distributedOn ex:CompromisedCDN ;
+    ex:relatedTo ex:SecondStagePayload .
+
+ex:state_gov a ex:GovernmentDomain,
+        owl:NamedIndividual ;
+    ex:belongsTo ex:StateDepartment ;
+    ex:exposedPasswords 29144 .
+
+ex:va_gov a ex:GovernmentDomain,
+        owl:NamedIndividual ;
+    ex:belongsTo ex:VeteransAffairsDepartment ;
+    ex:exposedPasswords 28937 .
+
+ex:APTGroup a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:ThreatActor .
+
+ex:ActiveDirectory a ex:Software,
+        owl:NamedIndividual ;
+    rdfs:label "Microsoft Active Directory"^^xsd:string ;
+    ex:developedBy ex:Microsoft ;
+    ex:usedFor ex:IdentityManagement .
+
+ex:AirIndia a ex:Organization,
+        owl:NamedIndividual ;
+    rdfs:label "Air India"^^xsd:string ;
+    ex:country "India"^^xsd:string ;
+    ex:industry ex:AviationIndustry .
+
+ex:AmazonWebServices a ex:CloudProvider,
+        owl:NamedIndividual ;
+    ex:providesService ex:AWSS3 .
+
+ex:Android-SpyC23.A a ex:Spyware,
+        owl:NamedIndividual ;
+    ex:alsoKnownAs "Android/SpyC23.A"^^xsd:string,
+        "Android/SpyC32.A"^^xsd:string ;
+    ex:communicatesWith ex:APT-C-23-C2 ;
+    ex:developedBy ex:APT-C-23 ;
+    ex:distributedVia ex:DigitalApps ;
+    ex:evasionMethod ex:SecurityNotificationDismissal ;
+    ex:hasSurveillanceCapability ex:CallRecordingCapability,
+        ex:NotificationSpyingCapability,
+        ex:ScreenRecordingCapability ;
+    ex:impersonates ex:Telegram,
+        ex:Threema,
+        ex:weMessage .
+
+ex:AuthenticationFlaw a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Vulnerability .
+
+ex:AzureCosmosDB a ex:DatabaseService,
+        owl:NamedIndividual ;
+    rdfs:label "Azure Cosmos DB"^^xsd:string ;
+    ex:hasFeature ex:JupyterNotebookFeature ;
+    ex:hasVulnerability ex:ChaosDBVulnerability ;
+    ex:isManagedService true ;
+    ex:isNoSQLDatabase true ;
+    ex:provider ex:Microsoft .
+
+ex:Bitcoin a ex:Cryptocurrency,
+        owl:NamedIndividual .
+
+ex:BreachedPasswordProtection a ex:SecurityControl,
+        owl:NamedIndividual ;
+    rdfs:label "Breached Password Protection"^^xsd:string ;
+    ex:mitigates ex:PasswordAttack .
+
+ex:BrokeragePlatform a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:FinancialServices,
+        ex:Organization .
+
+ex:BrowserFeature a owl:Class,
+        owl:NamedIndividual .
+
+ex:ChrisHughes a ex:Person,
+        owl:NamedIndividual ;
+    ex:role ex:FacebookCoFounder,
+        "Facebook Co-founder"^^xsd:string .
+
+ex:City a owl:Class .
+
+ex:ClickStudios a ex:Company,
+        owl:NamedIndividual ;
+    ex:knownFor ex:Passwordstate .
+
+ex:CloudService a owl:Class,
+        owl:NamedIndividual .
+
+ex:CommandAndControlServer a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Infrastructure .
+
+ex:CompromisedUpdateMechanism a ex:SecurityVulnerability,
+        owl:NamedIndividual ;
+    ex:affects ex:UpdateMechanism .
+
+ex:Consulting a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:IndustrySector .
+
+ex:ContentManagementSystem a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:WebApplication .
+
+ex:CredentialStuffing a ex:PasswordAttack,
+        owl:NamedIndividual ;
+    rdfs:label "Credential Stuffing"^^xsd:string ;
+    ex:targets ex:UserAccounts ;
+    ex:uses ex:BreachedPasswordLists .
+
+ex:CrossSiteScripting a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:WebVulnerability .
+
+ex:CyberAttackCampaign a owl:Class .
+
+ex:Cybercriminal a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Criminal .
+
+ex:CybersecurityForensicsFirm a ex:ForensicsFirm,
+        owl:NamedIndividual .
+
+ex:DarkWeb a ex:CybercrimeForum,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Platform .
+
+ex:DataExfiltration a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:AttackMethod .
+
+ex:DigestAuthentication a ex:AuthenticationMethod,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:AuthenticationMethod .
+
+ex:DigilockerTeam a ex:ITTeam,
+        owl:NamedIndividual ;
+    ex:partOf ex:IndianGovernment .
+
+ex:DigitalWallet a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:FinancialServices .
+
+ex:DigitalWalletService a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:GovernmentService .
+
+ex:Dropbox a ex:CloudStorageCompany,
+        owl:NamedIndividual .
+
+ex:DustinMoskovitz a ex:Person,
+        owl:NamedIndividual ;
+    ex:role ex:FacebookCoFounder,
+        "Facebook Co-founder"^^xsd:string .
+
+ex:EvasionTechnique a owl:Class .
+
+ex:ExperianSouthAfrica a ex:CreditReportingAgency,
+        owl:NamedIndividual ;
+    ex:location ex:SouthAfrica ;
+    ex:parentCompany ex:Experian ;
+    ex:reportedTo ex:LawEnforcement,
+        ex:RegulatoryAuthorities .
+
+ex:FacebookUserProfiles a ex:PersonalInformation,
+        owl:NamedIndividual ;
+    ex:contains ex:AccountCreationDates,
+        ex:EmailAddresses,
+        ex:FacebookIDs,
+        ex:FullNames,
+        ex:Genders,
+        ex:Locations,
+        ex:Occupations,
+        ex:PhoneNumbers .
+
+ex:FinancialDocument a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SensitiveData .
+
+ex:FireEyeBreach a ex:CyberAttack,
+        owl:NamedIndividual ;
+    ex:attributedTo ex:APT29 ;
+    ex:date "2020-12-08"^^xsd:date ;
+    ex:stolenItems ex:FireEyeRedTeamTools .
+
+ex:FormjackingAttack a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CyberAttack .
+
+ex:Formspring a ex:DefunctSocialMediaCompany,
+        owl:NamedIndividual .
+
+ex:Fortune500Companies a ex:OrganizationCategory,
+        owl:NamedIndividual ;
+    rdfs:label "Fortune 500 Companies"^^xsd:string .
+
+ex:Genders a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:GermanBKA a ex:LawEnforcementAgency,
+        owl:NamedIndividual .
+
+ex:GitHubRepositoryAttacks a ex:AttackMethod,
+        owl:NamedIndividual ;
+    rdfs:label "GitHub Repository Attacks"^^xsd:string ;
+    ex:goal ex:CredentialTheft,
+        ex:VulnerabilityDiscovery ;
+    ex:targets ex:SourceCode .
+
+ex:Government a owl:Class,
+        owl:NamedIndividual .
+
+ex:HTTPAuthentication a ex:AuthenticationMethod,
+        owl:NamedIndividual .
+
+ex:HashedPasswords a owl:NamedIndividual .
+
+ex:ITCompany a owl:Class .
+
+ex:IllegalService a owl:Class .
+
+ex:IndianGovernment a ex:Government,
+        owl:NamedIndividual .
+
+ex:JupyterNotebookFeature a ex:DatabaseFeature,
+        owl:NamedIndividual ;
+    rdfs:label "Jupyter Notebook Feature"^^xsd:string ;
+    ex:isPartOf ex:AzureCosmosDB .
+
+ex:KYCDocument a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SensitiveDocument .
+
+ex:KYCDocuments a ex:KYC,
+        ex:KYCDocument,
+        owl:NamedIndividual ;
+    ex:documentCount 56000000 ;
+    ex:quantity 56000000 .
+
+ex:LinkedIn a ex:SocialMediaCompany,
+        owl:NamedIndividual .
+
+ex:MD5Hash a ex:PasswordHash,
+        ex:PasswordHashAlgorithm,
+        owl:NamedIndividual ;
+    ex:securityStatus "Insecure"^^xsd:string .
+
+ex:MOIPAccountDetails a ex:PaymentAccount,
+        owl:NamedIndividual ;
+    ex:storedOn ex:AWSS3 .
+
+ex:MaliciousTool a owl:Class .
+
+ex:MalwareBackdoor a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Malware .
+
+ex:MalwareInstallation a ex:CyberCrime,
+        owl:NamedIndividual .
+
+ex:MarkZuckerberg a ex:Person,
+        owl:NamedIndividual ;
+    ex:hasAccount ex:ZuckerbergFacebookProfile,
+        ex:ZuckerbergSignalAccount ;
+    ex:hasPhoneNumber ex:ZuckerbergPhoneNumber ;
+    ex:role ex:FacebookCEO,
+        "Facebook CEO"^^xsd:string ;
+    ex:usesApp ex:Signal .
+
+ex:MiddleEast a ex:GeographicRegion,
+        owl:NamedIndividual .
+
+ex:Mimikatz a ex:Tool,
+        owl:NamedIndividual ;
+    rdfs:label "Mimikatz"^^xsd:string ;
+    ex:usedFor ex:CredentialHarvesting,
+        ex:PasswordExtraction .
+
+ex:NOAA a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack .
+
+ex:NSA a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack .
+
+ex:NetherlandsPolice a ex:LawEnforcementAgency,
+        owl:NamedIndividual .
+
+ex:NikitaPopov a ex:Person,
+        owl:NamedIndividual ;
+    ex:role ex:PHPMaintainer,
+        "PHP Maintainer"^^xsd:string .
+
+ex:NorthernIrelandPolice a ex:LawEnforcementAgency,
+        owl:NamedIndividual .
+
+ex:OTPAuthentication a ex:OTP,
+        owl:NamedIndividual .
+
+ex:OrganizationDomain a owl:Class .
+
+ex:PHPMaintainers a ex:Organization,
+        owl:NamedIndividual ;
+    ex:operates ex:GitPHPNetServer,
+        ex:MasterPHPNetSystem .
+
+ex:PHPSourceCode a ex:SoftwareComponent,
+        ex:SourceCode,
+        owl:NamedIndividual ;
+    ex:wasCompromisedIn ex:PHPBreach .
+
+ex:PasswordReset a ex:SecurityAction,
+        owl:NamedIndividual .
+
+ex:PasswordSpraying a ex:PasswordAttack,
+        owl:NamedIndividual ;
+    rdfs:label "Password Spraying"^^xsd:string ;
+    ex:targets ex:UserAccounts .
+
+ex:Payload a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Malware .
+
+ex:PaymentService a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:FinancialService .
+
+ex:PaymentSkimming a ex:CyberAttack,
+        owl:NamedIndividual .
+
+ex:PenetrationTestingTool a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityTool .
+
+ex:ProtestMovement a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SocialMovement .
+
+ex:SSHAuthentication a ex:AuthenticationMethod,
+        owl:NamedIndividual .
+
+ex:SVR a ex:GovernmentOrganization,
+        owl:Class,
+        owl:NamedIndividual ;
+    ex:attributedNation ex:Russia ;
+    rdfs:subClassOf ex:GovernmentOrganization .
+
+ex:Sansec a ex:CybersecurityCompany,
+        owl:NamedIndividual .
+
+ex:SecondStagePayload a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Payload .
+
+ex:SecurityMechanism a owl:Class .
+
+ex:SecurityMisconfiguration a owl:Class .
+
+ex:SecurityPractice a owl:Class,
+        owl:NamedIndividual .
+
+ex:SecurityResearchOrganization a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Organization .
+
+ex:SecurityTeam a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Organization .
+
+ex:SecurityTool a owl:Class .
+
+ex:ServerCertificate a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CryptographicMaterial .
+
+ex:SocialMediaProfile a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:UserAccount .
+
+ex:SoftwareCompany a owl:Class .
+
+ex:SouthAfrica a ex:Country,
+        owl:NamedIndividual .
+
+ex:Spyware a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Malware .
+
+ex:SupplyChainAttacks a ex:AttackMethod,
+        owl:NamedIndividual ;
+    rdfs:label "Supply Chain Attacks"^^xsd:string ;
+    ex:goal ex:SystemCompromise ;
+    ex:targets ex:ThirdPartyVendors .
+
+ex:ToolTheft a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityIncident .
+
+ex:TransparencyCollective a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Organization .
+
+ex:UnidentifiedSuspect a ex:ThreatActor,
+        owl:NamedIndividual ;
+    ex:intendedUse "To create marketing leads for insurance and credit-related services"^^xsd:string ;
+    ex:stoleDataFrom ex:ExperianSouthAfrica .
+
+ex:UnitedKingdom a ex:Country,
+        owl:NamedIndividual .
+
+ex:UnknownThreatActor a ex:ThreatActor,
+        owl:NamedIndividual ;
+    ex:monitors ex:SocialMediaPlatform .
+
+ex:UserAccount a owl:Class .
+
+ex:VideoconferencingSoftware a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Software .
+
+ex:WebHostingCompany a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:ITCompany .
+
+ex:WebsiteDefacement a ex:CyberAttack,
+        owl:NamedIndividual .
+
+ex:ZuckerbergPhoneNumber a ex:PhoneNumber,
+        owl:NamedIndividual .
+
+ex:APT-C-23 a ex:APTGroup,
+        owl:NamedIndividual ;
+    ex:alsoKnownAs "Desert Scorpion"^^xsd:string,
+        "Two-tailed Scorpion"^^xsd:string ;
+    ex:firstObserved "2017"^^xsd:gYear ;
+    ex:targetsRegion ex:MiddleEast .
+
+ex:AttackVector a owl:Class .
+
+ex:Backdoor a ex:MaliciousCode,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Malware .
+
+ex:BugBountyResearcher a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityResearcher .
+
+ex:CredentialStuffingAttack a ex:CyberAttack,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CyberAttack .
+
+ex:CyberEspionageCampaign a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CyberAttack .
+
+ex:DataDump a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:DataBreach .
+
+ex:FireEyeRedTeamTools a ex:PenetrationTestingTool,
+        ex:RedTeamTool,
+        owl:NamedIndividual ;
+    ex:composition "40% in-house, 17% modified, 43% public"^^xsd:string ;
+    ex:exploitsVulnerabilities ex:CVE-2019-0708,
+        ex:CVE-2019-11510,
+        ex:CVE-2020-10189,
+        ex:CVE-2020-1472 ;
+    ex:toolStolenIn ex:FireEyeBreach2020 .
+
+ex:Hotfix a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityControl .
+
+ex:InsiderRisk a ex:SecurityThreat,
+        owl:NamedIndividual ;
+    rdfs:label "Insider Risk"^^xsd:string ;
+    ex:canInvolve ex:DataExfiltration,
+        ex:UnauthorizedAccess ;
+    ex:subClassOf ex:CyberRisk .
+
+ex:MaliciousCode a owl:Class .
+
+ex:MultiplePoliceDepartments a ex:LawEnforcementAgency,
+        owl:NamedIndividual .
+
+ex:NASA a ex:GovernmentAgency,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack .
+
+ex:NCA a ex:LawEnforcementAgency,
+        owl:NamedIndividual ;
+    ex:locatedIn ex:UnitedKingdom .
+
+ex:NationalFusionCenterAssociation a ex:FusionCenter,
+        owl:NamedIndividual .
+
+ex:OrionImprovementProgram a ex:NetworkProtocol,
+        ex:SoftwareComponent,
+        owl:NamedIndividual ;
+    ex:purpose "Collect performance and usage statistics"^^xsd:string ;
+    ex:usedBy ex:SolarWindsOrion .
+
+ex:PasswordHashAlgorithm a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CryptographicAlgorithm .
+
+ex:PasswordstateSupplyChainAttack a ex:SupplyChainAttack,
+        owl:NamedIndividual ;
+    ex:affectedUsers "very low"^^xsd:string ;
+    ex:associatedWith ex:UnknownThreatActor ;
+    ex:duration "2021-04-20T20:33Z/2021-04-22T00:30Z"^^xsd:string ;
+    ex:exploits ex:PasswordstateUpdateMechanism ;
+    ex:targets ex:Passwordstate .
+
+ex:PhoneNumber a owl:Class .
+
+ex:ProgrammingLanguage a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Software .
+
+ex:RedTeamTool a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:PenetrationTestingTool .
+
+ex:SUNBURST a ex:Backdoor,
+        ex:MaliciousUpdate,
+        ex:MalwareBackdoor,
+        owl:NamedIndividual ;
+    ex:affectedUsers 18000 ;
+    ex:capabilities ex:CommandExecution,
+        ex:FileTransfer,
+        ex:ServiceDisabling,
+        ex:SystemProfiling,
+        ex:SystemReboot ;
+    ex:capability ex:CommandExecution,
+        ex:FileTransfer,
+        ex:ServiceDisabling,
+        ex:SystemProfiling ;
+    ex:communicationMethod ex:HTTP ;
+    ex:communicationProtocol ex:HTTP ;
+    ex:deliveryMethod ex:SoftwareUpdate ;
+    ex:disguisedAs ex:OrionImprovementProgram ;
+    ex:distributedVia ex:SolarWindsOrionUpdate ;
+    ex:evasionMethod ex:VictimCountryVPN ;
+    ex:killswitchDomain "avsvmcloud[.]com"^^xsd:string ;
+    ex:masqueradesAs ex:OrionImprovementProgram ;
+    ex:targetPlatform ex:Windows .
+
+ex:SecurityAudit a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityProcedure .
+
+ex:SecurityResearcher a owl:Class .
+
+ex:SecurityResearcherOrganization a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Organization .
+
+ex:ShinyHunters a ex:CybercriminalGroup,
+        ex:ThreatActor,
+        owl:NamedIndividual ;
+    rdfs:label "ShinyHunters"^^xsd:string ;
+    ex:associatedWith ex:BigBasketBreach,
+        ex:BigBasketLeak ;
+    ex:firstActive "2020-04"^^xsd:gYearMonth ;
+    ex:knownFor ex:CloudCredentialTheft,
+        ex:GitHubRepositoryAttacks,
+        ex:TokopediaLeak,
+        ex:WattpadLeak,
+        ex:ZooskLeak ;
+    ex:motivation "Data collection and resale"^^xsd:string ;
+    ex:operatesOn ex:RaidForums ;
+    ex:pastTargets ex:Chatbooks,
+        ex:Dave,
+        ex:Mathway,
+        ex:MeetMindful,
+        ex:Mindful,
+        ex:Minted,
+        ex:Promo,
+        ex:SocialShare,
+        ex:StarTribune,
+        ex:TeeSpring,
+        ex:Tokopedia,
+        ex:Wattpad,
+        ex:Zoosk ;
+    ex:targets ex:EducationEntities,
+        ex:GovernmentEntities,
+        ex:MilitaryEntities,
+        ex:SP100Companies .
+
+ex:SocialMediaPlatform a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Platform .
+
+ex:SoftwareUpdateCompromise a ex:AttackVector,
+        owl:Class,
+        owl:NamedIndividual ;
+    ex:compromisePeriod "2020-03 to 2020-06"^^xsd:string ;
+    ex:targetSoftware ex:SolarWindsOrion ;
+    ex:versionsAffected "2019.4 to 2020.2.1"^^xsd:string ;
+    rdfs:subClassOf ex:AttackVector .
+
+ex:SolarWinds a ex:SoftwareCompany,
+        owl:NamedIndividual ;
+    ex:compromisedSystem ex:BuildSystem,
+        ex:ReleaseSystem ;
+    ex:releasedHotfix "2020-12-15"^^xsd:date .
+
+ex:SourceCode a owl:Class,
+        owl:NamedIndividual .
+
+ex:SupplyChainAttack a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CyberAttack .
+
+ex:SurveillanceCapability a owl:Class .
+
+ex:SystemComponent a owl:Class .
+
+ex:SystemMigration a ex:SecurityAction,
+        owl:Class,
+        owl:NamedIndividual ;
+    ex:newSystem ex:MainPHPNetSystem .
+
+ex:UpdateMechanism a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityMechanism .
+
+ex:UserNames a owl:NamedIndividual .
+
+ex:YevgeniyNikulin a ex:ThreatActor,
+        owl:NamedIndividual ;
+    ex:age 32 ;
+    ex:alsoKnownAs "Yevgeniy Aleksandrovich Nikulin"^^xsd:string ;
+    ex:associatedWith ex:RussianCybercriminalForum ;
+    ex:citizenship ex:Russia ;
+    ex:convictedOf ex:AggravatedIdentityTheft,
+        ex:ComputerIntrusion,
+        ex:DataTrafficking,
+        ex:MalwareInstallation ;
+    ex:extraditedFrom ex:CzechRepublic ;
+    ex:sentencedTo "88 months"^^xsd:string ;
+    ex:stoleDataFrom ex:Dropbox,
+        ex:Formspring,
+        ex:LinkedIn ;
+    ex:targeted ex:Automattic ;
+    ex:usedMethod ex:CredentialTheft,
+        ex:MalwareInstallation .
+
+ex:BirthDates a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:ChaosDBVulnerability a ex:SecurityVulnerability,
+        owl:NamedIndividual ;
+    rdfs:label "ChaosDB"^^xsd:string ;
+    ex:affectedFeature ex:JupyterNotebookFeature ;
+    ex:bountyDate "2021-08-17"^^xsd:date ;
+    ex:disclosureDate "2021-08-12"^^xsd:date ;
+    ex:exploitComplexity "Trivial"^^xsd:string ;
+    ex:fixDate "2021-08-14"^^xsd:date ;
+    ex:impact "Read, write, and delete privileges"^^xsd:string ;
+    ex:mitigation "Regenerate Primary Keys"^^xsd:string ;
+    ex:potentialImpact ex:Fortune500Companies ;
+    ex:severity "High"^^xsd:string .
+
+ex:Countermeasure a owl:Class .
+
+ex:Credential a owl:Class .
+
+ex:CyberCrime a owl:Class .
+
+ex:CybercrimeMarketplace a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:IllegalService .
+
+ex:FBI a ex:LawEnforcementAgency,
+        owl:NamedIndividual .
+
+ex:Facebook a ex:Organization,
+        ex:SocialMediaPlatform,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:FacebookDataLeak2019 ;
+    ex:hasExecutive ex:ChrisHughes,
+        ex:DustinMoskovitz,
+        ex:MarkZuckerberg ;
+    ex:hasVulnerability ex:ProfileScrapingVulnerability ;
+    ex:operatedBy ex:MetaPlatformsInc ;
+    ex:operates ex:FacebookPlatform .
+
+ex:FinancialServices a ex:Industry,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:OrganizationDomain .
+
+ex:GovernmentDomain a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Organization,
+        ex:OrganizationDomain .
+
+ex:LegalProceeding a owl:Class .
+
+ex:PasswordAttack a ex:AttackMethod,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Password Attack"^^xsd:string ;
+    ex:subClassOf ex:CyberAttack .
+
+ex:Passwordstate a ex:PasswordManager,
+        ex:Software,
+        owl:NamedIndividual ;
+    ex:hasVulnerability ex:CompromisedUpdateMechanism,
+        ex:PasswordstateSupplyChainAttack ;
+    ex:maintainedBy ex:ClickStudios .
+
+ex:PhishingAttack a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CyberAttack .
+
+ex:ProfileScrapingVulnerability a ex:ProfileScraping,
+        ex:SecurityVulnerability,
+        owl:NamedIndividual ;
+    ex:affectedComponent "User Profile API"^^xsd:string ;
+    ex:discoveryDate "2019-08-01"^^xsd:date ;
+    ex:fixedDate "2019-08"^^xsd:gYearMonth ;
+    ex:remediationDate "2019-08-31"^^xsd:date .
+
+ex:Russia a ex:Country,
+        owl:NamedIndividual .
+
+ex:ServicePlan a owl:Class .
+
+ex:SoftwareComponent a owl:Class .
+
+ex:SoftwareFeature a owl:Class,
+        owl:NamedIndividual .
+
+ex:SolarWindsOrion a ex:SoftwarePlatform,
+        owl:NamedIndividual ;
+    ex:customerCount 300000 ;
+    ex:estimatedImpact 18000 ;
+    ex:notableCustomers ex:EducationInstitutions,
+        ex:Fortune500,
+        ex:MajorTelecoms ;
+    ex:type ex:NetworkManagementSoftware ;
+    ex:vendor ex:SolarWinds .
+
+ex:SourceCodeRepository a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SoftwareInfrastructure,
+        ex:VersionControlSystem .
+
+ex:StateDepartment a ex:GovernmentAgency,
+        ex:GovernmentDomain,
+        owl:NamedIndividual ;
+    ex:affectedBy ex:SolarWindsAttack ;
+    ex:domain "state.gov"^^xsd:string ;
+    ex:exposedPasswords 29144 .
+
+ex:APT29 a ex:AdvancedPersistentThreat,
+        ex:StateSponsoredActor,
+        owl:Class,
+        owl:NamedIndividual ;
+    ex:affiliatedWith ex:SVR ;
+    ex:alsoKnownAs "Cozy Bear"^^xsd:string ;
+    ex:attackMethods ex:RedToolTheft,
+        ex:SoftwareSupplyChainCompromise ;
+    ex:attributedNation ex:Russia ;
+    ex:linkedTo ex:CriticalInfrastructureBreaches ;
+    ex:previousOperations ex:US_InfrastructureAttacks ;
+    ex:recentOperations ex:FireEyeBreach,
+        ex:SolarWindsAttack ;
+    ex:usedVPN ex:VictimCountryVPN ;
+    rdfs:subClassOf ex:StateSponsoredActor .
+
+ex:AWSS3 a ex:CloudStorage,
+        owl:NamedIndividual .
+
+ex:CybercrimeService a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Software .
+
+ex:CybercriminalGroup a owl:Class .
+
+ex:DataCentricAuditProtection a ex:SecurityControl,
+        owl:NamedIndividual ;
+    rdfs:label "Data-Centric Audit and Protection"^^xsd:string ;
+    ex:mitigates ex:DataLeakage,
+        ex:InsiderRisk ;
+    rdfs:comment "DCAP system that protects data at rest"^^xsd:string .
+
+ex:DatabaseActivityMonitoring a ex:SecurityControl,
+        owl:NamedIndividual ;
+    rdfs:label "Database Activity Monitoring"^^xsd:string ;
+    ex:mitigates ex:InsiderRisk,
+        ex:UnauthorizedAccess ;
+    rdfs:comment "DAM system that monitors database access"^^xsd:string .
+
+ex:FusionCenter a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:LawEnforcementAgency .
+
+ex:OnlineService a owl:Class .
+
+ex:OrganizationCategory a owl:Class .
+
+ex:Platform a owl:Class .
+
+ex:SecurityThreat a owl:Class .
+
+ex:StolenCredentials a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SensitiveData .
+
+ex:UserDatabase a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:Database .
+
+xsd:date a rdfs:Datatype .
+
+ex:AuthenticationMethod a owl:Class .
+
+ex:Company a owl:Class .
+
+ex:LawEnforcementOperation a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityOperation .
+
+ex:PersonalInformation a ex:SensitiveDataType,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SensitiveData .
+
+ex:PhoneNumbers a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:StateSponsoredActor a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:ThreatActor .
+
+ex:SubscriptionPlan a owl:Class .
+
+ex:SySS a ex:SecurityResearchCompany,
+        ex:SecurityResearcherOrganization,
+        owl:NamedIndividual .
+
+ex:CybersecurityCompany a owl:Class .
+
+ex:EmailAddresses a ex:PersonalData,
+        owl:NamedIndividual .
+
+ex:FireEye a ex:CybersecurityCompany,
+        owl:NamedIndividual ;
+    ex:associatedWith ex:FBI,
+        ex:Microsoft ;
+    ex:compromisedData ex:ActiveDirectoryExploit,
+        ex:ManageEngineExploit,
+        ex:PulseSecureExploit,
+        ex:RedTeamTools,
+        ex:RemoteDesktopExploit ;
+    ex:detectedActivityIn ex:Asia,
+        ex:Europe,
+        ex:MiddleEast,
+        ex:NorthAmerica ;
+    ex:developedCountermeasure ex:FireEyeCountermeasures ;
+    ex:hasTool ex:FireEyeRedTeamTools .
+
+ex:GovernmentOrganization a owl:Class .
+
+ex:IndustrySector a owl:Class .
+
+ex:PasswordHash a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:CredentialData,
+        ex:EncryptedData .
+
+ex:LawEnforcementAgency a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:GovernmentOrganization .
+
+ex:Microsoft a ex:Company,
+        ex:Organization,
+        ex:TechnologyCompany,
+        owl:NamedIndividual ;
+    rdfs:label "Microsoft"^^xsd:string,
+        "Microsoft Corporation"^^xsd:string ;
+    ex:affectedBy ex:SolarWindsAttack ;
+    ex:attackMethod ex:GitHubRepositoryAttacks ;
+    ex:collaboratedWith ex:FireEye,
+        ex:GoDaddy ;
+    ex:created ex:Killswitch ;
+    ex:customerLocations ex:Belgium,
+        ex:Canada,
+        ex:Israel,
+        ex:Mexico,
+        ex:Spain,
+        ex:UAE,
+        ex:UK,
+        ex:US ;
+    ex:developed ex:AzureCosmosDB ;
+    ex:fixed ex:ChaosDBVulnerability ;
+    ex:notifiedCustomers 40 ;
+    ex:paidBounty 40000 ;
+    ex:wasAttackedBy ex:ShinyHunters .
+
+ex:SecurityAction a owl:Class .
+
+ex:AttackMethod a owl:Class .
+
+ex:CybercrimeForum a ex:CybercrimeForum,
+        owl:Class,
+        owl:NamedIndividual ;
+    ex:hostedData ex:FacebookUserProfiles ;
+    rdfs:subClassOf ex:IllegalPlatform,
+        ex:OnlinePlatform,
+        ex:Platform .
+
+ex:SecurityControl a owl:Class .
+
+ex:ThreatActor a owl:Class .
+
+ex:SensitiveData a owl:Class,
+        owl:NamedIndividual .
+
+ex:Country a owl:Class .
+
+ex:Vulnerability a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityRisk,
+        ex:SecurityWeakness .
+
+ex:DataLeak a owl:Class,
+        owl:NamedIndividual ;
+    rdfs:subClassOf ex:SecurityIncident .
+
+ex:SolarWindsAttack a ex:CyberEspionageCampaign,
+        ex:SupplyChainAttack,
+        owl:NamedIndividual ;
+    ex:alsoKnownAs "Solorigate"^^xsd:string,
+        "UNC2452"^^xsd:string ;
+    ex:attackVector ex:DuoMFACompromise,
+        ex:DuoMFAKey,
+        ex:OrionImprovementProgram,
+        ex:SolarWindsOrion ;
+    ex:attributedTo ex:APT29 ;
+    ex:compromisedOrganizations ex:DeptOfJustice,
+        ex:FireEye,
+        ex:Microsoft,
+        ex:NASA,
+        ex:NNSA,
+        ex:NOAA,
+        ex:NSA,
+        ex:OfficeOfThePresident,
+        ex:Pentagon,
+        ex:PostalService,
+        ex:SolarWinds,
+        ex:StateDepartment,
+        ex:USDeptOfCommerce,
+        ex:USDeptOfEnergy,
+        ex:USDeptOfHomelandSecurity,
+        ex:USDeptOfTreasury,
+        ex:USMilitary ;
+    ex:discoveryDate "2020-12-08"^^xsd:date ;
+    ex:impactedCountries ex:Belgium,
+        ex:Canada,
+        ex:Israel,
+        ex:Mexico,
+        ex:Spain,
+        ex:UAE,
+        ex:UK,
+        ex:US ;
+    ex:primaryMalware ex:SUNBURST ;
+    ex:relatedAttack ex:FireEyeBreach ;
+    ex:startDate "2020-03-01"^^xsd:date,
+        "2020-12-13"^^xsd:date ;
+    ex:targetedOrganizations ex:FireEye,
+        ex:Microsoft,
+        ex:NASA,
+        ex:NNSA,
+        ex:NOAA,
+        ex:NSA,
+        ex:OfficeOfPresident,
+        ex:US_Commerce,
+        ex:US_DoJ,
+        ex:US_Energy,
+        ex:US_HomelandSecurity,
+        ex:US_Military,
+        ex:US_PostalService,
+        ex:US_Treasury ;
+    ex:targetedSector ex:Consulting,
+        ex:Education,
+        ex:ExtractiveIndustry,
+        ex:Government,
+        ex:Technology,
+        ex:Telecommunications ;
+    ex:usedMalware ex:CobaltStrikeBeacon,
+        ex:SUNBURST,
+        ex:Teardrop ;
+    ex:usedTechnique ex:MultiFactorAuthenticationBypass,
+        ex:VPNObfuscation .
+
+ex:PersonalData a owl:Class .
+
+ex:GovernmentAgency a owl:Class .
+
+ex:SecurityIncident a owl:Class .
+
+ex:Person a owl:Class .
+
+ex:Software a owl:Class .
+
+ex:CybersecurityNewsArticle a owl:Class ;
+    rdfs:label "CybersecurityNewsArticle"^^xsd:string .
+
+ex:Malware a owl:Class .
+
+ex:CyberAttack a owl:Class .
+
+ex:SecurityVulnerability a owl:Class .
+
+ex:Organization a owl:Class .
+
+ex:DataBreach a ex:SecurityIncident,
+        owl:Class,
+        owl:NamedIndividual ;
+    rdfs:label "Data Breach"^^xsd:string ;
+    ex:averageCost 4240000 ;
+    ex:canBeCausedBy ex:PasswordAttack,
+        ex:SupplyChainAttacks ;
+    ex:commonCause ex:CompromisedCredentials ;
+    rdfs:subClassOf ex:CyberIncident,
+        ex:SecurityIncident .
+
+[] a owl:Ontology .
+
