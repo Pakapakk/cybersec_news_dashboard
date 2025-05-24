@@ -3,8 +3,12 @@ import { readFileSync } from "fs";
 import path from "path";
 import { Parser } from "n3";
 import { getOntologyClasses } from "../../../lib/ttlUtils";
+import fetch from "node-fetch";
 
-// Load ontology from TTL file and extract classes with labels
+const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-mpnet-base-v2";
+// https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2
+const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
+
 const TTL_PATH = path.join(process.cwd(), "src", "data", "ontology", "RefinedUnifiedOntology1-35.ttl");
 const ttlString = readFileSync(TTL_PATH, "utf8");
 
@@ -22,13 +26,13 @@ function cosineSimilarity(vecA, vecB) {
 }
 
 async function embedText(text) {
-  const response = await fetch("http://localhost:11434/api/embeddings", {
+  const response = await fetch(HUGGINGFACE_API_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "nomic-embed-text",
-      prompt: text,
-    }),
+    headers: {
+      "Authorization": `Bearer ${HUGGINGFACE_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ inputs: text }),
   });
 
   if (!response.ok) {
@@ -37,11 +41,11 @@ async function embedText(text) {
   }
 
   const data = await response.json();
-  if (!data.embedding) {
-    throw new Error(`No embedding returned: ${JSON.stringify(data)}`);
+  if (!Array.isArray(data) || !Array.isArray(data[0])) {
+    throw new Error(`Unexpected embedding response: ${JSON.stringify(data)}`);
   }
 
-  return data.embedding;
+  return data[0];
 }
 
 export async function POST(req) {
@@ -61,10 +65,9 @@ export async function POST(req) {
     });
   }
 
-  const classLabels = await extractOntologyLabels(); // [{ uri, label }]
-
+  const classLabels = await extractOntologyLabels();
   const matchedURIs = new Set();
-  const cos_scores = {}; // uri -> best score
+  const cos_scores = {};
 
   for (const query of queryTerms) {
     const queryEmbedding = await embedText(query);

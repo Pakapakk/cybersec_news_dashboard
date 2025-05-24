@@ -47,7 +47,6 @@ export default function NewsList() {
         "Vulnerability",
         "Mobile",
         "Website",
-        "Stealer",
     ];
 
     useEffect(() => {
@@ -132,8 +131,16 @@ export default function NewsList() {
             const response = await fetch("/api/search-news", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ queryTerms: updated }),
+                body: JSON.stringify({ queryTerms: [] }),
             });
+
+            if (!response.ok) {
+                const text = await response.text();
+                console.error("API Error Response:", text);
+                throw new Error(
+                    `API request failed with status ${response.status}`
+                );
+            }
 
             const result = await response.json();
             setNews(result.results);
