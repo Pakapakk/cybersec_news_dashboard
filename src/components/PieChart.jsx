@@ -4,31 +4,47 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
-import { aggregateAttackTypes } from "../aggregation/statistics";
 
-console.log(aggregateAttackTypes);
-
-const PieChart = ({ data }) => {
+const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
-  data = aggregateAttackTypes(data);
-
 
   useEffect(() => {
-    if (data && Array.isArray(data) && data.length > 0) {
-      const processedData = aggregateAttackTypes(data).map(({ label, value }) => ({
-        id: label,
-        label,
-        value,
-      }));
+    async function fetchAttackTypes() {
+      try {
+        const res = await fetch("/api/ontology-news");
+        const data = await res.json();
+        const attackTypes = data.statistics.attackTypeClassCounts || [];
 
-      if (processedData.length !== chartData.length) {
-        setChartData(processedData);
+        // Sort and separate top 8 + group rest as 'Others'
+        const sorted = attackTypes.sort((a, b) => b.count - a.count);
+        const top8 = sorted.slice(0, 8);
+        const others = sorted.slice(8);
+
+        const topData = top8.map(({ attackType, count }) => ({
+          id: attackType,
+          label: attackType,
+          value: count,
+        }));
+
+        if (others.length > 0) {
+          const othersCount = others.reduce((sum, item) => sum + item.count, 0);
+          topData.push({
+            id: "Others",
+            label: "Others",
+            value: othersCount,
+          });
+        }
+
+        setChartData(topData);
+      } catch (err) {
+        console.error("Failed to fetch attack types for pie chart:", err);
       }
     }
-  }, [data, chartData]);
-  console.log(chartData);
+
+    fetchAttackTypes();
+  }, []);
 
   return (
     <ResponsivePie
@@ -58,44 +74,6 @@ const PieChart = ({ data }) => {
       arcLabelsRadiusOffset={0.4}
       arcLabelsSkipAngle={7}
       arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      // legends={[
-      //   {
-      //     anchor: "bottom",
-      //     direction: "row",
-      //     justify: false,
-      //     translateX: 0,
-      //     translateY: 56,
-      //     itemsSpacing: 0,
-      //     itemWidth: 100,
-      //     itemHeight: 18,
-      //     itemTextColor: "#999",
-      //     itemDirection: "left-to-right",
-      //     itemOpacity: 1,
-      //     symbolSize: 18,
-      //     symbolShape: "circle",
-      //     effects: [{ on: "hover", style: { itemTextColor: "#000" } }],
-      //   },
-      // ]}
       tooltip={({ datum }) => (
         <div
           style={{
@@ -106,7 +84,7 @@ const PieChart = ({ data }) => {
             fontSize: "14px",
           }}
         >
-          <strong>{datum.id}</strong>: {datum.value}
+          <strong>{datum.label}</strong>: {datum.value}
         </div>
       )}
     />

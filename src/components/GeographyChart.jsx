@@ -5,12 +5,14 @@ import { useTheme } from "@mui/material";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoFeatures } from "../data/mockGeoFeatures";
 import { tokens } from "../theme";
-import { aggregateTargetCountries } from "../aggregation/statistics";
+
 
 // Country Name to ISO-3 Code Mapping
 const countryNameToISO3 = {
+  Italy: "ITA",
   Germany: "DEU",
   UK: "GBR",
+  "United Kingdom": "GBR",
   India: "IND",
   China: "CHN",
   Russia: "RUS",
@@ -19,27 +21,43 @@ const countryNameToISO3 = {
   Australia: "AUS",
   France: "FRA",
   USA: "USA",
+  "United States": "USA",
+  "United States of America": "USA",
+  Brazil: "BRA",
+  Canada: "CAN",
+  Netherlands: "NLD",
+  Israel: "ISR",
+  Singapore: "SGP",
 };
 
-const GeographyChart = ({ data, isDashboard = false }) => {
+const GeographyChart = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    const rawData = aggregateTargetCountries(data);
+    async function fetchCountryStats() {
+      try {
+        const res = await fetch("../api/ontology-news");
+        const { statistics } = await res.json();
 
-    if (rawData && Array.isArray(rawData) && rawData.length > 0) {
-      const formattedData = rawData
-        .map(({ label, value }) => ({
-          id: countryNameToISO3[label] || label, // Convert country name to ISO3
-          value,
-        }))
-        .filter(({ id }) => id); // Remove entries without ISO3 code
+        if (statistics?.countryCounts) {
+          const formatted = statistics.countryCounts
+            .map(({ country, count }) => ({
+              id: countryNameToISO3[country] || country,
+              value: count,
+            }))
+            .filter((d) => d.id);
 
-      setChartData(formattedData);
+          setChartData(formatted);
+        }
+      } catch (err) {
+        console.error("Failed to fetch country stats", err);
+      }
     }
-  }, [data]);
+
+    fetchCountryStats();
+  }, []);
 
   return (
     <ResponsiveChoropleth
