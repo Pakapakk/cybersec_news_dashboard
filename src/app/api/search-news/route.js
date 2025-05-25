@@ -41,13 +41,24 @@ function getCleanLabel(uri) {
   return uri.includes("#") ? uri.split("#").pop() : uri.split("/").pop();
 }
 
+const ONTOLOGY_NAMESPACE = "http://example.org/ontology#";
+const CLASS_NAMESPACE = "http://www.w3.org/2002/07/owl#";
+
+function isFromOntology(uri) {
+  return uri.startsWith(ONTOLOGY_NAMESPACE);
+}
+
 async function extractClassHierarchy(quads) {
   const store = new Store(quads);
   const topClasses = new Set();
   const subClassMap = new Map();
 
   for (const quad of quads) {
-    if (quad.predicate.value === "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
+    if (
+      quad.predicate.value === "http://www.w3.org/2000/01/rdf-schema#subClassOf" &&
+      isFromOntology(quad.subject.value) &&
+      isFromOntology(quad.object.value)
+    ) {
       const child = quad.subject.value;
       const parent = quad.object.value;
       if (!subClassMap.has(parent)) subClassMap.set(parent, []);
@@ -56,10 +67,14 @@ async function extractClassHierarchy(quads) {
   }
 
   for (const quad of quads) {
-    if (quad.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" &&
-        quad.object.value === "http://www.w3.org/2002/07/owl#Class") {
+    if (
+      quad.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" &&
+      quad.object.value === `${CLASS_NAMESPACE}Class` &&
+      isFromOntology(quad.subject.value)
+    ) {
       const classUri = quad.subject.value;
-      if (!Array.from(subClassMap.values()).flat().includes(classUri)) {
+      const isNotSubclass = !Array.from(subClassMap.values()).flat().includes(classUri);
+      if (isNotSubclass) {
         topClasses.add(classUri);
       }
     }
