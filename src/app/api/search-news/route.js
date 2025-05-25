@@ -1,22 +1,15 @@
 import clientPromise from "@/lib/mongodb";
 import { readFileSync } from "fs";
 import path from "path";
-import { Parser } from "n3";
-import { getOntologyClasses } from "../../../lib/ttlUtils";
+import { Parser, Store } from "n3";
 import fetch from "node-fetch";
 
-const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-mpnet-base-v2";
-// https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2
+// const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-mpnet-base-v2";
+const HUGGINGFACE_API_URL = "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2";
 const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
 
 const TTL_PATH = path.join(process.cwd(), "src", "data", "ontology", "RefinedUnifiedOntology1-35.ttl");
 const ttlString = readFileSync(TTL_PATH, "utf8");
-
-const extractOntologyLabels = async () => {
-  const parser = new Parser();
-  const quads = parser.parse(ttlString);
-  return getOntologyClasses(quads);
-};
 
 function cosineSimilarity(vecA, vecB) {
   const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
@@ -32,7 +25,7 @@ async function embedText(text) {
       "Authorization": `Bearer ${HUGGINGFACE_API_KEY}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ inputs: text }),
+    body: JSON.stringify({ inputs: [text] }),
   });
 
   if (!response.ok) {
@@ -41,81 +34,128 @@ async function embedText(text) {
   }
 
   const data = await response.json();
-  if (!Array.isArray(data) || !Array.isArray(data[0])) {
-    throw new Error(`Unexpected embedding response: ${JSON.stringify(data)}`);
-  }
-
   return data[0];
 }
 
+function getCleanLabel(uri) {
+  return uri.includes("#") ? uri.split("#").pop() : uri.split("/").pop();
+}
+
+async function extractClassHierarchy(quads) {
+  const store = new Store(quads);
+  const topClasses = new Set();
+  const subClassMap = new Map();
+
+  for (const quad of quads) {
+    if (quad.predicate.value === "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
+      const child = quad.subject.value;
+      const parent = quad.object.value;
+      if (!subClassMap.has(parent)) subClassMap.set(parent, []);
+      subClassMap.get(parent).push(child);
+    }
+  }
+
+  for (const quad of quads) {
+    if (quad.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" &&
+        quad.object.value === "http://www.w3.org/2002/07/owl#Class") {
+      const classUri = quad.subject.value;
+      if (!Array.from(subClassMap.values()).flat().includes(classUri)) {
+        topClasses.add(classUri);
+      }
+    }
+  }
+
+  return { topClasses: Array.from(topClasses), subClassMap };
+}
+
+async function findBestClassPath(graphQuads, query, model) {
+  const { topClasses, subClassMap } = await extractClassHierarchy(graphQuads);
+  const visited = new Set();
+
+  async function traverse(classes) {
+    let bestScore = -Infinity;
+    let bestClass = null;
+    let bestPath = [];
+
+    for (const classUri of classes) {
+      if (visited.has(classUri)) continue;
+      visited.add(classUri);
+
+      const label = getCleanLabel(classUri);
+      const labelEmbedding = await embedText(label);
+      const queryEmbedding = await embedText(query);
+      const score = cosineSimilarity(queryEmbedding, labelEmbedding);
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestClass = classUri;
+      }
+    }
+
+    if (bestClass && subClassMap.has(bestClass)) {
+      const { score: subScore, path: subPath } = await traverse(subClassMap.get(bestClass));
+      if (subScore > bestScore) {
+        return { score: subScore, path: [bestClass, ...subPath] };
+      }
+    }
+
+    return { score: bestScore, path: [bestClass] };
+  }
+
+  return await traverse(topClasses);
+}
+
 export async function POST(req) {
-  let { queryTerms } = await req.json();
-  queryTerms = (queryTerms || []).map(q => q.trim()).filter(Boolean);
+  const { queryTerms } = await req.json();
+  const terms = (queryTerms || []).map(q => q.trim()).filter(Boolean);
 
   const client = await clientPromise;
   const db = client.db("cyber_news_db");
   const collection = db.collection("news_articles");
-
   const allNews = await collection.find({}).toArray();
 
-  if (queryTerms.length === 0) {
+  if (terms.length === 0) {
     return new Response(JSON.stringify({ results: allNews }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   }
 
-  const classLabels = await extractOntologyLabels();
+  const parser = new Parser();
+  const quads = parser.parse(ttlString);
   const matchedURIs = new Set();
-  const cos_scores = {};
+  const scores = {};
 
-  for (const query of queryTerms) {
-    const queryEmbedding = await embedText(query);
-    let bestURI = null;
-    let bestScore = -Infinity;
-
-    for (const { uri, label } of classLabels) {
-      const labelEmbedding = await embedText(label);
-      const score = cosineSimilarity(queryEmbedding, labelEmbedding);
-      if (score > bestScore) {
-        bestScore = score;
-        bestURI = uri;
-      }
-    }
-
-    if (bestURI) {
-      matchedURIs.add(bestURI);
-      if (!cos_scores[bestURI] || bestScore > cos_scores[bestURI]) {
-        cos_scores[bestURI] = bestScore;
-      }
-    }
+  for (const term of terms) {
+    const { score, path } = await findBestClassPath(quads, term, { encode: embedText });
+    const matched = path[path.length - 1];
+    matchedURIs.add(matched);
+    scores[matched] = score;
   }
 
-  const matchingNews = [];
+  const results = [];
 
   for (const news of allNews) {
-    const scoreMap = news["Classes and Scores"] || {};
-    const overlappingURIs = Object.keys(scoreMap).filter(uri => matchedURIs.has(uri));
+    const classMap = news["Classes and Scores"] || {};
+    const overlap = Object.keys(classMap).filter(uri => matchedURIs.has(uri));
 
-    if (overlappingURIs.length > 0) {
-      const totalScore = overlappingURIs.reduce(
-        (sum, uri) => sum + parseFloat(scoreMap[uri]?.$numberDouble || scoreMap[uri]),
+    if (overlap.length > 0) {
+      const total = overlap.reduce(
+        (sum, uri) => sum + parseFloat(classMap[uri]?.$numberDouble || classMap[uri]),
         0
       );
 
-      const avgScore = totalScore / queryTerms.length;
-
-      matchingNews.push({
+      results.push({
         ...news,
-        avgScore,
-        overlapCount: overlappingURIs.length,
+        avgScore: total / terms.length,
+        overlapCount: overlap.length,
       });
     }
   }
 
-  matchingNews.sort((a, b) => b.avgScore - a.avgScore);
+  results.sort((a, b) => b.avgScore - a.avgScore);
 
-  return new Response(JSON.stringify({ results: matchingNews }), {
+  return new Response(JSON.stringify({ results }), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });

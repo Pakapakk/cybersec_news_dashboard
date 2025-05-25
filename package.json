@@ -41,6 +41,7 @@
     "react-dom": "^18.3.1",
     "react-pro-sidebar": "^0.7.1",
     "sparql-engine": "^0.8.3",
+    "swr": "^2.3.3",
     "yup": "^1.6.1"
   },
   "devDependencies": {

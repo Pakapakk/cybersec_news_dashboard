@@ -12,11 +12,15 @@ import {
     CircularProgress,
     Alert,
     Tooltip,
+    IconButton,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import Popup from "../../components/Popup";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useBookmarks } from "@/lib/useBookmarks";
 
 export default function NewsList() {
     const theme = useTheme();
@@ -31,13 +35,13 @@ export default function NewsList() {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
     const [selectedTopics, setSelectedTopics] = useState([]);
-    const predefinedTopics = [
+
+    const { bookmarks, mutate } = useBookmarks();
+
+    const fixedTopics = [
         "Phishing",
-        "DDoS",
         "Malware",
-        "Backdoor",
         "Data",
         "Credential",
         "Spyware",
@@ -48,6 +52,28 @@ export default function NewsList() {
         "Mobile",
         "Website",
     ];
+    const [predefinedTopics, setPredefinedTopics] = useState([...fixedTopics]);
+
+    useEffect(() => {
+        const fetchTopics = async () => {
+            try {
+                const response = await fetch("/api/top-ontology-classes");
+                const topics = await response.json();
+                if (!Array.isArray(topics)) {
+                    console.error("Expected an array, got:", topics);
+                    return;
+                }
+                const fetched = topics.map((item) =>
+                    typeof item === "string" ? item : item.label || item.uri
+                );
+                const unique = Array.from(new Set([...fixedTopics, ...fetched]));
+                setPredefinedTopics(unique);
+            } catch (err) {
+                console.error("Failed to fetch topics", err);
+            }
+        };
+        fetchTopics();
+    }, []);
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -58,10 +84,9 @@ export default function NewsList() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ queryTerms: [] }),
                 });
-
-                const result = await response.json();
-                setNews(result.results);
-                setFilteredData(result.results);
+                const newsData = await response.json();
+                setNews(newsData.results);
+                setFilteredData(newsData.results);
             } catch (err) {
                 setError("Failed to fetch news");
                 console.error(err);
@@ -69,12 +94,11 @@ export default function NewsList() {
                 setLoading(false);
             }
         };
-
         fetchNews();
     }, []);
 
     useEffect(() => {
-        let filtered = news.filter((news) => {
+        const filtered = news.filter((news) => {
             const matchesText =
                 (news["News Title"] || "")
                     .toLowerCase()
@@ -102,56 +126,37 @@ export default function NewsList() {
 
             return matchesText && matchesSemantic;
         });
-
         setFilteredData(filtered);
     }, [searchQuery, selectedTopics, news]);
 
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
+    const handleSearchChange = (event) => setSearchQuery(event.target.value);
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") event.preventDefault();
     };
 
-    const handleKeyDown = (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
+    const toggleBookmark = async (newsItem) => {
+        const isBookmarked = bookmarks.some(
+            (b) => b["News Title"] === newsItem["News Title"]
+        );
+        const method = isBookmarked ? "DELETE" : "POST";
+        const body = isBookmarked ? { title: newsItem["News Title"] } : newsItem;
+
+        const res = await fetch("/api/cyber-news-bookmark", {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+        });
+
+        if (res.ok) {
+            mutate();
         }
     };
 
     const toggleTopic = async (topic) => {
-        let updated;
-        if (selectedTopics.includes(topic)) {
-            updated = selectedTopics.filter((t) => t !== topic);
-        } else {
-            updated = [...selectedTopics, topic];
-        }
-
+        let updated = selectedTopics.includes(topic)
+            ? selectedTopics.filter((t) => t !== topic)
+            : [...selectedTopics, topic];
         setSelectedTopics(updated);
-
-        setLoading(true);
-        try {
-            const response = await fetch("/api/search-news", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ queryTerms: [] }),
-            });
-
-            if (!response.ok) {
-                const text = await response.text();
-                console.error("API Error Response:", text);
-                throw new Error(
-                    `API request failed with status ${response.status}`
-                );
-            }
-
-            const result = await response.json();
-            setNews(result.results);
-            setFilteredData(result.results);
-            setCurrentPage(1);
-        } catch (err) {
-            setError("Semantic search failed.");
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
     };
 
     const handleOpenPopup = (newsItem) => {
@@ -189,8 +194,7 @@ export default function NewsList() {
                         backgroundColor: colors.primary[400],
                         borderRadius: "5px",
                         input: {
-                            color:
-                                theme.palette.mode === "dark" ? "#fff" : "#000",
+                            color: theme.palette.mode === "dark" ? "#fff" : "#000",
                         },
                     }}
                 />
@@ -216,9 +220,7 @@ export default function NewsList() {
                             backgroundColor: selectedTopics.includes(topic)
                                 ? colors.greenAccent[400]
                                 : colors.grey[500],
-                            color: selectedTopics.includes(topic)
-                                ? "#000"
-                                : "#eee",
+                            color: selectedTopics.includes(topic) ? "#000" : "#eee",
                             fontWeight: "bold",
                         }}
                         clickable
@@ -227,12 +229,7 @@ export default function NewsList() {
             </Box>
 
             {loading ? (
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    minHeight="60vh"
-                >
+                <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
                     <CircularProgress />
                 </Box>
             ) : error ? (
@@ -245,13 +242,7 @@ export default function NewsList() {
                                 const entry = Object.entries(
                                     newsItem["Classes and Scores"] || {}
                                 ).find(([uri]) =>
-                                    uri
-                                        .toLowerCase()
-                                        .includes(
-                                            label
-                                                .toLowerCase()
-                                                .replace(/\s/g, "")
-                                        )
+                                    uri.toLowerCase().includes(label.toLowerCase().replace(/\s/g, ""))
                                 );
                                 return {
                                     label,
@@ -274,58 +265,48 @@ export default function NewsList() {
                                 onClick={() => handleOpenPopup(newsItem)}
                             >
                                 <CardContent>
-                                    <Typography
-                                        variant="h4"
-                                        fontWeight="bold"
-                                        mb={1}
-                                    >
-                                        {newsItem["News Title"]}
-                                    </Typography>
-
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            flexWrap: "wrap",
-                                            gap: "8px",
-                                            mt: 2,
-                                        }}
-                                    >
-                                        {labelScores
-                                            .slice(0, 5)
-                                            .map((item, i) => (
-                                                <Tooltip
-                                                    key={i}
-                                                    title={`Score: ${item.score.toFixed(
-                                                        3
-                                                    )}`}
-                                                >
-                                                    <Chip
-                                                        label={item.label}
-                                                        sx={{
-                                                            backgroundColor:
-                                                                colors
-                                                                    .greenAccent[400],
-                                                            color: "#000",
-                                                            fontSize: "0.9rem",
-                                                        }}
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            setSearchQuery(
-                                                                item.label
-                                                            );
-                                                        }}
-                                                        clickable
-                                                    />
-                                                </Tooltip>
-                                            ))}
+                                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                                        <Typography variant="h4" fontWeight="bold" mb={1}>
+                                            {newsItem["News Title"]}
+                                        </Typography>
+                                        <IconButton
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleBookmark(newsItem);
+                                            }}
+                                        >
+                                            {bookmarks.some(
+                                                (b) => b["News Title"] === newsItem["News Title"]
+                                            ) ? (
+                                                <BookmarkIcon sx={{ color: "gold" }} />
+                                            ) : (
+                                                <BookmarkBorderIcon sx={{ color: "white" }} />
+                                            )}
+                                        </IconButton>
+                                    </Box>
+                                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px", mt: 2 }}>
+                                        {labelScores.slice(0, 5).map((item, i) => (
+                                            <Tooltip key={i} title={`Score: ${item.score.toFixed(3)}`}>
+                                                <Chip
+                                                    label={item.label}
+                                                    sx={{
+                                                        backgroundColor: colors.greenAccent[400],
+                                                        color: "#000",
+                                                        fontSize: "0.9rem",
+                                                    }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setSearchQuery(item.label);
+                                                    }}
+                                                    clickable
+                                                />
+                                            </Tooltip>
+                                        ))}
                                         {labelScores.length > 5 && (
                                             <Chip
-                                                label={`+${
-                                                    labelScores.length - 5
-                                                } more`}
+                                                label={`+${labelScores.length - 5} more`}
                                                 sx={{
-                                                    backgroundColor:
-                                                        colors.grey[500],
+                                                    backgroundColor: colors.grey[500],
                                                     color: "#000",
                                                     fontSize: "0.8rem",
                                                 }}
@@ -339,18 +320,9 @@ export default function NewsList() {
                 </Box>
             )}
 
-            <Popup
-                open={openPopup}
-                onClose={() => setOpenPopup(false)}
-                news={selectedNews}
-            />
+            <Popup open={openPopup} onClose={() => setOpenPopup(false)} news={selectedNews} />
 
-            <Box
-                display="flex"
-                justifyContent="center"
-                mt={2}
-                alignItems="center"
-            >
+            <Box display="flex" justifyContent="center" mt={2} alignItems="center">
                 <Button
                     variant="contained"
                     sx={{ backgroundColor: colors.primary[500], mr: 1 }}
@@ -370,12 +342,8 @@ export default function NewsList() {
                                 currentPage === pageIndex + 1
                                     ? colors.greenAccent[400]
                                     : colors.primary[500],
-                            color:
-                                currentPage === pageIndex + 1 ? "#000" : "#fff",
-                            fontWeight:
-                                currentPage === pageIndex + 1
-                                    ? "bold"
-                                    : "normal",
+                            color: currentPage === pageIndex + 1 ? "#000" : "#fff",
+                            fontWeight: currentPage === pageIndex + 1 ? "bold" : "normal",
                             "&:hover": {
                                 backgroundColor: colors.greenAccent[300],
                                 color: "#000",

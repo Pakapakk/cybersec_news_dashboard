@@ -4,7 +4,7 @@ export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("cyber_news_db");
-    const news = await db.collection("news_articles").find({}).limit(20).toArray();
+    const news = await db.collection("news_articles").find({}).toArray();
 
     return new Response(JSON.stringify(news), {
       status: 200,
