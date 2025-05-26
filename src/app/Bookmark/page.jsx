@@ -12,13 +12,13 @@ import {
     Chip,
     Button,
     IconButton,
+    TextField,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import Popup from "../../components/Popup";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { useBookmarks } from "@/lib/useBookmarks";
 
 export default function BookmarkList() {
@@ -28,23 +28,18 @@ export default function BookmarkList() {
     const [selectedNews, setSelectedNews] = useState(null);
     const [openPopup, setOpenPopup] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredBookmarks, setFilteredBookmarks] = useState([]);
 
+    const itemsPerPage = 10;
     const { bookmarks, mutate, isLoading, error } = useBookmarks();
 
     const toggleBookmark = async (newsItem) => {
-        const isBookmarked = bookmarks.some(
-            (b) => b["News Title"] === newsItem["News Title"]
-        );
-        const method = isBookmarked ? "DELETE" : "POST";
-        const body = isBookmarked ? { title: newsItem["News Title"] } : newsItem;
-
         const res = await fetch("/api/cyber-news-bookmark", {
-            method,
+            method: "DELETE",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
+            body: JSON.stringify({ title: newsItem["News Title"] }),
         });
-
         if (res.ok) mutate();
     };
 
@@ -53,10 +48,22 @@ export default function BookmarkList() {
         setOpenPopup(true);
     };
 
+    useEffect(() => {
+        const filtered = bookmarks.filter((item) => {
+            const query = searchQuery.toLowerCase();
+            return (
+                item["News Title"]?.toLowerCase().includes(query) ||
+                item.Article?.toLowerCase().includes(query) ||
+                (item.Labels || []).some((l) => l.toLowerCase().includes(query))
+            );
+        });
+        setFilteredBookmarks(filtered);
+    }, [bookmarks, searchQuery]);
+
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = bookmarks.slice(indexOfFirstItem, indexOfLastItem);
-    const totalPages = Math.ceil(bookmarks.length / itemsPerPage);
+    const currentItems = filteredBookmarks.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(filteredBookmarks.length / itemsPerPage);
 
     const changePage = (newPage) => {
         setCurrentPage(newPage);
@@ -66,7 +73,31 @@ export default function BookmarkList() {
 
     return (
         <Box m="20px" marginTop={5}>
-            <Header title="Bookmarked News" subtitle={`Total Bookmarks: ${bookmarks.length}`} />
+            <Header title="Bookmarked News" subtitle={`Total Bookmarks: ${filteredBookmarks.length}`} />
+
+            <Box display="flex" gap={1} mb={2}>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    placeholder="Search in bookmarks"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    sx={{
+                        backgroundColor: colors.primary[400],
+                        borderRadius: "5px",
+                        input: {
+                            color: theme.palette.mode === "dark" ? "#fff" : "#000",
+                        },
+                    }}
+                />
+                <Button
+                    variant="contained"
+                    sx={{ backgroundColor: colors.greenAccent[500], color: "#000" }}
+                    onClick={() => setSearchQuery(searchQuery.trim())}
+                >
+                    SEARCH
+                </Button>
+            </Box>
 
             {isLoading ? (
                 <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
@@ -165,7 +196,10 @@ export default function BookmarkList() {
                         onClick={() => changePage(pageIndex + 1)}
                         sx={{
                             mx: 0.5,
-                            backgroundColor: currentPage === pageIndex + 1 ? colors.greenAccent[400] : colors.primary[500],
+                            backgroundColor:
+                                currentPage === pageIndex + 1
+                                    ? colors.greenAccent[400]
+                                    : colors.primary[500],
                             color: currentPage === pageIndex + 1 ? "#000" : "#fff",
                             fontWeight: currentPage === pageIndex + 1 ? "bold" : "normal",
                             "&:hover": {
