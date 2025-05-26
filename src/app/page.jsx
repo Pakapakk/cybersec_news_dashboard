@@ -3,12 +3,6 @@
 import { useEffect, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "@/theme";
-import {
-  aggregateAttacksPerMonth,
-  getMostUsedAttackType,
-  getMostTargetedIndustry,
-  getLatestAttacks,
-} from "../aggregation/statistics";
 import Header from "@/components/Header";
 import LineChart from "@/components/LineChart";
 import GeographyChart from "@/components/GeographyChart";
@@ -20,52 +14,42 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  // Ontology-based state
   const [newsCount, setNewsCount] = useState(0);
   const [topAttackTechniques, setTopAttackTechniques] = useState([]);
-  const [topOntologyAttackers, setTopOntologyAttackers] = useState([]);
+  const [topAttackers, setTopAttackers] = useState([]);
   const [countryCounts, setCountryCounts] = useState([]);
   const [topTargetCountries, setTopTargetCountries] = useState([]);
+  const [mostUsedAttackType, setMostUsedAttackType] = useState("N/A");
+  const [mostTargetedSector, setMostTargetedSector] = useState("N/A");
 
   useEffect(() => {
-    async function fetchOntologyStats() {
+    async function fetchStats() {
       try {
-        const res = await fetch("/api/ontology-news");
+        const res = await fetch("/api/cyber-news-stat");
         const data = await res.json();
 
-        const techniques = data.statistics.attackTypeClassCounts?.slice(0, 5) || [];
-        const attackers = data.statistics.threatActorCounts?.slice(0, 5) || [];
-        const countries = data.statistics.countryCounts || [];
+        setNewsCount(data.newsCount || 0);
+        setTopAttackTechniques(data.top5AttackTechniques || []);
+        setTopAttackers(data.top5Attackers || []);
+        setCountryCounts(data.countries || []);
+        setMostUsedAttackType(data.mostUsedAttackType || "N/A");
+        setMostTargetedSector(data.mostTargetedSector || "N/A");
 
-        setNewsCount(data.statistics.newsCount || 0);
-        setTopAttackTechniques(techniques);
-        setTopOntologyAttackers(attackers);
-        setCountryCounts(countries);
-
-        const topCountries = countries
+        const topCountries = (data.countries || [])
           .sort((a, b) => b.count - a.count)
           .slice(0, 3)
-          .map(({ country, count }) => ({
-            label: country,
+          .map(({ _id, count }) => ({
+            label: _id,
             value: count,
           }));
         setTopTargetCountries(topCountries);
       } catch (err) {
-        console.error("Failed to fetch ontology stats:", err);
+        console.error("Failed to fetch dashboard stats:", err);
       }
     }
 
-    fetchOntologyStats();
+    fetchStats();
   }, []);
-
-  // Local data (static or precomputed)
-  const totalAttacks = aggregateAttacksPerMonth().reduce(
-    (sum, item) => sum + item.value,
-    0
-  );
-  const mostUsedAttackType = getMostUsedAttackType()?.label || "N/A";
-  const mostTargetedIndustry = getMostTargetedIndustry()?.label || "N/A";
-  const latestAttacks = getLatestAttacks();
 
   return (
     <Box m="20px" marginTop={5}>
@@ -87,10 +71,7 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
-            title="Total Attacks"
-            subtitle={newsCount.toLocaleString()}
-          />
+          <StatBox title="Total Attacks" subtitle={newsCount.toLocaleString()} />
         </Box>
 
         <Box
@@ -100,7 +81,7 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox title="Most Techniques" subtitle={mostUsedAttackType} />
+          <StatBox title="Most Technique" subtitle={mostUsedAttackType} />
         </Box>
 
         <Box
@@ -110,10 +91,7 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox
-            title="Most Targeted Industry"
-            subtitle={mostTargetedIndustry}
-          />
+          <StatBox title="Most Mentioned Sector" subtitle={mostTargetedSector} />
         </Box>
 
         {/* Row 2 */}
@@ -121,13 +99,10 @@ const Dashboard = () => {
           gridColumn="span 5"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
+          // sx={{ height: "320px" }}
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Target Industries
+          <Typography variant="h4" fontWeight="600" sx={{ padding: "30px 30px 0 30px" }}>
+            Mentioned Sectors
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChart isDashboard={true} />
@@ -140,30 +115,22 @@ const Dashboard = () => {
           backgroundColor={colors.primary[400]}
           padding="30px"
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Target Countries
+          <Typography variant="h4" fontWeight="600" sx={{ marginBottom: "15px" }}>
+            Mentioned Countries
           </Typography>
           <Box display="flex" height="200px" justifyContent="space-between">
             <Box flex="1">
               <GeographyChart data={countryCounts} isDashboard={true} />
             </Box>
             <Box width="30%" paddingLeft="20px">
-              <Typography
-                variant="h6"
-                fontWeight="600"
-                sx={{ marginBottom: "10px" }}
-              >
-                Top 3 Target Countries
+              <Typography variant="h4" fontWeight="600" sx={{ marginBottom: "10px" }}>
+                Top 3 Mentioned Countries
               </Typography>
               {topTargetCountries.map((country, index) => (
                 <Typography
                   key={index}
                   color={colors.grey[100]}
-                  sx={{ marginBottom: "8px" }}
+                  sx={{ marginBottom: "8px"}}
                 >
                   {index + 1}. {country.label} ({country.value})
                 </Typography>
@@ -172,19 +139,15 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        {/* Row 2.5 */}
+        {/* Row 2.5 - Top Techniques */}
         <Box
           gridColumn="span 2"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Top 5 Cyber Attack Techniques
+          <Typography variant="h4" fontWeight="600" sx={{ marginBottom: "15px" }}>
+            Top 5 Techniques
           </Typography>
           <Box>
             {topAttackTechniques.map((tech, index) => (
@@ -193,13 +156,13 @@ const Dashboard = () => {
                 color={colors.grey[100]}
                 sx={{ marginBottom: "10px" }}
               >
-                {index + 1}. {tech.attackType} ({tech.count})
+                {index + 1}. {tech._id} ({tech.count})
               </Typography>
             ))}
           </Box>
         </Box>
 
-        {/* Row 3 */}
+        {/* Row 3 - Monthly line chart */}
         <Box
           gridColumn="span 6"
           gridRow="span 2"
@@ -212,12 +175,8 @@ const Dashboard = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography
-              variant="h5"
-              fontWeight="600"
-              color={colors.grey[100]}
-            >
-              Attack Statistics
+            <Typography variant="h4" fontWeight="600" color={colors.grey[100]}>
+              Monthly Attack Statistics
             </Typography>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
@@ -225,13 +184,14 @@ const Dashboard = () => {
           </Box>
         </Box>
 
+        {/* Row 3 - Pie chart */}
         <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           p="30px"
         >
-          <Typography variant="h5" fontWeight="600">
+          <Typography variant="h4" fontWeight="600">
             Attack Types
           </Typography>
           <Box height="290px" mt="-20px" paddingTop={3}>
@@ -239,28 +199,24 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        {/* Top Attackers */}
+        {/* Row 3 - Top attackers */}
         <Box
           gridColumn="span 2"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           padding="30px"
         >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
+          <Typography variant="h4" fontWeight="600" sx={{ marginBottom: "15px" }}>
             Top 5 Attackers
           </Typography>
           <Box>
-            {topOntologyAttackers.map((attacker, index) => (
+            {topAttackers.map((attacker, index) => (
               <Typography
                 key={index}
                 color={colors.grey[100]}
                 sx={{ marginBottom: "10px" }}
               >
-                {index + 1}. {attacker.actor} ({attacker.count})
+                {index + 1}. {attacker._id} ({attacker.count})
               </Typography>
             ))}
           </Box>

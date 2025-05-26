@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { aggregateAttacksPerMonth } from "../aggregation/statistics";
+// import { aggregateLast12Months } from "../utils/aggregateMonthly"; // ✅ your helper function
 
 const LineChart = ({ isDashboard = false }) => {
     const theme = useTheme();
@@ -12,25 +12,38 @@ const LineChart = ({ isDashboard = false }) => {
     const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
-        const rawData = aggregateAttacksPerMonth();
+        async function fetchAndFormat() {
+            try {
+                const res = await fetch("/api/cyber-news-stat");
+                const newsData = await res.json();
 
-        if (rawData && Array.isArray(rawData) && rawData.length > 0) {
-            const formattedData = [
-                {
-                    id: "Cyber Attacks",
-                    color: colors.grey[300], // Light color for the line
-                    data: rawData.map(({ label, value }) => ({
-                        x: label,
-                        y: value,
-                    })),
-                },
-            ];
+                const rawData = newsData.monthlyCounts || [];
 
-            if (formattedData.length !== chartData.length) {
+                const formattedData = [
+                    {
+                        id: "Cyber Attacks",
+                        color: colors.grey[300],
+                        data: rawData
+                            .filter(
+                                (item) =>
+                                    item?.label &&
+                                    typeof item.value === "number"
+                            ) // ✅ Validate
+                            .map(({ label, value }) => ({
+                                x: label,
+                                y: value,
+                            })),
+                    },
+                ];
+
                 setChartData(formattedData);
+            } catch (err) {
+                console.error("Failed to fetch or process chart data:", err);
             }
         }
-    }, [chartData]);
+
+        fetchAndFormat();
+    }, []);
 
     return (
         <ResponsiveLine
@@ -98,7 +111,7 @@ const LineChart = ({ isDashboard = false }) => {
             pointBorderWidth={2}
             pointBorderColor={{ from: "serieColor" }}
             pointLabelYOffset={-12}
-            useMesh={true} // 🔥 Enables smoother hover interactions like in BarChart
+            useMesh={true}
             tooltip={({ point }) => (
                 <div
                     style={{

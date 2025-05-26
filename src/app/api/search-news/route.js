@@ -126,7 +126,7 @@ export async function POST(req) {
 
   const client = await clientPromise;
   const db = client.db("cyber_news_db");
-  const collection = db.collection("news_articles");
+  const collection = db.collection("news_list");
   const allNews = await collection.find({}).toArray();
 
   if (terms.length === 0) {
