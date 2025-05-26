@@ -3,10 +3,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  devIndicators: {
-    buildActivity: false,
-    autoPrerender: false,
-  },
+  devIndicators: false
 };
 
 export default nextConfig;
