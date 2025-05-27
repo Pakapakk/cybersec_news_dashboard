@@ -19,8 +19,9 @@ const Dashboard = () => {
   const [topAttackers, setTopAttackers] = useState([]);
   const [countryCounts, setCountryCounts] = useState([]);
   const [topTargetCountries, setTopTargetCountries] = useState([]);
-  const [mostUsedAttackType, setMostUsedAttackType] = useState("N/A");
-  const [mostTargetedSector, setMostTargetedSector] = useState("N/A");
+  const [mostUsedAttackType, setMostUsedAttackType] = useState({ label: "N/A", count: 0 });
+  const [mostTargetedSector, setMostTargetedSector] = useState({ label: "N/A", count: 0 });
+
 
   useEffect(() => {
     async function fetchStats() {
@@ -32,8 +33,9 @@ const Dashboard = () => {
         setTopAttackTechniques(data.top5AttackTechniques || []);
         setTopAttackers(data.top5Attackers || []);
         setCountryCounts(data.countries || []);
-        setMostUsedAttackType(data.mostUsedAttackType || "N/A");
-        setMostTargetedSector(data.mostTargetedSector || "N/A");
+        setMostUsedAttackType(data.mostUsedAttackType || { label: "N/A", count: 0 });
+        setMostTargetedSector(data.mostTargetedSector || { label: "N/A", count: 0 });
+
 
         const topCountries = (data.countries || [])
           .sort((a, b) => b.count - a.count)
@@ -81,7 +83,10 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox title="Most Technique" subtitle={mostUsedAttackType} />
+          <StatBox
+  title="Most Technique"
+  subtitle={`${mostUsedAttackType.label} (${mostUsedAttackType.count})`}
+/>
         </Box>
 
         <Box
@@ -91,7 +96,10 @@ const Dashboard = () => {
           alignItems="center"
           justifyContent="center"
         >
-          <StatBox title="Most Mentioned Sector" subtitle={mostTargetedSector} />
+          <StatBox
+  title="Most Mentioned Sector"
+  subtitle={`${mostTargetedSector.label} (${mostTargetedSector.count})`}
+/>
         </Box>
 
         {/* Row 2 */}
@@ -102,7 +110,7 @@ const Dashboard = () => {
           // sx={{ height: "320px" }}
         >
           <Typography variant="h4" fontWeight="600" sx={{ padding: "30px 30px 0 30px" }}>
-            Mentioned Sectors
+            Attack Types
           </Typography>
           <Box height="250px" mt="-20px">
             <BarChart isDashboard={true} />
@@ -192,7 +200,7 @@ const Dashboard = () => {
           p="30px"
         >
           <Typography variant="h4" fontWeight="600">
-            Attack Types
+            Mentioned Sectors
           </Typography>
           <Box height="290px" mt="-20px" paddingTop={3}>
             <PieChart />
