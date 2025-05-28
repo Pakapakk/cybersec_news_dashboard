@@ -44,7 +44,7 @@ function normalizeCountry(label = "") {
 export async function GET() {
     const client = await clientPromise;
     const db = client.db("cyber_news_db");
-    const collection = db.collection("news_list_test");
+    const collection = db.collection("news_list");
 
     const fields = [
         "companies",
