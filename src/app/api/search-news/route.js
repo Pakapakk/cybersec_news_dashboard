@@ -40,22 +40,22 @@ async function embedText(text) {
 }
 
 
-function averageVectors(vectors) {
-  if (!Array.isArray(vectors) || vectors.length === 0 || !vectors[0] || !Array.isArray(vectors[0])) {
-    return [];
-  }
+// function averageVectors(vectors) {
+//   if (!Array.isArray(vectors) || vectors.length === 0 || !vectors[0] || !Array.isArray(vectors[0])) {
+//     return [];
+//   }
 
-  const length = vectors[0].length;
-  const sum = new Array(length).fill(0);
+//   const length = vectors[0].length;
+//   const sum = new Array(length).fill(0);
 
-  for (const vec of vectors) {
-    for (let i = 0; i < length; i++) {
-      sum[i] += vec[i];
-    }
-  }
+//   for (const vec of vectors) {
+//     for (let i = 0; i < length; i++) {
+//       sum[i] += vec[i];
+//     }
+//   }
 
-  return sum.map((val) => val / vectors.length);
-}
+//   return sum.map((val) => val / vectors.length);
+// }
 
 
 function getCleanLabel(uri) {
@@ -125,60 +125,64 @@ export async function POST(req) {
   const quads = parser.parse(ttlString);
   const { topClasses, subClassMap } = await extractClassHierarchy(quads);
 
-  const queryEmbeddings = await Promise.all(terms.map(embedText));
-  const averagedQuery = averageVectors(queryEmbeddings);
+  const matchedURIs = new Set();
+  for (const term of terms) {
+    const termEmbedding = await embedText(term);
+    if (!termEmbedding) continue;
 
-  const visited = new Set();
+    const visited = new Set();
+    async function traverse(classes) {
+      let bestScore = -Infinity;
+      let bestClass = null;
+      let bestPath = [];
 
-  async function traverse(classes) {
-    let bestScore = -Infinity;
-    let bestClass = null;
-    let bestPath = [];
+      for (const classUri of classes) {
+        if (visited.has(classUri)) continue;
+        visited.add(classUri);
 
-    for (const classUri of classes) {
-      if (visited.has(classUri)) continue;
-      visited.add(classUri);
+        const label = getCleanLabel(classUri);
+        const labelEmbedding = await embedText(label);
+        if (!labelEmbedding) continue;
 
-      const label = getCleanLabel(classUri);
-      const labelEmbedding = await embedText(label);
-      const score = cosineSimilarity(averagedQuery, labelEmbedding);
+        const score = cosineSimilarity(termEmbedding, labelEmbedding);
 
-      if (score > bestScore) {
-        bestScore = score;
-        bestClass = classUri;
+        if (score > bestScore) {
+          bestScore = score;
+          bestClass = classUri;
+        }
       }
+
+      if (bestClass && subClassMap.has(bestClass)) {
+        const { score: subScore, path: subPath } = await traverse(subClassMap.get(bestClass));
+        if (subScore > bestScore) {
+          return { score: subScore, path: [bestClass, ...subPath] };
+        }
+      }
+
+      return { score: bestScore, path: [bestClass] };
     }
 
-    if (bestClass && subClassMap.has(bestClass)) {
-      const { score: subScore, path: subPath } = await traverse(subClassMap.get(bestClass));
-      if (subScore > bestScore) {
-        return { score: subScore, path: [bestClass, ...subPath] };
-      }
-    }
-
-    return { score: bestScore, path: [bestClass] };
+    const { path } = await traverse(topClasses);
+    const matched = path?.[path.length - 1];
+    if (matched) matchedURIs.add(matched);
   }
 
-  const { score, path } = await traverse(topClasses);
-  const matched = path?.[path.length - 1];
-  const matchedURIs = matched ? new Set([matched]) : new Set();
-
   const results = [];
-
   for (const news of allNews) {
     const classMap = news["Classes and Scores"] || {};
-    const overlap = Object.keys(classMap).filter((uri) => matchedURIs.has(uri));
+    const classURIs = Object.keys(classMap);
 
-    if (overlap.length > 0) {
-      const total = overlap.reduce(
+    const matchesAll = Array.from(matchedURIs).every(uri => classURIs.includes(uri));
+    if (matchesAll) {
+      const total = Array.from(matchedURIs).reduce(
         (sum, uri) => sum + parseFloat(classMap[uri]?.$numberDouble || classMap[uri]),
         0
       );
 
       results.push({
         ...news,
-        avgScore: total / terms.length,
-        overlapCount: overlap.length,
+        avgScore: total / matchedURIs.size,
+        overlapCount: matchedURIs.size,
       });
     }
   }

@@ -54,7 +54,7 @@ export default function NewsList() {
     ];
     const [predefinedTopics, setPredefinedTopics] = useState([...fixedTopics]);
 
-    useEffect(() => {
+useEffect(() => {
     const fetchTopics = async () => {
         try {
             const response = await fetch("/api/top-ontology-classes");
@@ -86,8 +86,7 @@ useEffect(() => {
             });
 
             const text = await response.text();
-            console.log(text);
-            // if (!text) throw new Error("Empty response body");
+            if (!text) throw new Error("Empty response body");
 
             const newsData = JSON.parse(text);
             setNews(newsData.results);
@@ -123,7 +122,7 @@ useEffect(() => {
 
         const matchesSemantic =
             selectedTopics.length === 0 ||
-            selectedTopics.some((topic) =>
+            selectedTopics.every((topic) =>
                 (news.Labels || []).some((label) =>
                     label.toLowerCase().includes(topic.toLowerCase())
                 )
@@ -193,6 +192,7 @@ const handleOpenPopup = (newsItem) => {
     setSelectedNews(newsItem);
     setOpenPopup(true);
 };
+
 
 
     const indexOfLastItem = currentPage * itemsPerPage;
