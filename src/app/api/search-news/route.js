@@ -1,3 +1,5 @@
+"use server"
+
 import clientPromise from "@/lib/mongodb";
 import { readFileSync } from "fs";
 import path from "path";
@@ -90,8 +92,7 @@ async function extractClassHierarchy(quads) {
   for (const quad of quads) {
     if (
       quad.predicate.value === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" &&
-      quad.object.value === `${CLASS_NAMESPACE}Class` &&
-      isFromOntology(quad.subject.value)
+      isFromOntology(quad.object.value)
     ) {
       const classUri = quad.subject.value;
       const isNotSubclass = !Array.from(subClassMap.values()).flat().includes(classUri);
@@ -106,12 +107,11 @@ async function extractClassHierarchy(quads) {
 
 export async function POST(req) {
   const { queryTerms } = await req.json();
-  console.log(queryTerms);
   const terms = (queryTerms || []).map((q) => q.trim()).filter(Boolean);
 
   const client = await clientPromise;
   const db = client.db("cyber_news_db");
-  const collection = db.collection("cyber_news_list");
+  const collection = db.collection("cyber_news_mapped");
   const allNews = await collection.find({}).toArray();
 
   if (terms.length === 0) {
@@ -125,7 +125,8 @@ export async function POST(req) {
   const quads = parser.parse(ttlString);
   const { topClasses, subClassMap } = await extractClassHierarchy(quads);
 
-  const matchedURIs = new Set();
+  const perTermMatchedURIs = [];
+
   for (const term of terms) {
     const termEmbedding = await embedText(term);
     if (!termEmbedding) continue;
@@ -164,25 +165,26 @@ export async function POST(req) {
 
     const { path } = await traverse(topClasses);
     const matched = path?.[path.length - 1];
-    if (matched) matchedURIs.add(matched);
+    if (matched) perTermMatchedURIs.push(matched);
   }
 
   const results = [];
+
   for (const news of allNews) {
     const classMap = news["Classes and Scores"] || {};
     const classURIs = Object.keys(classMap);
 
-    const matchesAll = Array.from(matchedURIs).every(uri => classURIs.includes(uri));
+    const matchesAll = perTermMatchedURIs.every(uri => classURIs.includes(uri));
     if (matchesAll) {
-      const total = Array.from(matchedURIs).reduce(
+      const total = perTermMatchedURIs.reduce(
         (sum, uri) => sum + parseFloat(classMap[uri]?.$numberDouble || classMap[uri]),
         0
       );
 
       results.push({
         ...news,
-        avgScore: total / matchedURIs.size,
-        overlapCount: matchedURIs.size,
+        avgScore: total / perTermMatchedURIs.length,
+        overlapCount: perTermMatchedURIs.length,
       });
     }
   }

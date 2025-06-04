@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTheme } from "@mui/material/styles";
-import { tokens } from "../theme"; // adjust path if needed
+import { tokens } from "../theme";
 
 const NewsPopup = ({ open, onClose, news }) => {
     const theme = useTheme();
@@ -21,7 +21,7 @@ const NewsPopup = ({ open, onClose, news }) => {
 
     if (!news) return null;
 
-    const keywords = Object.entries(news.Keywords || {})
+    const keywords = Object.entries(news.Keywords || news.keywords || {})
         .flatMap(([category, items]) =>
             items.map((item) => ({ category, item }))
         )
@@ -29,7 +29,7 @@ const NewsPopup = ({ open, onClose, news }) => {
 
     const formatDate = (rawDate) => {
         const date = new Date(rawDate);
-        if (isNaN(date.getTime())) return rawDate; // fallback if parsing fails
+        if (isNaN(date.getTime())) return rawDate;
         return date.toLocaleDateString(undefined, {
             year: "numeric",
             month: "short",
@@ -60,8 +60,7 @@ const NewsPopup = ({ open, onClose, news }) => {
                     fontWeight="bold"
                     color="black"
                 >
-                    Cyber Attack Report -{" "}
-                    {news.victimName || news["News Title"] || "Unknown"}
+                    Cyber Attack Report - {news.victimName || news["News Title"] || "Unknown"}
                 </Typography>
                 <IconButton
                     aria-label="close"
@@ -74,7 +73,7 @@ const NewsPopup = ({ open, onClose, news }) => {
 
             <DialogContent>
                 {/* Keywords */}
-                {news.Keywords && Object.keys(news.Keywords).length > 0 && (
+                {keywords.length > 0 && (
                     <>
                         <Typography
                             variant="h4"
@@ -85,7 +84,7 @@ const NewsPopup = ({ open, onClose, news }) => {
                             Keywords:
                         </Typography>
                         <Box pl={2}>
-                            {Object.entries(news.Keywords).map(
+                            {Object.entries(news.Keywords || news.keywords || {}).map(
                                 ([category, items], idx) => {
                                     if (!items || items.length === 0) return null;
 

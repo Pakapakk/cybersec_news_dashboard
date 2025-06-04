@@ -202,7 +202,7 @@ const Dashboard = () => {
           <Typography variant="h4" fontWeight="600">
             Mentioned Sectors
           </Typography>
-          <Box height="290px" mt="-20px" paddingTop={3}>
+          <Box height="290px" mt="-20px" paddingTop={3} paddingBottom={2}>
             <PieChart />
           </Box>
         </Box>

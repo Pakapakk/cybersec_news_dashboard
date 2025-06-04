@@ -1,27 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Typography,
+    Chip,
+    Tooltip,
     Box,
+    Link,
     Card,
     CardContent,
-    Typography,
     CircularProgress,
     Alert,
-    Tooltip,
-    Chip,
-    Button,
-    IconButton,
     TextField,
+    Button
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import Popup from "../../components/Popup";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useBookmarks } from "@/lib/useBookmarks";
+import { useState, useEffect, useMemo } from "react";
 
-export default function BookmarkList() {
+const BookmarkList = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -29,7 +34,6 @@ export default function BookmarkList() {
     const [openPopup, setOpenPopup] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
-    const [filteredBookmarks, setFilteredBookmarks] = useState([]);
 
     const itemsPerPage = 10;
     const { bookmarks, mutate, isLoading, error } = useBookmarks();
@@ -48,16 +52,15 @@ export default function BookmarkList() {
         setOpenPopup(true);
     };
 
-    useEffect(() => {
-        const filtered = bookmarks.filter((item) => {
-            const query = searchQuery.toLowerCase();
+    const filteredBookmarks = useMemo(() => {
+        const query = searchQuery.toLowerCase();
+        return bookmarks.filter((item) => {
             return (
                 item["News Title"]?.toLowerCase().includes(query) ||
                 item.Article?.toLowerCase().includes(query) ||
                 (item.Labels || []).some((l) => l.toLowerCase().includes(query))
             );
         });
-        setFilteredBookmarks(filtered);
     }, [bookmarks, searchQuery]);
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -108,16 +111,8 @@ export default function BookmarkList() {
             ) : (
                 <Box>
                     {currentItems.map((newsItem, index) => {
-                        const labelScores = (newsItem.Labels || [])
-                            .map((label) => {
-                                const entry = Object.entries(newsItem["Classes and Scores"] || {})
-                                    .find(([uri]) => uri.toLowerCase().includes(label.toLowerCase().replace(/\s/g, "")));
-                                return {
-                                    label,
-                                    score: entry ? parseFloat(entry[1]) : 0,
-                                };
-                            })
-                            .sort((a, b) => b.score - a.score);
+                        const keywordEntries = Object.entries(newsItem.Keywords || newsItem.keywords || {})
+                            .flatMap(([category, items]) => (items || []).map((item) => ({ category, item })));
 
                         return (
                             <Card
@@ -147,22 +142,25 @@ export default function BookmarkList() {
                                         </IconButton>
                                     </Box>
                                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: "8px", mt: 2 }}>
-                                        {labelScores.slice(0, 5).map((item, i) => (
-                                            <Tooltip key={i} title={`Score: ${item.score.toFixed(3)}`}>
+                                        {keywordEntries.slice(0, 5).map((kw, i) => (
+                                            <Tooltip key={i} title={kw.category}>
                                                 <Chip
-                                                    label={item.label}
+                                                    label={kw.item}
                                                     sx={{
                                                         backgroundColor: colors.greenAccent[400],
                                                         color: "#000",
                                                         fontSize: "0.9rem",
                                                     }}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                    }}
                                                     clickable
                                                 />
                                             </Tooltip>
                                         ))}
-                                        {labelScores.length > 5 && (
+                                        {keywordEntries.length > 5 && (
                                             <Chip
-                                                label={`+${labelScores.length - 5} more`}
+                                                label={`+${keywordEntries.length - 5} more`}
                                                 sx={{
                                                     backgroundColor: colors.grey[500],
                                                     color: "#000",
@@ -223,4 +221,6 @@ export default function BookmarkList() {
             </Box>
         </Box>
     );
-}
+};
+
+export default BookmarkList;
