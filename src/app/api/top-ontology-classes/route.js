@@ -10,23 +10,29 @@ const TTL_PATH = path.join(
   "ontology",
   "RefinedUnifiedOntology1-35.ttl"
 );
-const ttlData = readFileSync(TTL_PATH, "utf8");
+
+function formatLabel(label) {
+  return label.replace(/([a-z])([A-Z])/g, '$1 $2').trim();
+}
 
 export async function GET() {
   try {
-    const parser = new Parser();
-    const quads = parser.parse(ttlData);
+    const ttl = readFileSync(TTL_PATH, "utf8");
+    const quads = new Parser().parse(ttl);
+    const raw = getTopClassesByInstanceCount(quads);
 
-    const topClasses = getTopClassesByInstanceCount(quads);
+    const topClasses = raw.map(({ uri, label, count }) => ({
+      uri,
+      label: formatLabel(label),
+      count
+    }));
+
     return new Response(JSON.stringify(topClasses), {
       status: 200,
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     });
-  } catch (error) {
-    console.error("Failed to parse TTL:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to get top classes" }),
-      { status: 500 }
-    );
+  } catch (err) {
+    console.error(err);
+    return new Response(JSON.stringify({ error: "…"}), { status: 500 });
   }
 }
