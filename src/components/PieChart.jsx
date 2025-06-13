@@ -10,50 +10,48 @@ export default function PieChart({ isDashboard = false, onSliceClick }) {
   const colors = tokens(theme.palette.mode);
   const [chartData, setChartData] = useState([]);
 
- useEffect(() => {
-  (async () => {
-    const res = await fetch("/api/cyber-news-stat");
-    const data = await res.json();
-    const arr = (data.sectors || []).sort((a, b) => b.count - a.count);
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/cyber-news-stat");
+      const data = await res.json();
+      const arr = (data.sectors || []).sort((a, b) => b.count - a.count);
 
-    // Aggregate duplicates by id into a Map
-    const map = new Map();
-    arr.forEach(item => {
-      const id = item._id;
-      if (!id) return;
-      map.set(id, (map.get(id) || 0) + item.count);
-    });
+      // Combine by id in case there are duplicates
+      const map = new Map();
+      arr.forEach(item => {
+        const id = item._id;
+        if (!id) return;
+        map.set(id, (map.get(id) || 0) + item.count);
+      });
 
-    const aggregated = Array.from(map.entries())
-      .map(([id, value]) => ({ id, label: id, value }))
-      .sort((a, b) => b.value - a.value);
+      const aggregated = Array.from(map.entries())
+        .map(([id, value]) => ({ id, label: id, value }))
+        .sort((a, b) => b.value - a.value);
 
-    const top8 = aggregated.slice(0, 8);
-    const others = aggregated.slice(8);
-    const chartArray = [
-      ...top8,
-      ...(others.length ? [{
-        id: "Others",
-        label: "Others",
-        value: others.reduce((sum, it) => sum + it.value, 0)
-      }] : [])
-    ];
+      // Show top 6 and group rest into Others
+      const top7 = aggregated.slice(0, 7);
+      const others = aggregated.slice(7);
+      const chartArray = [
+        ...top7,
+        ...(others.length
+          ? [{
+              id: "Others",
+              label: "Others",
+              value: others.reduce((sum, it) => sum + it.value, 0)
+            }]
+          : [])
+      ];
 
-    setChartData(chartArray);
-  })();
-}, []);
-
+      setChartData(chartArray);
+    })();
+  }, []);
 
   return (
     <ResponsivePie
       data={chartData}
       keyBy="id"
       label={({ datum }) => datum.label}
-      onClick={({ id, label }) => {
-        if (typeof onSliceClick === "function") {
-          onSliceClick(label); // pass the human-readable label
-        }
-      }}
+      onClick={({ id, label }) => onSliceClick?.(label)}
       theme={{
         legends: { text: { fill: colors.grey[100] } },
         axis: { domain: { line: { stroke: colors.grey[100] } } },
@@ -76,6 +74,7 @@ export default function PieChart({ isDashboard = false, onSliceClick }) {
             padding: 5,
             borderRadius: 4,
             color: "#fff",
+            fontSize: "14px"
           }}
         >
           <strong>{datum.label}</strong>: {datum.value}
