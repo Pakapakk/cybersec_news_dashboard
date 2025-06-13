@@ -2,12 +2,24 @@
 
 import { useState, useEffect } from "react";
 import {
-  Dialog, DialogTitle, DialogContent,
-  List, ListItem, ListItemText,
-  CircularProgress, Box, Typography, Link
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  List,
+  ListItem,
+  ListItemText,
+  CircularProgress,
+  Box,
+  Typography,
+  Link,
 } from "@mui/material";
 
+import { useTheme } from "@mui/material";
+import { tokens } from "../theme";
+
 export default function TopicPopup({ topic, open, onClose }) {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -21,19 +33,24 @@ export default function TopicPopup({ topic, open, onClose }) {
         const data = await res.json();
 
         let lookupKey = topic;
-        // Convert from ISO3 map clicks
         if (topic === "USA" || topic === "United States of America") {
           lookupKey = "United States";
         }
 
         let results = [];
         if (lookupKey === "Others") {
-          const top7 = (data.sectors || []).slice(0, 7).map(s => s._id);
-          Object.entries(data.sectorNewsMap || {}).forEach(([sector, list]) => {
-            if (!top7.includes(sector)) {
-              list.forEach(n => results.push({ ...n, sector }));
+          const top6 = (data.sectors || [])
+            .slice(0, 6)
+            .map((s) => s._id);
+          Object.entries(data.sectorNewsMap || {}).forEach(
+            ([sector, list]) => {
+              if (!top6.includes(sector)) {
+                list.forEach((n) =>
+                  results.push({ ...n, sector })
+                );
+              }
             }
-          });
+          );
         } else {
           const mapping = {
             ...data.attackNewsMap,
@@ -43,15 +60,18 @@ export default function TopicPopup({ topic, open, onClose }) {
           results = mapping[lookupKey] || [];
         }
 
-        // Deduplicate while preserving sector tag
         const seen = new Map();
-        results.forEach(n => {
+        results.forEach((n) => {
           if (!seen.has(n._id)) {
             seen.set(n._id, n);
-          } else if (!seen.get(n._id).sector && n.sector) {
-            seen.get(n._id).sector = n.sector;
+          } else {
+            const existing = seen.get(n._id);
+            if (!existing.sector && n.sector) {
+              existing.sector = n.sector;
+            }
           }
         });
+
         setItems(Array.from(seen.values()));
       } catch (e) {
         console.error(e);
@@ -71,20 +91,36 @@ export default function TopicPopup({ topic, open, onClose }) {
             <CircularProgress />
           </Box>
         )}
+
         {!loading && items.length > 0 && (
           <List>
             {items.map((n, i) => (
               <Box key={`${n._id}-${i}`}>
                 {n.sector && (
-                  <Typography variant="subtitle2" sx={{ mt: i === 0 ? 0 : 2, mb: 1 }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ mt: i === 0 ? 0 : 2, mb: 1 }}
+                  >
                     {n.sector}
                   </Typography>
                 )}
                 <ListItem divider>
                   <ListItemText
                     primary={
-                      n.URL ? (
-                        <Link href={n.URL} target="_blank" rel="noopener">
+                      n.URL || n.url ? (
+                        <Link
+                          href={n.URL || n.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          sx={{
+                            color: "white",
+                            textDecoration: "underline",
+                            "&:hover": {
+                              color: colors.greenAccent[600],
+                              textDecoration: "underline",
+                            },
+                          }}
+                        >
                           {n.title}
                         </Link>
                       ) : (
@@ -93,7 +129,8 @@ export default function TopicPopup({ topic, open, onClose }) {
                     }
                     secondary={
                       n.date
-                        ? new Date(n.date).toLocaleDateString()
+                        ? new Date(n.date)
+                            .toLocaleDateString("en-GB")
                         : ""
                     }
                   />
@@ -102,6 +139,7 @@ export default function TopicPopup({ topic, open, onClose }) {
             ))}
           </List>
         )}
+
         {!loading && items.length === 0 && (
           <Typography p={3} color="textSecondary">
             No related news for “{topic}”

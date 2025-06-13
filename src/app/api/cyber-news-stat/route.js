@@ -64,7 +64,7 @@ export async function GET() {
 
   const all = await col
     .find({}, {
-      projection: { _id: 1, "News Title": 1, "Publish Date": 1, keywords: 1 }
+      projection: { _id: 1, "News Title": 1, "URL": 1, "Publish Date": 1, keywords: 1 }
     })
     .toArray();
 
@@ -87,7 +87,8 @@ export async function GET() {
     const item = {
       _id: doc._id.toString(),
       title: doc["News Title"],
-      date: doc["Publish Date"]
+      date: doc["Publish Date"],
+      URL: doc["URL"],
     };
     const uniq = field =>
       Array.from(new Set((doc.keywords?.[field] || []).map(v => v.toLowerCase())));
