@@ -1,79 +1,64 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoFeatures } from "../data/mockGeoFeatures";
 import TopicPopup from "./TopicPopup";
 
-// Country Name to ISO-3 Code Mapping
+// More complete name-to-ISO mapping
 const countryNameToISO3 = {
-  italy: "ITA",
-  germany: "DEU",
-  uk: "GBR",
-  "united kingdom": "GBR",
-  "great britain": "GBR",
-  london: "GBR",
-  us: "USA",
-  "u.s.": "USA",
-  "united states": "USA",
-  "united states of america": "USA",
-  america: "USA",
-  china: "CHN",
-  "north korea": "PRK",
-  "south korea": "KOR",
-  russia: "RUS",
-  japan: "JPN",
-  india: "IND",
-  australia: "AUS",
-  canada: "CAN",
-  ukraine: "UKR",
-  belarus: "BLR",
-  brazil: "BRA",
-  france: "FRA",
-  netherlands: "NLD",
-  israel: "ISR",
-  singapore: "SGP",
+  italy: "ITA", germany: "DEU", uk: "GBR", "united kingdom": "GBR",
+  "great britain": "GBR", london: "GBR", us: "USA", "u.s.": "USA",
+  "united states": "USA", "united states of america": "USA",
+  america: "USA", china: "CHN", "north korea": "PRK",
+  "south korea": "KOR", russia: "RUS", japan: "JPN",
+  india: "IND", australia: "AUS", canada: "CAN",
+  ukraine: "UKR", belarus: "BLR", brazil: "BRA", france: "FRA",
+  netherlands: "NLD", israel: "ISR", singapore: "SGP",
 };
 
-export default function GeographyChart({ isDashboard = false }) {
+export default function GeographyChart({
+  isDashboard = false,
+  countryNewsMap = {},
+  onCountryClick,
+}) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [chartData, setChartData] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [articles, setArticles] = useState([]);
   const [popupOpen, setPopupOpen] = useState(false);
 
-  useEffect(() => {
-    async function fetchCountryStats() {
-      try {
-        const res = await fetch("/api/cyber-news-stat");
-        const data = await res.json();
+  const chartData = Object.entries(countryNewsMap)
+    .map(([country, info]) => {
+      const iso = countryNameToISO3[country.trim().toLowerCase()];
+      if (!iso) return null;
+      return {
+        id: iso,
+        value: info.count,
+        label: country,
+        articles: info.articles || [],
+      };
+    })
+    .filter(Boolean);
 
-        if (data?.countries) {
-          const formatted = data.countries
-            .map(({ _id, count }) => {
-              const key = _id.toLowerCase().trim();
-              const iso3 = countryNameToISO3[key];
-              return iso3
-                ? { id: iso3, value: count, label: _id }
-                : null;
-            })
-            .filter(Boolean);
+  // Map iso code → data entry for fast reverse lookup
+  const isoToEntry = chartData.reduce((acc, d) => {
+    acc[d.id] = d;
+    return acc;
+  }, {});
 
-          setChartData(formatted);
-        }
-      } catch (err) {
-        console.error("Failed to fetch country stats", err);
-      }
-    }
-    fetchCountryStats();
-  }, []);
+  // On-click, match via feature.id and lookup via isoToEntry
+  const handleClick = feature => {
+    const iso = feature.id;
+    const entry = isoToEntry[iso];
+    if (!entry) return;
 
-  const handleCountryClick = (feature) => {
-    const name = feature.properties.name;
-    setSelectedCountry(name);
+    setSelectedCountry(entry.label);
+    setArticles(entry.articles);
     setPopupOpen(true);
+    if (onCountryClick) onCountryClick(entry.label);
   };
 
   return (
@@ -102,7 +87,7 @@ export default function GeographyChart({ isDashboard = false }) {
             Attacks: {feature.value?.toLocaleString() || "N/A"}
           </div>
         )}
-        onClick={handleCountryClick}
+        onClick={handleClick}
         theme={{
           axis: {
             domain: { line: { stroke: colors.grey[100] } },
@@ -114,26 +99,34 @@ export default function GeographyChart({ isDashboard = false }) {
           },
           legends: { text: { fill: colors.grey[100] } },
         }}
-        legends={!isDashboard ? [{
-          anchor: "bottom-left",
-          direction: "column",
-          translateX: 20,
-          translateY: -100,
-          itemsSpacing: 0,
-          itemWidth: 94,
-          itemHeight: 18,
-          itemDirection: "left-to-right",
-          itemTextColor: colors.grey[100],
-          itemOpacity: 0.85,
-          symbolSize: 18,
-          effects: [
-            { on: "hover", style: { itemTextColor: "#ffffff", itemOpacity: 1 } }
-          ],
-        }] : undefined}
+        legends={!isDashboard
+          ? [
+              {
+                anchor: "bottom-left",
+                direction: "column",
+                translateX: 20,
+                translateY: -100,
+                itemsSpacing: 0,
+                itemWidth: 94,
+                itemHeight: 18,
+                itemDirection: "left-to-right",
+                itemTextColor: colors.grey[100],
+                itemOpacity: 0.85,
+                symbolSize: 18,
+                effects: [
+                  {
+                    on: "hover",
+                    style: { itemTextColor: "#ffffff", itemOpacity: 1 },
+                  },
+                ],
+              }
+            ]
+          : undefined}
       />
 
       <TopicPopup
         topic={selectedCountry}
+        articles={articles}
         open={popupOpen}
         onClose={() => setPopupOpen(false)}
       />

@@ -3,9 +3,13 @@
 import clientPromise from "@/lib/mongodb";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import isBetween from "dayjs/plugin/isBetween";
+
 dayjs.extend(customParseFormat);
+dayjs.extend(isBetween);
 
 const exceptions = { cve: "CVE", ddos: "DDoS", dos: "DoS" };
+
 const attackMap = {
   Phishing: ["phishing"],
   Malware: ["malware", "ransomware", "trojan", "spyware", "virus"],
@@ -18,6 +22,7 @@ const attackMap = {
   DDoS: ["ddos", "denial of service", "dos"],
   CVE: ["cve"],
 };
+
 const sectorMap = {
   Energy: ["energy", "oil", "gas", "power"],
   Military: ["military", "defense", "army"],
@@ -58,119 +63,120 @@ function fuzzyCountry(s) {
     .join(" ");
 }
 
-export async function GET() {
+export async function GET(request) {
   const client = await clientPromise;
   const col = client.db("cyber_news_db").collection("cyber_news_mapped");
+  const url = new URL(request.url);
+  const startParam = url.searchParams.get("start"); // MM-YYYY
+  const endParam = url.searchParams.get("end");     // MM-YYYY
 
-  const all = await col
-    .find({}, {
-      projection: { _id: 1, "News Title": 1, "URL": 1, "Publish Date": 1, keywords: 1 }
-    })
-    .toArray();
+  const endMonth = endParam
+    ? dayjs(endParam, "MM-YYYY").endOf("month")
+    : dayjs().endOf("month");
+  const startMonth = startParam
+    ? dayjs(startParam, "MM-YYYY").startOf("month")
+    : endMonth.subtract(11, "month").startOf("month");
 
-  // Initialize maps
+  const all = await col.find({}, {
+    projection: {
+      _id: 1,
+      "News Title": 1,
+      URL: 1,
+      "Publish Date": 1,
+      keywords: 1
+    }
+  }).toArray();
+
   const maps = {
     attack: {},
     sector: {},
     country: {},
     attacker: {},
-    company: {},
+    company: {}
   };
-  
-  const pushUnique = (map, key, item) => {
-    const arr = map[key] || (map[key] = []);
+
+  const pushUnique = (mapObj, key, item) => {
+    const arr = (mapObj[key] = mapObj[key] || []);
     if (!arr.some(x => x._id === item._id)) arr.push(item);
   };
 
-  // Build unique news maps
-  all.forEach(doc => {
+  const monthsCount = {};
+  for (const doc of all) {
+    const p = dayjs(doc["Publish Date"], [
+      "ddd, D MMM YYYY HH:mm:ss Z",
+      "MM-YYYY-DD",
+      dayjs.ISO_8601
+    ]);
+    if (!p.isValid() || !p.isBetween(startMonth, endMonth, "month", "[]")) {
+      continue;
+    }
+
+    const key = p.format("MM-YYYY");
+    monthsCount[key] = (monthsCount[key] || 0) + 1;
+
     const item = {
       _id: doc._id.toString(),
       title: doc["News Title"],
       date: doc["Publish Date"],
-      URL: doc["URL"],
+      URL: doc.URL
     };
+
     const uniq = field =>
       Array.from(new Set((doc.keywords?.[field] || []).map(v => v.toLowerCase())));
 
-    // Attack techniques
-    uniq("attack_techniques")
-      .map(formatLabel)
-      .filter(Boolean)
+    uniq("attack_techniques").map(formatLabel).filter(Boolean)
       .forEach(lbl => pushUnique(maps.attack, lbl, item));
-
-    // Sectors
-    uniq("sectors")
-      .map(fuzzySector)
-      .filter(Boolean)
+    uniq("sectors").map(fuzzySector).filter(Boolean)
       .forEach(lbl => pushUnique(maps.sector, lbl, item));
-
-    // Countries
-    uniq("countries")
-      .map(fuzzyCountry)
-      .filter(Boolean)
+    uniq("countries").map(fuzzyCountry).filter(Boolean)
       .forEach(lbl => pushUnique(maps.country, lbl, item));
-
-    // Attackers (exclude generic terms)
     uniq("attackers")
       .filter(s => !["threat actors", "attackers", "attacker"].includes(s))
       .forEach(lbl => pushUnique(maps.attacker, lbl, item));
+    uniq("companies").forEach(lbl => pushUnique(maps.company, lbl, item));
+  }
 
-    // Companies
-    uniq("companies")
-      .forEach(lbl => pushUnique(maps.company, lbl, item));
-  });
-
-  const makeCounts = map =>
-    Object.entries(map)
-      .map(([label, arr]) => ({ _id: label, count: arr.length }))
+  const makeCounts = mapObj =>
+    Object.entries(mapObj).map(([label, arr]) => ({ _id: label, count: arr.length }))
       .sort((a, b) => b.count - a.count);
 
-  const attack_techniques = makeCounts(maps.attack);
-  const sectors = makeCounts(maps.sector);
-  const countries = makeCounts(maps.country);
-  const attackers = makeCounts(maps.attacker);
-  const companies = makeCounts(maps.company);
-  const newsCount = all.length;
+  const monthlyCounts = Object.entries(monthsCount).reduce(
+    (acc, [label, value]) => ({ ...acc, [label]: value }),
+    {}
+  );
 
-  // Monthly counts over past year
-  const months = {};
-  all.forEach(d => {
-    const p = dayjs(d["Publish Date"], [
-      "ddd, D MMM YYYY HH:mm:ss Z",
-      "YYYY-MM-DD",
-      dayjs.ISO_8601
-    ]);
-    if (p.isValid() && !p.isAfter(dayjs())) {
-      const key = p.format("YYYY-MM");
-      months[key] = (months[key] || 0) + 1;
+  const wrapMap = rawMap => {
+    const result = {};
+    for (const [label, arr] of Object.entries(rawMap)) {
+      result[label] = {
+        count: arr.length,
+        articles: arr
+      };
     }
-  });
-  const sortedKeys = Object.keys(months).sort();
-  const last = sortedKeys.pop();
-  const start = dayjs(last).subtract(11, "month");
-  const monthlyCounts = Array.from({ length: 12 }, (_, i) => {
-    const label = start.add(i, "month").format("YYYY-MM");
-    return { label, value: months[label] || 0 };
-  });
+    return result;
+  };
 
   return new Response(
     JSON.stringify({
-      attack_techniques,
-      sectors,
-      countries,
-      attackers,
-      companies,
-      top5AttackTechniques: attack_techniques.slice(0,5),
-      top5Attackers: attackers.slice(0,5),
-      mostUsedAttackType: [attack_techniques[0]] || { _id: "N/A", count: 0 },
-      mostTargetedSector: [sectors[0]] || { _id: "N/A", count: 0 },
-      newsCount,
-      monthlyCounts,
-      attackNewsMap: maps.attack,
-      sectorNewsMap: maps.sector,
-      countryNewsMap: maps.country
+      newsCount: Object.values(monthsCount).reduce((a, b) => a + b, 0),
+      attack_techniques: makeCounts(maps.attack),
+      sectors: makeCounts(maps.sector),
+      countries: makeCounts(maps.country),
+      attackers: makeCounts(maps.attacker),
+      companies: makeCounts(maps.company),
+      top5AttackTechniques: makeCounts(maps.attack).slice(0, 5),
+      top5Attackers: makeCounts(maps.attacker).slice(0, 5),
+      mostUsedAttackType: makeCounts(maps.attack).slice(0, 1),
+      mostTargetedSector: makeCounts(maps.sector).slice(0, 1),
+      monthlyCounts: Object.entries(monthsCount)
+        .map(([label, value]) => ({ label, value })),
+      attackNewsMap: wrapMap(maps.attack),
+      sectorNewsMap: wrapMap(maps.sector),
+      countryNewsMap: wrapMap(maps.country),
     }),
-    { status: 200, headers: { "Content-Type": "application/json" } }
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" }
+    }
   );
 }

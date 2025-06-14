@@ -5,7 +5,6 @@ import {
   Dialog, DialogTitle, DialogContent, List, ListItem,
   ListItemText, CircularProgress, Box, Typography, Link
 } from "@mui/material";
-
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
@@ -23,6 +22,8 @@ export default function TopicPopup({ topic, open, onClose }) {
       try {
         const res = await fetch("/api/cyber-news-stat");
         const data = await res.json();
+
+        // Normalize country mapping for United States (popup search logic)
         let lookupKey = topic;
         if (["USA", "United States of America"].includes(topic)) {
           lookupKey = "United States";
@@ -30,21 +31,25 @@ export default function TopicPopup({ topic, open, onClose }) {
 
         let results = [];
         if (lookupKey === "Others") {
+          // Special handling for "Others" slice
           const top6 = (data.sectors || []).slice(0, 6).map(s => s._id);
           Object.entries(data.sectorNewsMap || {}).forEach(([sector, list]) => {
             if (!top6.includes(sector)) {
-              list.forEach(n => results.push({ ...n, sector }));
+              list.articles.forEach(n => results.push({ ...n, sector }));
             }
           });
         } else {
+          // Main mapping logic
           const mapping = {
             ...data.attackNewsMap,
             ...data.sectorNewsMap,
             ...data.countryNewsMap,
           };
-          results = mapping[lookupKey] || [];
+          const entry = mapping[lookupKey];
+          results = Array.isArray(entry?.articles) ? entry.articles : [];
         }
 
+        // Dedupe by _id
         const seen = new Map();
         results.forEach(n => {
           if (!seen.has(n._id)) {
@@ -69,7 +74,9 @@ export default function TopicPopup({ topic, open, onClose }) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <DialogTitle sx={{ backgroundColor: colors.grey[600] }}>{topic} - Related News</DialogTitle>
+      <DialogTitle sx={{ backgroundColor: colors.grey[600] }}>
+        {topic} - Related News
+      </DialogTitle>
       <DialogContent sx={{ backgroundColor: colors.grey[600] }}>
         {loading && (
           <Box display="flex" justifyContent="center" p={3}>
