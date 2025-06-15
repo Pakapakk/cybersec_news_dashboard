@@ -91,12 +91,12 @@ export default function PieChart({
           </div>
         )}
       />
-      <TopicPopup
+      {/* <TopicPopup
         topic={selectedSlice}
         articles={articles}
         open={popupOpen}
         onClose={() => setPopupOpen(false)}
-      />
+      /> */}
     </>
   );
 }

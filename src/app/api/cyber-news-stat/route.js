@@ -20,7 +20,8 @@ const attackMap = {
   "System Vulnerability": ["vulnerability", "exploit"],
   Injection: ["injection", "sql injection", "command injection"],
   DDoS: ["ddos", "denial of service", "dos"],
-  CVE: ["cve"],
+  // CVE: ["cve"],
+  "Zero-day": ["zero day", "zero-day", "zeroday"],
 };
 
 const sectorMap = {

@@ -124,12 +124,12 @@ export default function GeographyChart({
           : undefined}
       />
 
-      <TopicPopup
+      {/* <TopicPopup
         topic={selectedCountry}
         articles={articles}
         open={popupOpen}
         onClose={() => setPopupOpen(false)}
-      />
+      /> */}
     </>
   );
 }

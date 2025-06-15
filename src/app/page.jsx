@@ -382,7 +382,14 @@ export default function Dashboard() {
                 </Box>
             </Box>
 
-            {/* <TopicPopup topic={popupTopic} open={open} onClose={closePopup} /> */}
+            <TopicPopup
+                topic={popupTopic}
+                open={open}
+                onClose={closePopup}
+                attackNewsMap={attackMap}
+                sectorNewsMap={sectorMap}
+                countryNewsMap={countryMap}
+            />
         </Box>
     );
 }

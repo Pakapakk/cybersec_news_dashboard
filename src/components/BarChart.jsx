@@ -98,12 +98,12 @@ export default function BarChart({
         onClick={handleClick}
       />
 
-      <TopicPopup
+      {/* <TopicPopup
         topic={selectedTopic}
         articles={articles}
         open={isPopupOpen}
         onClose={() => setPopupOpen(false)}
-      />
+      /> */}
     </>
   );
 }
