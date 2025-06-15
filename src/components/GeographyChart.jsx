@@ -5,7 +5,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { ResponsiveChoropleth } from "@nivo/geo";
 import { geoFeatures } from "../data/mockGeoFeatures";
-import TopicPopup from "./TopicPopup";
+// import TopicPopup from "./TopicPopup";
 
 // More complete name-to-ISO mapping
 const countryNameToISO3 = {

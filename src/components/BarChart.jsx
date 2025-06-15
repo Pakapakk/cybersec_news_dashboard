@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "@mui/material";
 import { ResponsiveBar } from "@nivo/bar";
 import { tokens } from "../theme";
-import TopicPopup from "./TopicPopup";
+// import TopicPopup from "./TopicPopup";
 
 export default function BarChart({
   isDashboard = false,

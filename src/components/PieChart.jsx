@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTheme } from "@mui/material";
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
-import TopicPopup from "./TopicPopup";
+// import TopicPopup from "./TopicPopup";
 
 export default function PieChart({
   isDashboard = false,
