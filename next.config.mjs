@@ -7,6 +7,7 @@ const nextConfig = {
     buildActivity: false,
     autoPrerender: false,
   },
+  output: "standalone",
 };
 
 export default nextConfig;
