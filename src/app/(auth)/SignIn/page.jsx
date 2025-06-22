@@ -43,9 +43,11 @@ export default function SignIn() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      router.push("/");
+      document.cookie = "authToken=true; path=/; SameSite=Lax";
+      setTimeout(() => router.push("/"), 50);
     } catch (e) {
-      setFirebaseError(e.message);
+      const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
+      setFirebaseError(message);
     } finally {
       setLoading(false);
     }
@@ -57,9 +59,11 @@ export default function SignIn() {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      router.push("/");
+      document.cookie = "authToken=true; path=/; SameSite=Lax";
+      setTimeout(() => router.push("/"), 50);
     } catch (e) {
-      setFirebaseError(e.message);
+      const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
+      setFirebaseError(message);
     } finally {
       setLoading(false);
     }
