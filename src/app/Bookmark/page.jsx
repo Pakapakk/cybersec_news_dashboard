@@ -78,7 +78,7 @@ const BookmarkList = () => {
 
     return (
         <Box m="20px" marginTop={5}>
-            {/* <Box display="flex" justifyContent="flex-end" mb={2}>
+            <Box display="flex" justifyContent="flex-end" mb={2}>
                 <Button
                     variant="contained"
                     sx={{ backgroundColor: colors.greenAccent[500], color: "#000" }}
@@ -90,7 +90,7 @@ const BookmarkList = () => {
                 >
                     LOG OUT
                 </Button>
-            </Box> */}
+            </Box>
 
             <Header title="Bookmarked News" subtitle={`Total Bookmarks: ${filteredBookmarks.length}`} />
 
