@@ -27,7 +27,7 @@ export default function AuthLayout({ title, children }) {
           color: colors.grey[100],
         }}
       >
-        <Typography variant="h5" align="center" gutterBottom>
+        <Typography variant="h3" align="center" gutterBottom>
           {title}
         </Typography>
         {children}
