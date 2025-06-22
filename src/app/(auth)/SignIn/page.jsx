@@ -28,7 +28,7 @@ export default function SignIn() {
   const [errors, setErrors] = useState({});
   const [firebaseError, setFirebaseError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [user, authLoading] = useAuthState(auth); // ✅
+  const [user, authLoading] = useAuthState(auth);
 
   // ✅ Redirect after user is authenticated
   useEffect(() => {
