@@ -118,7 +118,7 @@ export default function SignIn() {
         </Box>
 
         <Box mt={2} display="flex" justifyContent="center" gap={1}>
-          <Typography variant="body1" color={colors.grey[100]}>Don’t have an account?</Typography>
+          <Typography variant="body1" color={colors.grey[100]}>Do not have an account?</Typography>
           <NextLink href="/SignUp" passHref legacyBehavior>
             <Typography component="a" variant="body1" sx={{
               color: colors.grey[100], textDecoration: "underline",
