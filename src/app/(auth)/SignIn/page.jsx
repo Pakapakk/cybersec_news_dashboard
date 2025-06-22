@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import GoogleButton from "react-google-button";
@@ -14,7 +14,10 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function SignIn() {
   const theme = useTheme();
@@ -25,6 +28,15 @@ export default function SignIn() {
   const [errors, setErrors] = useState({});
   const [firebaseError, setFirebaseError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [user, authLoading] = useAuthState(auth); // ✅
+
+  // ✅ Redirect after user is authenticated
+  useEffect(() => {
+    if (user && !authLoading) {
+      document.cookie = "authToken=true; path=/; SameSite=Lax";
+      router.replace("/");
+    }
+  }, [user, authLoading, router]);
 
   const validate = () => {
     const errs = {};
@@ -42,9 +54,9 @@ export default function SignIn() {
     setFirebaseError("");
     setLoading(true);
     try {
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      document.cookie = "authToken=true; path=/; SameSite=Lax";
-      setTimeout(() => router.replace("/"), 50);
+      // Redirection will now happen in the useEffect
     } catch (e) {
       const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
       setFirebaseError(message);
@@ -58,9 +70,9 @@ export default function SignIn() {
     setLoading(true);
     try {
       const provider = new GoogleAuthProvider();
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, provider);
-      document.cookie = "authToken=true; path=/; SameSite=Lax";
-      setTimeout(() => router.replace("/"), 50);
+      // Redirection will now happen in the useEffect
     } catch (e) {
       const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
       setFirebaseError(message);
