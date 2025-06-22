@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "@/theme";
@@ -15,10 +15,23 @@ export default function Profile() {
   const [user, loading, error] = useAuthState(auth);
   const router = useRouter();
 
+  // Sign out handler
   const handleSignOut = async () => {
-    await auth.signOut();
-    router.push("/SignIn");
+    try {
+      await fetch("/api/signout", { method: "POST" }); // clear authToken cookie
+      await auth.signOut(); // sign out from Firebase
+      router.push("/SignIn"); // redirect
+    } catch (err) {
+      console.error("Error signing out:", err);
+    }
   };
+
+  // Redirect unauthenticated users on mount
+  useEffect(() => {
+    if (!loading && (!user || error)) {
+      router.push("/SignIn");
+    }
+  }, [user, loading, error, router]);
 
   if (loading) {
     return (
@@ -28,10 +41,7 @@ export default function Profile() {
     );
   }
 
-  if (error || !user) {
-    router.push("/SignIn");
-    return null;
-  }
+  if (!user) return null; // avoid accessing user.email before it's ready
 
   return (
     <AuthLayout title="Profile">

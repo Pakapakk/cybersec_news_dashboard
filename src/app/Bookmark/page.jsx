@@ -25,6 +25,8 @@ import Header from "../../components/Header";
 import Popup from "../../components/Popup";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useState, useEffect, useMemo } from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const BookmarkList = () => {
     const theme = useTheme();
@@ -76,6 +78,20 @@ const BookmarkList = () => {
 
     return (
         <Box m="20px" marginTop={5}>
+            {/* <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Button
+                    variant="contained"
+                    sx={{ backgroundColor: colors.greenAccent[500], color: "#000" }}
+                    onClick={async () => {
+                        await signOut(auth);
+                        document.cookie = "authToken=; Max-Age=0; path=/";
+                        window.location.href = "/SignIn";
+                    }}
+                >
+                    LOG OUT
+                </Button>
+            </Box> */}
+
             <Header title="Bookmarked News" subtitle={`Total Bookmarks: ${filteredBookmarks.length}`} />
 
             <Box display="flex" gap={1} mb={2}>

@@ -13,6 +13,7 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 
 const Item = ({ title, to, icon }) => {
     const pathname = usePathname();
@@ -121,6 +122,12 @@ const Sidebar = () => {
                             to="/Bookmark"
                             icon={<BookmarkIcon />}
                         />{" "}
+                        
+                        <Item
+                            title="Profile"
+                            to="/Profile"
+                            icon={<PersonOutlinedIcon />} // NEW PROFILE ITEM
+                        />
 
                         {/* Dark Mode Toggle */}
                         {/* <Box
