@@ -44,7 +44,7 @@ export default function SignIn() {
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
       document.cookie = "authToken=true; path=/; SameSite=Lax";
-      setTimeout(() => router.push("/"), 50);
+      setTimeout(() => router.replace("/"), 50);
     } catch (e) {
       const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
       setFirebaseError(message);
@@ -60,7 +60,7 @@ export default function SignIn() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       document.cookie = "authToken=true; path=/; SameSite=Lax";
-      setTimeout(() => router.push("/"), 50);
+      setTimeout(() => router.replace("/"), 50);
     } catch (e) {
       const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
       setFirebaseError(message);
