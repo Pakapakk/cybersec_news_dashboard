@@ -1,21 +1,33 @@
-"use server"
+"use server";
 
 import clientPromise from "@/lib/mongodb";
 
-export async function GET() {
+export async function GET(req) {
   try {
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId");
+
+    if (!userId) {
+      return new Response("Missing userId", { status: 400 });
+    }
+
     const client = await clientPromise;
     const db = client.db("cyber_news_db");
-    const bookmarks = await db.collection("news_bookmark").find({}).toArray();
+    const bookmarks = await db
+      .collection("news_bookmark")
+      .find({ userId })
+      .toArray();
+
     return new Response(JSON.stringify(bookmarks), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
     console.error("Failed to fetch bookmarks:", err);
-    return new Response(JSON.stringify({ error: "Failed to fetch bookmarks" }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({ error: "Failed to fetch bookmarks" }),
+      { status: 500 }
+    );
   }
 }
 
@@ -25,9 +37,14 @@ export async function POST(req) {
     const client = await clientPromise;
     const db = client.db("cyber_news_db");
 
+    const { userId, _id, ...rest } = body;
+
+    // Combine userId and news _id to create a unique composite _id
+    const compositeId = `${userId}::${_id}`;
+
     await db.collection("news_bookmark").updateOne(
-      { _id: body._id },
-      { $set: body },
+      { _id: compositeId },
+      { $set: { userId, newsId: _id, ...rest } },
       { upsert: true }
     );
 
@@ -40,13 +57,17 @@ export async function POST(req) {
   }
 }
 
+
 export async function DELETE(req) {
   try {
     const body = await req.json();
     const client = await clientPromise;
     const db = client.db("cyber_news_db");
 
-    await db.collection("news_bookmark").deleteOne({ "News Title": body.title });
+    await db.collection("news_bookmark").deleteOne({
+      "News Title": body.title,
+      userId: body.userId, // required now
+    });
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (err) {
@@ -56,4 +77,5 @@ export async function DELETE(req) {
     });
   }
 }
+
 

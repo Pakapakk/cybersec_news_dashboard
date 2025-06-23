@@ -1,16 +1,28 @@
-import useSWR from "swr";
+"use client";
 
-const fetcher = (...args) => fetch(...args).then(res => res.json());
+import useSWR from "swr";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
+
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Failed to fetch bookmarks");
+  return res.json();
+};
 
 export function useBookmarks() {
-    const { data, error, mutate } = useSWR("/api/cyber-news-bookmark", fetcher, {
-        refreshInterval: 0,
-    });
+  const [user, loading, error] = useAuthState(auth);
 
-    return {
-        bookmarks: data || [],
-        isLoading: !error && !data,
-        isError: error,
-        mutate,
-    };
+  const shouldFetch = user && !loading && !error;
+  const { data, mutate, isLoading, error: fetchError } = useSWR(
+    shouldFetch ? `/api/cyber-news-bookmark?userId=${user.uid}` : null,
+    fetcher
+  );
+
+  return {
+    bookmarks: data || [],
+    mutate,
+    isLoading,
+    error: error || fetchError,
+  };
 }
