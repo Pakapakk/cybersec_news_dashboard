@@ -1,4 +1,3 @@
-// app/(dashboard)/page.jsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -249,38 +248,16 @@ export default function Dashboard() {
                     >
                         Mentioned Countries
                     </Typography>
-                    <Box
-                        display="flex"
-                        height="200px"
-                        justifyContent="space-between"
-                    >
-                        <Box flex="1">
-                            <GeographyChart
-                                isDashboard
-                                countryNewsMap={countryMap}
-                                onCountryClick={handleTopicClick}
-                            />
-                        </Box>
-                        <Box width="30%" pl={2}>
-                            <Typography
-                                variant="h4"
-                                fontWeight="600"
-                                sx={{ mb: "10px" }}
-                            >
-                                Top 3 Mentioned Countries
-                            </Typography>
-                            {topTargetCountries.map((ct, idx) => (
-                                <Typography
-                                    key={idx}
-                                    color={colors.grey[100]}
-                                    sx={{ mb: "8px" }}
-                                >
-                                    {idx + 1}. {ct.label} ({ct.value})
-                                </Typography>
-                            ))}
-                        </Box>
+                    <Box height="200px">
+                        <GeographyChart
+                            isDashboard
+                            countryNewsMap={countryMap}
+                            onCountryClick={handleTopicClick}
+                            topCountries={topTargetCountries}
+                        />
                     </Box>
                 </Box>
+
 
                 {/* Top Techniques List */}
                 <Box

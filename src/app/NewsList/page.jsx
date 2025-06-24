@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -23,6 +22,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
+import { useState, useEffect } from "react";
 
 export default function NewsList() {
   const theme = useTheme();
@@ -111,34 +111,34 @@ export default function NewsList() {
     setFilteredData(filtered);
   }, [searchQuery, selectedTopics, news]);
 
-const toggleBookmark = async (newsItem) => {
-  const user = auth.currentUser;
-  if (!user) return;
+  const toggleBookmark = async (newsItem) => {
+    const user = auth.currentUser;
+    if (!user) return;
 
-  const isBookmarked = Array.isArray(bookmarks) &&
-    bookmarks.some((b) => b["News Title"] === newsItem["News Title"]);
+    const isBookmarked = Array.isArray(bookmarks) &&
+      bookmarks.some((b) => b["News Title"] === newsItem["News Title"]);
 
-  const method = isBookmarked ? "DELETE" : "POST";
+    const method = isBookmarked ? "DELETE" : "POST";
 
-  const body = isBookmarked
-    ? {
-        title: newsItem["News Title"],
-        userId: user.uid,
-      }
-    : {
-        ...newsItem,
-        userId: user.uid,
-        _id: newsItem._id,
-      };
+    const body = isBookmarked
+      ? {
+          title: newsItem["News Title"],
+          userId: user.uid,
+        }
+      : {
+          ...newsItem,
+          userId: user.uid,
+          _id: newsItem._id,
+        };
 
-  const res = await fetch("/api/cyber-news-bookmark", {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+    const res = await fetch("/api/cyber-news-bookmark", {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
 
-  if (res.ok) mutate();
-};
+    if (res.ok) mutate();
+  };
 
   const toggleTopic = (topic) => {
     const updated = selectedTopics.includes(topic)
@@ -167,7 +167,7 @@ const toggleBookmark = async (newsItem) => {
     <Box m="20px" marginTop={5}>
       <Header title="News List" subtitle={`Total Articles: ${filteredData.length}`} />
 
-      <Box display="flex" gap={1} mb={1}>
+      <Box display="flex" gap={1} mb={2} flexDirection={{ xs: "column", sm: "row" }}>
         <TextField
           fullWidth
           variant="outlined"
@@ -275,10 +275,10 @@ const toggleBookmark = async (newsItem) => {
 
       <Popup open={openPopup} onClose={() => setOpenPopup(false)} news={selectedNews} />
 
-      <Box display="flex" justifyContent="center" mt={2} alignItems="center">
+      <Box display="flex" justifyContent="center" mt={2} alignItems="center" flexWrap="wrap" gap={1}>
         <Button
           variant="contained"
-          sx={{ backgroundColor: colors.primary[500], mr: 1 }}
+          sx={{ backgroundColor: colors.primary[500] }}
           onClick={() => changePage(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -290,7 +290,6 @@ const toggleBookmark = async (newsItem) => {
             key={pageIndex}
             onClick={() => changePage(pageIndex + 1)}
             sx={{
-              mx: 0.5,
               backgroundColor: currentPage === pageIndex + 1 ? colors.greenAccent[400] : colors.primary[500],
               color: currentPage === pageIndex + 1 ? "#000" : "#fff",
               fontWeight: currentPage === pageIndex + 1 ? "bold" : "normal",
@@ -303,7 +302,7 @@ const toggleBookmark = async (newsItem) => {
 
         <Button
           variant="contained"
-          sx={{ backgroundColor: colors.primary[500], ml: 1 }}
+          sx={{ backgroundColor: colors.primary[500] }}
           onClick={() => changePage(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
