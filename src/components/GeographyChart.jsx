@@ -66,7 +66,7 @@ export default function GeographyChart({
       width="100%"
       sx={{ overflow: "hidden" }}
     >
-      <Box flex={3} minWidth={0} pr={2}>
+      <Box flex={3} minWidth={0} pr={1}>
         <ResponsiveChoropleth
           data={chartData}
           features={geoFeatures.features}
@@ -131,7 +131,7 @@ export default function GeographyChart({
       </Box>
 
       {isDashboard && topCountries.length > 0 && (
-        <Box flex={1} minWidth={0} pl={1} py={1}>
+        <Box flex={1} minWidth={0} pl={0.1} py={1}>
           <Typography variant="h4" fontWeight="600" sx={{ mb: 1 }}>
             Top 3 Mentioned Countries
           </Typography>
