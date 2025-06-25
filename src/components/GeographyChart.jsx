@@ -90,8 +90,8 @@ export default function GeographyChart({
               }}
             >
               <strong>{feature.properties.name}</strong>
-              <br />
-              Attacks: {feature.value?.toLocaleString() || "N/A"}
+              {/* <br /> */}
+              : {feature.value?.toLocaleString() || "N/A"}
             </div>
           )}
           onClick={handleClick}

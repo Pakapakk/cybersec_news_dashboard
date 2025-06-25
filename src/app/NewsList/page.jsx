@@ -24,6 +24,17 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import { useState, useEffect } from "react";
 
+const formatKeyword = (category, item) => {
+  if (!item) return "";
+  if (category.toLowerCase() === "attackers") {
+    return item.toUpperCase();
+  }
+  return item
+    .split(" ")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+};
+
 export default function NewsList() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -252,7 +263,7 @@ export default function NewsList() {
                     {keywordEntries.slice(0, 5).map((kw, i) => (
                       <Tooltip key={i} title={kw.category}>
                         <Chip
-                          label={kw.item}
+                          label={formatKeyword(kw.category, kw.item)}
                           sx={{ backgroundColor: colors.greenAccent[400], color: "#000", fontSize: "0.9rem" }}
                           onClick={(e) => { e.stopPropagation(); setSearchQuery(kw.item); }}
                           clickable

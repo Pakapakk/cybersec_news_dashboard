@@ -133,7 +133,9 @@ export async function GET(request) {
       .forEach(lbl => pushUnique(maps.country, lbl, item));
     uniq("attackers")
       .filter(s => !["threat actors", "attackers", "attacker"].includes(s))
+      .map(s => s.toUpperCase())
       .forEach(lbl => pushUnique(maps.attacker, lbl, item));
+
     uniq("companies").forEach(lbl => pushUnique(maps.company, lbl, item));
   }
 

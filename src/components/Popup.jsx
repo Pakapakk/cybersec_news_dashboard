@@ -60,7 +60,7 @@ const NewsPopup = ({ open, onClose, news }) => {
                     fontWeight="bold"
                     color="black"
                 >
-                    Cyber Attack Report - {news.victimName || news["News Title"] || "Unknown"}
+                    {news.victimName || news["News Title"] || "Unknown"}
                 </Typography>
                 <IconButton
                     aria-label="close"
@@ -112,14 +112,22 @@ const NewsPopup = ({ open, onClose, news }) => {
                                                 {items.map((item, i) => (
                                                     <Chip
                                                         key={i}
-                                                        label={item}
+                                                        label={
+                                                            category.toLowerCase() === "attackers"
+                                                                ? item.toUpperCase()
+                                                                : item
+                                                                    .split(" ")
+                                                                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                                                                    .join(" ")
+                                                            }
+
                                                         sx={{
-                                                            backgroundColor:
-                                                                colors.greenAccent[400],
+                                                            backgroundColor: colors.greenAccent[400],
                                                             color: "#000",
                                                         }}
                                                     />
                                                 ))}
+
                                             </Box>
                                         </Box>
                                     );
