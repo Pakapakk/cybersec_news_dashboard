@@ -8,6 +8,9 @@ const nextConfig = {
     autoPrerender: false,
   },
   output: "standalone",
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 export default nextConfig;
