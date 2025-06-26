@@ -138,7 +138,7 @@ export default function GeographyChart({
           {topCountries.map((ct, idx) => (
             <Typography
               key={idx}
-              sx={{ mb: "4px", fontSize: 16, wordWrap: "break-word" }}
+              sx={{ mb: "4px", fontSize: 17, wordWrap: "break-word" }}
               color={colors.grey[100]}
             >
               {idx + 1}. {ct.label} ({ct.value})

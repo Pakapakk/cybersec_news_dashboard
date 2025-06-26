@@ -7,7 +7,8 @@ import GoogleButton from "react-google-button";
 import AuthLayout from "@/components/AuthLayout";
 import { tokens } from "@/theme";
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+
 
 import { auth } from "@/lib/firebase";
 import {
@@ -23,6 +24,8 @@ export default function SignIn() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
@@ -30,13 +33,12 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const [user, authLoading] = useAuthState(auth);
 
-  // ✅ Redirect after user is authenticated
   useEffect(() => {
     if (user && !authLoading) {
       document.cookie = "authToken=true; path=/; SameSite=Lax";
-      router.replace("/");
+      router.replace(redirectTo);
     }
-  }, [user, authLoading, router]);
+  }, [user, authLoading, router, redirectTo]);
 
   const validate = () => {
     const errs = {};

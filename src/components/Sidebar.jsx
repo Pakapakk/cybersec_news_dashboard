@@ -123,11 +123,11 @@ const Sidebar = () => {
                             icon={<BookmarkIcon />}
                         />{" "}
                         
-                        <Item
+                        {/* <Item
                             title="Profile"
                             to="/Profile"
                             icon={<PersonOutlinedIcon />} // NEW PROFILE ITEM
-                        />
+                        /> */}
 
                         {/* Dark Mode Toggle */}
                         {/* <Box

@@ -12,6 +12,10 @@ import {
   Alert,
   Tooltip,
   IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { tokens } from "../../theme";
@@ -23,24 +27,21 @@ import { useBookmarks } from "@/lib/useBookmarks";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { formatKeyword } from "@/lib/formatKeywords";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const formatKeyword = (category, item) => {
-  if (!item) return "";
-  if (category.toLowerCase() === "attackers") {
-    return item.toUpperCase();
-  }
-  return item
-    .split(" ")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
-    .join(" ");
-};
 
 export default function NewsList() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
 
   const [user] = useAuthState(auth);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedNews, setSelectedNews] = useState(null);
   const [openPopup, setOpenPopup] = useState(false);
@@ -51,6 +52,7 @@ export default function NewsList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedTopics, setSelectedTopics] = useState([]);
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
 
   const { bookmarks, mutate } = useBookmarks();
 
@@ -124,7 +126,10 @@ export default function NewsList() {
 
   const toggleBookmark = async (newsItem) => {
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) {
+      setLoginDialogOpen(true);
+      return;
+    }
 
     const isBookmarked = Array.isArray(bookmarks) &&
       bookmarks.some((b) => b["News Title"] === newsItem["News Title"]);
@@ -174,10 +179,53 @@ export default function NewsList() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleSignOut = async () => {
+    await auth.signOut();
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
+  };
+
   return (
     <Box m="20px" marginTop={5}>
-      <Header title="News List" subtitle={`Total Articles: ${filteredData.length}`} />
+      <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+        <Header title="News List" subtitle={`Total Articles: ${filteredData.length}`} />
+        {user ? (
+                      <IconButton
+                onClick={() => router.push("/Profile")}
+                sx={{
+                color: colors.greenAccent[500],
+                fontWeight: "bold",
+                "&:hover": {
+                    backgroundColor: colors.greenAccent[500],
+                    color: "#000",
+                },
+                }}
+            >
+                <AccountCircleIcon fontSize="large" />
+            </IconButton>
+            ) : (
+            <Button
+                variant="outlined"
+                component={Link}
+                href={`/SignIn?redirect=${encodeURIComponent(pathname + (searchParams?.toString() ? '?' + searchParams.toString() : ''))}`}
+                sx={{
+                borderColor: colors.greenAccent[500],
+                color: colors.greenAccent[500],
+                fontWeight: "bold",
+                "&:hover": {
+                    backgroundColor: colors.greenAccent[500],
+                    color: "#000",
+                    borderColor: colors.greenAccent[500],
+                },
+                }}
+            >
+                Sign In
+            </Button>
+            )}
 
+      </Box>
       <Box display="flex" gap={1} mb={2} flexDirection={{ xs: "column", sm: "row" }}>
         <TextField
           fullWidth
@@ -285,6 +333,38 @@ export default function NewsList() {
       )}
 
       <Popup open={openPopup} onClose={() => setOpenPopup(false)} news={selectedNews} />
+
+      <Dialog
+        open={loginDialogOpen}
+        onClose={() => setLoginDialogOpen(false)}
+        fullWidth
+        maxWidth="sm"
+        sx={{
+          "& .MuiDialog-paper": {
+            padding: 3,
+            borderRadius: "16px",
+          },
+        }}
+      >
+        <DialogTitle variant="h4" sx={{ fontWeight: "bold" }}>Login Required</DialogTitle>
+        <DialogContent>
+          &nbsp; You must be signed in to bookmark news articles.
+        </DialogContent>
+        <DialogActions>
+          <Button
+            component={Link}
+            href={`/SignIn?redirect=${encodeURIComponent(pathname + (searchParams?.toString() ? '?' + searchParams.toString() : ''))}`}
+            variant="contained"
+            sx={{ backgroundColor: colors.greenAccent[400], color: "#000" }}
+          >
+            Sign In
+          </Button>
+          <Button onClick={() => setLoginDialogOpen(false)}
+            sx={{ color: "#fff" }}
+          >
+              Cancel</Button>
+        </DialogActions>
+      </Dialog>
 
       <Box display="flex" justifyContent="center" mt={2} alignItems="center" flexWrap="wrap" gap={1}>
         <Button

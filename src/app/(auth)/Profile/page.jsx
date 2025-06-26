@@ -20,7 +20,7 @@ export default function Profile() {
     try {
       await fetch("/api/signout", { method: "POST" }); // clear authToken cookie
       await auth.signOut(); // sign out from Firebase
-      router.push("/SignIn"); // redirect
+      router.push("/"); // redirect
     } catch (err) {
       console.error("Error signing out:", err);
     }
@@ -29,7 +29,7 @@ export default function Profile() {
   // Redirect unauthenticated users on mount
   useEffect(() => {
     if (!loading && (!user || error)) {
-      router.push("/SignIn");
+      router.push("/");
     }
   }, [user, loading, error, router]);
 

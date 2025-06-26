@@ -26,6 +26,7 @@ import Popup from "../../components/Popup";
 import { useBookmarks } from "@/lib/useBookmarks";
 import { useState, useMemo } from "react";
 import { auth } from "@/lib/firebase";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const BookmarkList = () => {
   const theme = useTheme();
@@ -97,9 +98,33 @@ const BookmarkList = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleSignOut = async () => {
+    await auth.signOut();
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
+  };
+
   return (
     <Box m="20px" marginTop={5}>
-      <Header title="Bookmarked News" subtitle={`Total Bookmarks: ${filteredBookmarks.length}`} />
+      <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+        <Header title="Bookmarked News" subtitle={`Total Bookmarks: ${filteredBookmarks.length}`} />
+        <IconButton
+                onClick={() => router.push("/Profile")}
+                sx={{
+                color: colors.greenAccent[500],
+                fontWeight: "bold",
+                "&:hover": {
+                    backgroundColor: colors.greenAccent[500],
+                    color: "#000",
+                },
+                }}
+            >
+                <AccountCircleIcon fontSize="large" />
+            </IconButton>
+      </Box>
+
 
       <Box display="flex" gap={1} mb={2}>
         <TextField

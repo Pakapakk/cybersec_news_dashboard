@@ -11,7 +11,7 @@ const Header = ({ title, subtitle }) => {
     <Box mb="30px">
       {/* Title */}
       <Typography
-        variant="h2"
+        variant="h1"
         sx={{
           color: colors.grey[100],
           fontWeight: "bold",
@@ -23,7 +23,7 @@ const Header = ({ title, subtitle }) => {
 
       {/* Subtitle */}
       <Typography
-        variant="h5"
+        variant="h4"
         sx={{ color: colors.greenAccent[400] }}
       >
         {subtitle}

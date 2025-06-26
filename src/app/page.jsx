@@ -1,7 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Box, Typography, TextField, Button, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  useTheme,
+  IconButton
+} from "@mui/material";
 import { tokens } from "@/theme";
 import Header from "@/components/Header";
 import LineChart from "@/components/LineChart";
@@ -10,166 +17,161 @@ import BarChart from "@/components/BarChart";
 import StatBox from "@/components/StatBox";
 import PieChart from "@/components/PieChart";
 import TopicPopup from "@/components/TopicPopup";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
+import Link from "next/link";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+
 export default function Dashboard() {
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const router = useRouter();
+  const pathname = usePathname();
+const searchParams = useSearchParams();
 
-    const [newsCount, setNewsCount] = useState(0);
-    const [attackMap, setAttackMap] = useState({});
-    const [sectorMap, setSectorMap] = useState({});
-    const [countryMap, setCountryMap] = useState({});
-    const [monthlyCounts, setMonthlyCounts] = useState([]);
-    const [attackCounts, setAttackCounts] = useState([]);
-    const [sectorCounts, setSectorCounts] = useState([]);
-    const [countryCounts, setCountryCounts] = useState([]);
-    const [topAttackTechniques, setTopAttackTechniques] = useState([]);
-    const [topAttackers, setTopAttackers] = useState([]);
-    const [topTargetCountries, setTopTargetCountries] = useState([]);
-    const [mostUsedAttackType, setMostUsedAttackType] = useState({
-        label: "N/A",
-        count: 0,
-    });
-    const [mostTargetedSector, setMostTargetedSector] = useState({
-        label: "N/A",
-        count: 0,
-    });
 
-    const [startDate, setStartDate] = useState(
-        dayjs().subtract(11, "month").startOf("month")
-    );
-    const [endDate, setEndDate] = useState(dayjs());
+  const [user] = useAuthState(auth);
 
-    const fetchStats = async (start, end) => {
-        const query = `?start=${start.format("MM-YYYY")}&end=${end.format(
-            "MM-YYYY"
-        )}`;
-        const res = await fetch(`/api/cyber-news-stat${query}`);
-        if (!res.ok) return;
-        const data = await res.json();
+  const [newsCount, setNewsCount] = useState(0);
+  const [attackMap, setAttackMap] = useState({});
+  const [sectorMap, setSectorMap] = useState({});
+  const [countryMap, setCountryMap] = useState({});
+  const [monthlyCounts, setMonthlyCounts] = useState([]);
+  const [topAttackTechniques, setTopAttackTechniques] = useState([]);
+  const [topAttackers, setTopAttackers] = useState([]);
+  const [topTargetCountries, setTopTargetCountries] = useState([]);
+  const [mostUsedAttackType, setMostUsedAttackType] = useState({ label: "N/A", count: 0 });
+  const [mostTargetedSector, setMostTargetedSector] = useState({ label: "N/A", count: 0 });
 
-        setNewsCount(data.newsCount);
-        setAttackMap(data.attackNewsMap || {});
-        setSectorMap(data.sectorNewsMap || {});
-        setCountryMap(data.countryNewsMap || {});
-        setMonthlyCounts(data.monthlyCounts || []);
+  const [startDate, setStartDate] = useState(dayjs().subtract(11, "month").startOf("month"));
+  const [endDate, setEndDate] = useState(dayjs());
 
-        // Convert maps into arrays with shape {_id, count, articles}
-        const attacks = Object.entries(data.attackNewsMap || {}).map(
-            ([id, info]) => ({
-                _id: id,
-                count: info.count,
-                articles: info.articles,
-            })
-        );
-        const sectors = Object.entries(data.sectorNewsMap || {}).map(
-            ([id, info]) => ({
-                _id: id,
-                count: info.count,
-                articles: info.articles,
-            })
-        );
-        const countries = Object.entries(data.countryNewsMap || {}).map(
-            ([id, info]) => ({
-                _id: id,
-                count: info.count,
-                articles: info.articles,
-            })
-        );
+  const fetchStats = async (start, end) => {
+    const query = `?start=${start.format("MM-YYYY")}&end=${end.format("MM-YYYY")}`;
+    const res = await fetch(`/api/cyber-news-stat${query}`);
+    if (!res.ok) return;
+    const data = await res.json();
 
-        setAttackCounts(attacks);
-        setSectorCounts(sectors);
-        setCountryCounts(countries);
+    setNewsCount(data.newsCount);
+    setAttackMap(data.attackNewsMap || {});
+    setSectorMap(data.sectorNewsMap || {});
+    setCountryMap(data.countryNewsMap || {});
+    setMonthlyCounts(data.monthlyCounts || []);
 
-        setTopAttackTechniques(
-            attacks.sort((a, b) => b.count - a.count).slice(0, 5)
-        );
-        setTopAttackers(data.top5Attackers || []);
+    const attacks = Object.entries(data.attackNewsMap || {}).map(([id, info]) => ({ _id: id, count: info.count, articles: info.articles }));
+    const sectors = Object.entries(data.sectorNewsMap || {}).map(([id, info]) => ({ _id: id, count: info.count, articles: info.articles }));
+    const countries = Object.entries(data.countryNewsMap || {}).map(([id, info]) => ({ _id: id, count: info.count, articles: info.articles }));
 
-        if (data.mostUsedAttackType?.length) {
-            setMostUsedAttackType({
-                label: data.mostUsedAttackType[0]._id,
-                count: data.mostUsedAttackType[0].count,
-            });
-        }
-        if (data.mostTargetedSector?.length) {
-            setMostTargetedSector({
-                label: data.mostTargetedSector[0]._id,
-                count: data.mostTargetedSector[0].count,
-            });
-        }
+    setTopAttackTechniques(attacks.sort((a, b) => b.count - a.count).slice(0, 5));
+    setTopAttackers(data.top5Attackers || []);
 
-        const top3Countries = countries
-            .sort((a, b) => b.count - a.count)
-            .slice(0, 3)
-            .map((c) => ({ label: c._id, value: c.count }));
-        setTopTargetCountries(top3Countries);
-    };
+    if (data.mostUsedAttackType?.length) {
+      setMostUsedAttackType({ label: data.mostUsedAttackType[0]._id, count: data.mostUsedAttackType[0].count });
+    }
+    if (data.mostTargetedSector?.length) {
+      setMostTargetedSector({ label: data.mostTargetedSector[0]._id, count: data.mostTargetedSector[0].count });
+    }
 
-    useEffect(() => {
-        fetchStats(startDate, endDate);
-    }, []);
+    setTopTargetCountries(countries.sort((a, b) => b.count - a.count).slice(0, 3).map((c) => ({ label: c._id, value: c.count })));
+  };
 
-    const handleApply = () => fetchStats(startDate, endDate);
+  useEffect(() => {
+    fetchStats(startDate, endDate);
+  }, []);
 
-    const [popupTopic, setPopupTopic] = useState(null);
-    const [open, setOpen] = useState(false);
-    const handleTopicClick = (topic) => {
-        setPopupTopic(topic);
-        setOpen(true);
-    };
-    const closePopup = () => {
-        setPopupTopic(null);
-        setOpen(false);
-    };
+  const handleApply = () => fetchStats(startDate, endDate);
 
-    return (
-        <Box mb={4} mt={3} mx={2}>
-            <Box display="flex" justifyContent="space-between">
-                <Header title="DASHBOARD" subtitle="Cyber Attack Statistics" />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <DatePicker
-                            label="Start"
-                            views={["year", "month"]}
-                            inputFormat="MMMM YYYY"
-                            value={startDate}
-                            onChange={setStartDate}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    size="small"
-                                    sx={{ width: 150 }}
-                                />
-                            )}
-                        />
-                        <DatePicker
-                            label="End"
-                            views={["year", "month"]}
-                            inputFormat="MMMM YYYY"
-                            value={endDate}
-                            onChange={setEndDate}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    size="small"
-                                    sx={{ width: 150 }}
-                                />
-                            )}
-                        />
-                        <Button variant="contained" onClick={handleApply}>
-                            Apply
-                        </Button>
-                    </Box>
-                </LocalizationProvider>
+  const [popupTopic, setPopupTopic] = useState(null);
+  const [open, setOpen] = useState(false);
+  const handleTopicClick = (topic) => {
+    setPopupTopic(topic);
+    setOpen(true);
+  };
+  const closePopup = () => {
+    setPopupTopic(null);
+    setOpen(false);
+  };
+
+  const handleSignOut = async () => {
+    await auth.signOut();
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.reload();
+  };
+
+  return (
+    <Box mb={4} mt={3} mx={2}>
+        
+      <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+        <Header title="DASHBOARD" subtitle="Cyber Attack Statistics" />
+
+        <Box display="flex" flexDirection="column" alignItems="flex-end" gap={2}>
+          {user ? (
+            <IconButton
+                onClick={() => router.push("/Profile")}
+                sx={{
+                color: colors.greenAccent[500],
+                fontWeight: "bold",
+                "&:hover": {
+                    backgroundColor: colors.greenAccent[500],
+                    color: "#000",
+                },
+                }}
+            >
+                <AccountCircleIcon fontSize="large" />
+            </IconButton>
+            ) : (
+            <Button
+                variant="outlined"
+                component={Link}
+                href={`/SignIn?redirect=${encodeURIComponent(pathname + (searchParams?.toString() ? '?' + searchParams.toString() : ''))}`}
+                sx={{
+                borderColor: colors.greenAccent[500],
+                color: colors.greenAccent[500],
+                fontWeight: "bold",
+                "&:hover": {
+                    backgroundColor: colors.greenAccent[500],
+                    color: "#000",
+                    borderColor: colors.greenAccent[500],
+                },
+                }}
+            >
+                Sign In
+            </Button>
+            )}
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Box display="flex" alignItems="center" gap={1}>
+              <DatePicker
+                label="Start"
+                views={["year", "month"]}
+                value={startDate}
+                onChange={setStartDate}
+                renderInput={(params) => <TextField {...params} size="small" sx={{ width: 150 }} />}
+              />
+              <DatePicker
+                label="End"
+                views={["year", "month"]}
+                value={endDate}
+                onChange={setEndDate}
+                renderInput={(params) => <TextField {...params} size="small" sx={{ width: 150 }} />}
+              />
+              <Button variant="contained" onClick={handleApply}>Apply</Button>
             </Box>
+          </LocalizationProvider>
+        </Box>
+      </Box>
 
             {/* Stats */}
             <Box
+                mt={3}
                 display="grid"
                 gridTemplateColumns="repeat(12,1fr)"
                 gridAutoRows="140px"
@@ -367,6 +369,8 @@ export default function Dashboard() {
                 sectorNewsMap={sectorMap}
                 countryNewsMap={countryMap}
             />
+            
         </Box>
+        
     );
 }
