@@ -20,7 +20,7 @@ import {
 } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-export default function SignIn() {
+export default function SignInContent() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const router = useRouter();
