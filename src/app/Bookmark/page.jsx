@@ -27,10 +27,14 @@ import { useBookmarks } from "@/lib/useBookmarks";
 import { useState, useMemo } from "react";
 import { auth } from "@/lib/firebase";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 const BookmarkList = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const [selectedNews, setSelectedNews] = useState(null);
   const [openPopup, setOpenPopup] = useState(false);
