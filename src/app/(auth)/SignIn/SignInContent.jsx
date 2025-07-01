@@ -74,7 +74,6 @@ export default function SignInContent() {
       const provider = new GoogleAuthProvider();
       await setPersistence(auth, browserLocalPersistence);
       await signInWithPopup(auth, provider);
-      // Redirection will now happen in the useEffect
     } catch (e) {
       const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
       setFirebaseError(message);

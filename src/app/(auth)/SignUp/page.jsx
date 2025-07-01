@@ -45,7 +45,8 @@ export default function SignUp() {
       await createUserWithEmailAndPassword(auth, form.email, form.password);
       router.push("/SignIn");
     } catch (e) {
-      setFirebaseError(e.message);
+      const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
+      setFirebaseError(message);
     } finally {
       setLoading(false);
     }
@@ -59,7 +60,8 @@ export default function SignUp() {
       await signInWithPopup(auth, provider);
       router.push("/");
     } catch (e) {
-      setFirebaseError(e.message);
+      const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
+      setFirebaseError(message);
     } finally {
       setLoading(false);
     }
