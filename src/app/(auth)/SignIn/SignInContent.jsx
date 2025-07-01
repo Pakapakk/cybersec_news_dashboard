@@ -58,7 +58,6 @@ export default function SignInContent() {
     try {
       await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, form.email, form.password);
-      // Redirection will now happen in the useEffect
     } catch (e) {
       const message = e.message.replace(/^Firebase: Error \(auth\/(.+?)\)\.?$/, "$1").replace(/-/g, " ");
       setFirebaseError(message);
